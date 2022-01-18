@@ -65,6 +65,9 @@ management:
           autotime:
             enabled: true
 
+springdoc.api-docs.path: /api-docs
+springdoc.swagger-ui.disable-swagger-default-url: true
+
 spring:
   application:
     name: Periscol_Backend

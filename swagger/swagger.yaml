@@ -181,48 +181,7 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
-  /api/admin/users:
-    get:
-      tags:
-        - user-resource
-      summary: getAllUsers
-      operationId: getAllUsersUsingGET
-      produces:
-        - '*/*'
-      parameters:
-        - name: page
-          in: query
-          description: Page number of the requested page
-          required: false
-          type: integer
-          format: int32
-        - name: size
-          in: query
-          description: Size of a page
-          required: false
-          type: integer
-          format: int32
-        - name: sort
-          in: query
-          description: 'Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.'
-          required: false
-          type: array
-          items:
-            type: string
-          collectionFormat: multi
-      responses:
-        '200':
-          description: OK
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/AdminUserDTO'
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
+  /api/admin/user:
     post:
       tags:
         - user-resource
@@ -281,7 +240,7 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
-  /api/admin/users/{login}:
+  /api/admin/user/{login}:
     get:
       tags:
         - user-resource
@@ -330,6 +289,48 @@ paths:
           description: Unauthorized
         '403':
           description: Forbidden
+  /api/admin/users:
+    get:
+      tags:
+        - user-resource
+      summary: getAllUsers
+      operationId: getAllUsersUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: page
+          in: query
+          description: Page number of the requested page
+          required: false
+          type: integer
+          format: int32
+        - name: size
+          in: query
+          description: Size of a page
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: 'Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.'
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/AdminUserDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
   /api/authenticate:
     get:
       tags:
@@ -399,34 +400,7 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
-  /api/children:
-    get:
-      tags:
-        - child-resource
-      summary: getAllChildren
-      operationId: getAllChildrenUsingGET
-      produces:
-        - '*/*'
-      parameters:
-        - name: eagerload
-          in: query
-          description: eagerload
-          required: false
-          type: boolean
-          default: false
-      responses:
-        '200':
-          description: OK
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/ChildDTO'
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
+  /api/child:
     post:
       tags:
         - child-resource
@@ -456,7 +430,7 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
-  /api/children/{id}:
+  /api/child/{id}:
     get:
       tags:
         - child-resource
@@ -574,27 +548,35 @@ paths:
           description: Unauthorized
         '403':
           description: Forbidden
-  /api/classrooms:
+  /api/children:
     get:
       tags:
-        - classroom-resource
-      summary: getAllClassrooms
-      operationId: getAllClassroomsUsingGET
+        - child-resource
+      summary: getAllChildren
+      operationId: getAllChildrenUsingGET
       produces:
         - '*/*'
+      parameters:
+        - name: eagerload
+          in: query
+          description: eagerload
+          required: false
+          type: boolean
+          default: false
       responses:
         '200':
           description: OK
           schema:
             type: array
             items:
-              $ref: '#/definitions/ClassroomDTO'
+              $ref: '#/definitions/ChildDTO'
         '401':
           description: Unauthorized
         '403':
           description: Forbidden
         '404':
           description: Not Found
+  /api/classroom:
     post:
       tags:
         - classroom-resource
@@ -624,7 +606,7 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
-  /api/classrooms/{id}:
+  /api/classroom/{id}:
     get:
       tags:
         - classroom-resource
@@ -742,12 +724,12 @@ paths:
           description: Unauthorized
         '403':
           description: Forbidden
-  /api/diets:
+  /api/classrooms:
     get:
       tags:
-        - diet-resource
-      summary: getAllDiets
-      operationId: getAllDietsUsingGET
+        - classroom-resource
+      summary: getAllClassrooms
+      operationId: getAllClassroomsUsingGET
       produces:
         - '*/*'
       responses:
@@ -756,13 +738,14 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/DietDTO'
+              $ref: '#/definitions/ClassroomDTO'
         '401':
           description: Unauthorized
         '403':
           description: Forbidden
         '404':
           description: Not Found
+  /api/diet:
     post:
       tags:
         - diet-resource
@@ -792,7 +775,7 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
-  /api/diets/{id}:
+  /api/diet/{id}:
     get:
       tags:
         - diet-resource
@@ -910,6 +893,27 @@ paths:
           description: Unauthorized
         '403':
           description: Forbidden
+  /api/diets:
+    get:
+      tags:
+        - diet-resource
+      summary: getAllDiets
+      operationId: getAllDietsUsingGET
+      produces:
+        - '*/*'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DietDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
   /api/families:
     get:
       tags:
@@ -931,6 +935,7 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+  /api/family:
     post:
       tags:
         - family-resource
@@ -960,7 +965,7 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
-  /api/families/{id}:
+  /api/family/{id}:
     get:
       tags:
         - family-resource
@@ -1078,27 +1083,7 @@ paths:
           description: Unauthorized
         '403':
           description: Forbidden
-  /api/grade-levels:
-    get:
-      tags:
-        - grade-level-resource
-      summary: getAllGradeLevels
-      operationId: getAllGradeLevelsUsingGET
-      produces:
-        - '*/*'
-      responses:
-        '200':
-          description: OK
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/GradeLevelDTO'
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
+  /api/grade-level:
     post:
       tags:
         - grade-level-resource
@@ -1128,7 +1113,7 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
-  /api/grade-levels/{id}:
+  /api/grade-level/{id}:
     get:
       tags:
         - grade-level-resource
@@ -1141,7 +1126,8 @@ paths:
           in: path
           description: id
           required: true
-          type: string
+          type: integer
+          format: int64
       responses:
         '200':
           description: OK
@@ -1173,7 +1159,8 @@ paths:
           in: path
           description: id
           required: true
-          type: string
+          type: integer
+          format: int64
       responses:
         '200':
           description: OK
@@ -1199,7 +1186,8 @@ paths:
           in: path
           description: id
           required: true
-          type: string
+          type: integer
+          format: int64
       responses:
         '200':
           description: OK
@@ -1230,7 +1218,8 @@ paths:
           in: path
           description: id
           required: true
-          type: string
+          type: integer
+          format: int64
       responses:
         '200':
           description: OK
@@ -1242,6 +1231,27 @@ paths:
           description: Unauthorized
         '403':
           description: Forbidden
+  /api/grade-levels:
+    get:
+      tags:
+        - grade-level-resource
+      summary: getAllGradeLevels
+      operationId: getAllGradeLevelsUsingGET
+      produces:
+        - '*/*'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/GradeLevelDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
   /api/register:
     post:
       tags:
@@ -1428,6 +1438,9 @@ definitions:
     type: object
     properties:
       id:
+        type: integer
+        format: int64
+      level:
         type: string
     title: GradeLevelDTO
   JWTToken:
