@@ -1,0 +1,9 @@
+
+faire :
+docker pull swaggerapi/swagger-editor
+docker run -p 80:8080 swaggerapi/swagger-editor
+
+aller sur :
+http://localhost/
+
+faire File -> import File -> selectionner swagger.yaml
