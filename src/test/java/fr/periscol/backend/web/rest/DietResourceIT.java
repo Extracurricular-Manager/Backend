@@ -37,7 +37,8 @@ class DietResourceIT {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-    private static final String ENTITY_API_URL = "/api/diets";
+    private static final String ENTITY_API_URL = "/api/diet";
+    private static final String ENTITY_API_PLUR_URL = "/api/diets";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
     private static Random random = new Random();
@@ -129,7 +130,7 @@ class DietResourceIT {
 
         // Get all the dietList
         restDietMockMvc
-            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
+            .perform(get(ENTITY_API_PLUR_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(diet.getId().intValue())))

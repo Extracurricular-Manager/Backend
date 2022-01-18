@@ -54,7 +54,8 @@ class ChildResourceIT {
     private static final ZonedDateTime DEFAULT_BIRTHDAY = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_BIRTHDAY = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
-    private static final String ENTITY_API_URL = "/api/children";
+    private static final String ENTITY_API_URL = "/api/child";
+    private static final String ENTITY_API_PLUR_URL = "/api/children";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
     private static Random random = new Random();
@@ -153,7 +154,7 @@ class ChildResourceIT {
 
         // Get all the childList
         restChildMockMvc
-            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
+            .perform(get(ENTITY_API_PLUR_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(child.getId().intValue())))
@@ -166,7 +167,7 @@ class ChildResourceIT {
     void getAllChildrenWithEagerRelationshipsIsEnabled() throws Exception {
         when(childServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
-        restChildMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
+        restChildMockMvc.perform(get(ENTITY_API_PLUR_URL + "?eagerload=true")).andExpect(status().isOk());
 
         verify(childServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
@@ -175,7 +176,7 @@ class ChildResourceIT {
     void getAllChildrenWithEagerRelationshipsIsNotEnabled() throws Exception {
         when(childServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
-        restChildMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
+        restChildMockMvc.perform(get(ENTITY_API_PLUR_URL + "?reneagerload=true")).andExpect(status().isOk());
 
         verify(childServiceMock, times(1)).findAllWithEagerRelationships(any());
     }

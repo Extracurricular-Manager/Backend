@@ -137,7 +137,7 @@ class UserResourceIT {
 
         restUserMockMvc
             .perform(
-                post("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
+                post("/api/admin/user").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
             )
             .andExpect(status().isCreated());
 
@@ -174,7 +174,7 @@ class UserResourceIT {
         // An entity with an existing ID cannot be created, so this API call must fail
         restUserMockMvc
             .perform(
-                post("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
+                post("/api/admin/user").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
             )
             .andExpect(status().isBadRequest());
 
@@ -203,7 +203,7 @@ class UserResourceIT {
         // Create the User
         restUserMockMvc
             .perform(
-                post("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
+                post("/api/admin/user").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
             )
             .andExpect(status().isBadRequest());
 
@@ -232,7 +232,7 @@ class UserResourceIT {
         // Create the User
         restUserMockMvc
             .perform(
-                post("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
+                post("/api/admin/user").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
             )
             .andExpect(status().isBadRequest());
 
@@ -269,7 +269,7 @@ class UserResourceIT {
 
         // Get the user
         restUserMockMvc
-            .perform(get("/api/admin/users/{login}", user.getLogin()))
+            .perform(get("/api/admin/user/{login}", user.getLogin()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.login").value(user.getLogin()))
@@ -316,7 +316,7 @@ class UserResourceIT {
 
         restUserMockMvc
             .perform(
-                put("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
+                put("/api/admin/user").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
             )
             .andExpect(status().isOk());
 
@@ -360,7 +360,7 @@ class UserResourceIT {
 
         restUserMockMvc
             .perform(
-                put("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
+                put("/api/admin/user").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
             )
             .andExpect(status().isOk());
 
@@ -415,7 +415,7 @@ class UserResourceIT {
 
         restUserMockMvc
             .perform(
-                put("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
+                put("/api/admin/user").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
             )
             .andExpect(status().isBadRequest());
     }
@@ -458,7 +458,7 @@ class UserResourceIT {
 
         restUserMockMvc
             .perform(
-                put("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
+                put("/api/admin/user").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
             )
             .andExpect(status().isBadRequest());
     }
@@ -472,7 +472,7 @@ class UserResourceIT {
 
         // Delete the user
         restUserMockMvc
-            .perform(delete("/api/admin/users/{login}", user.getLogin()).accept(MediaType.APPLICATION_JSON))
+            .perform(delete("/api/admin/user/{login}", user.getLogin()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         assertThat(cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).get(user.getLogin())).isNull();

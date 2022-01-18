@@ -34,7 +34,9 @@ class GradeLevelResourceIT {
     private static final String DEFAULT_LEVEL = "AAAAAAAAAA";
     private static final String UPDATED_LEVEL = "BBBBBBBBBB";
 
-    private static final String ENTITY_API_URL = "/api/grade-levels";
+    private static final String ENTITY_API_URL = "/api/grade-level";
+    private static final String ENTITY_API_PLUR_URL = "/api/grade-levels";
+
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
     private static Random random = new Random();
@@ -125,7 +127,7 @@ class GradeLevelResourceIT {
 
         // Get all the gradeLevelList
         restGradeLevelMockMvc
-            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
+            .perform(get(ENTITY_API_PLUR_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(gradeLevel.getId().intValue())))
