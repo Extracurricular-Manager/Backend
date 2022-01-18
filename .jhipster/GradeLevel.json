@@ -3,6 +3,10 @@
   "fields": [
     {
       "fieldName": "id",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "level",
       "fieldType": "String"
     }
   ],

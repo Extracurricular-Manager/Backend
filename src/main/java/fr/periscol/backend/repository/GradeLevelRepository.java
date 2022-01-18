@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface GradeLevelRepository extends JpaRepository<GradeLevel, String> {}
+public interface GradeLevelRepository extends JpaRepository<GradeLevel, Long> {}

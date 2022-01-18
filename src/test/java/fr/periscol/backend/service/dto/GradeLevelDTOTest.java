@@ -11,12 +11,12 @@ class GradeLevelDTOTest {
     void dtoEqualsVerifier() throws Exception {
         TestUtil.equalsVerifier(GradeLevelDTO.class);
         GradeLevelDTO gradeLevelDTO1 = new GradeLevelDTO();
-        gradeLevelDTO1.setId("id1");
+        gradeLevelDTO1.setId(1L);
         GradeLevelDTO gradeLevelDTO2 = new GradeLevelDTO();
         assertThat(gradeLevelDTO1).isNotEqualTo(gradeLevelDTO2);
         gradeLevelDTO2.setId(gradeLevelDTO1.getId());
         assertThat(gradeLevelDTO1).isEqualTo(gradeLevelDTO2);
-        gradeLevelDTO2.setId("id2");
+        gradeLevelDTO2.setId(2L);
         assertThat(gradeLevelDTO1).isNotEqualTo(gradeLevelDTO2);
         gradeLevelDTO1.setId(null);
         assertThat(gradeLevelDTO1).isNotEqualTo(gradeLevelDTO2);

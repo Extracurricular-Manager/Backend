@@ -11,7 +11,8 @@ import fr.periscol.backend.repository.GradeLevelRepository;
 import fr.periscol.backend.service.dto.GradeLevelDTO;
 import fr.periscol.backend.service.mapper.GradeLevelMapper;
 import java.util.List;
-import java.util.UUID;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,8 +31,14 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class GradeLevelResourceIT {
 
+    private static final String DEFAULT_LEVEL = "AAAAAAAAAA";
+    private static final String UPDATED_LEVEL = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/grade-levels";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
+
+    private static Random random = new Random();
+    private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     @Autowired
     private GradeLevelRepository gradeLevelRepository;
@@ -54,7 +61,7 @@ class GradeLevelResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static GradeLevel createEntity(EntityManager em) {
-        GradeLevel gradeLevel = new GradeLevel();
+        GradeLevel gradeLevel = new GradeLevel().level(DEFAULT_LEVEL);
         return gradeLevel;
     }
 
@@ -65,7 +72,7 @@ class GradeLevelResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static GradeLevel createUpdatedEntity(EntityManager em) {
-        GradeLevel gradeLevel = new GradeLevel();
+        GradeLevel gradeLevel = new GradeLevel().level(UPDATED_LEVEL);
         return gradeLevel;
     }
 
@@ -88,13 +95,14 @@ class GradeLevelResourceIT {
         List<GradeLevel> gradeLevelList = gradeLevelRepository.findAll();
         assertThat(gradeLevelList).hasSize(databaseSizeBeforeCreate + 1);
         GradeLevel testGradeLevel = gradeLevelList.get(gradeLevelList.size() - 1);
+        assertThat(testGradeLevel.getLevel()).isEqualTo(DEFAULT_LEVEL);
     }
 
     @Test
     @Transactional
     void createGradeLevelWithExistingId() throws Exception {
         // Create the GradeLevel with an existing ID
-        gradeLevel.setId("existing_id");
+        gradeLevel.setId(1L);
         GradeLevelDTO gradeLevelDTO = gradeLevelMapper.toDto(gradeLevel);
 
         int databaseSizeBeforeCreate = gradeLevelRepository.findAll().size();
@@ -113,7 +121,6 @@ class GradeLevelResourceIT {
     @Transactional
     void getAllGradeLevels() throws Exception {
         // Initialize the database
-        gradeLevel.setId(UUID.randomUUID().toString());
         gradeLevelRepository.saveAndFlush(gradeLevel);
 
         // Get all the gradeLevelList
@@ -121,14 +128,14 @@ class GradeLevelResourceIT {
             .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(gradeLevel.getId())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(gradeLevel.getId().intValue())))
+            .andExpect(jsonPath("$.[*].level").value(hasItem(DEFAULT_LEVEL)));
     }
 
     @Test
     @Transactional
     void getGradeLevel() throws Exception {
         // Initialize the database
-        gradeLevel.setId(UUID.randomUUID().toString());
         gradeLevelRepository.saveAndFlush(gradeLevel);
 
         // Get the gradeLevel
@@ -136,7 +143,8 @@ class GradeLevelResourceIT {
             .perform(get(ENTITY_API_URL_ID, gradeLevel.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.id").value(gradeLevel.getId()));
+            .andExpect(jsonPath("$.id").value(gradeLevel.getId().intValue()))
+            .andExpect(jsonPath("$.level").value(DEFAULT_LEVEL));
     }
 
     @Test
@@ -150,7 +158,6 @@ class GradeLevelResourceIT {
     @Transactional
     void putNewGradeLevel() throws Exception {
         // Initialize the database
-        gradeLevel.setId(UUID.randomUUID().toString());
         gradeLevelRepository.saveAndFlush(gradeLevel);
 
         int databaseSizeBeforeUpdate = gradeLevelRepository.findAll().size();
@@ -159,6 +166,7 @@ class GradeLevelResourceIT {
         GradeLevel updatedGradeLevel = gradeLevelRepository.findById(gradeLevel.getId()).get();
         // Disconnect from session so that the updates on updatedGradeLevel are not directly saved in db
         em.detach(updatedGradeLevel);
+        updatedGradeLevel.level(UPDATED_LEVEL);
         GradeLevelDTO gradeLevelDTO = gradeLevelMapper.toDto(updatedGradeLevel);
 
         restGradeLevelMockMvc
@@ -173,13 +181,14 @@ class GradeLevelResourceIT {
         List<GradeLevel> gradeLevelList = gradeLevelRepository.findAll();
         assertThat(gradeLevelList).hasSize(databaseSizeBeforeUpdate);
         GradeLevel testGradeLevel = gradeLevelList.get(gradeLevelList.size() - 1);
+        assertThat(testGradeLevel.getLevel()).isEqualTo(UPDATED_LEVEL);
     }
 
     @Test
     @Transactional
     void putNonExistingGradeLevel() throws Exception {
         int databaseSizeBeforeUpdate = gradeLevelRepository.findAll().size();
-        gradeLevel.setId(UUID.randomUUID().toString());
+        gradeLevel.setId(count.incrementAndGet());
 
         // Create the GradeLevel
         GradeLevelDTO gradeLevelDTO = gradeLevelMapper.toDto(gradeLevel);
@@ -202,7 +211,7 @@ class GradeLevelResourceIT {
     @Transactional
     void putWithIdMismatchGradeLevel() throws Exception {
         int databaseSizeBeforeUpdate = gradeLevelRepository.findAll().size();
-        gradeLevel.setId(UUID.randomUUID().toString());
+        gradeLevel.setId(count.incrementAndGet());
 
         // Create the GradeLevel
         GradeLevelDTO gradeLevelDTO = gradeLevelMapper.toDto(gradeLevel);
@@ -210,7 +219,7 @@ class GradeLevelResourceIT {
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restGradeLevelMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, UUID.randomUUID().toString())
+                put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(gradeLevelDTO))
             )
@@ -225,7 +234,7 @@ class GradeLevelResourceIT {
     @Transactional
     void putWithMissingIdPathParamGradeLevel() throws Exception {
         int databaseSizeBeforeUpdate = gradeLevelRepository.findAll().size();
-        gradeLevel.setId(UUID.randomUUID().toString());
+        gradeLevel.setId(count.incrementAndGet());
 
         // Create the GradeLevel
         GradeLevelDTO gradeLevelDTO = gradeLevelMapper.toDto(gradeLevel);
@@ -244,7 +253,6 @@ class GradeLevelResourceIT {
     @Transactional
     void partialUpdateGradeLevelWithPatch() throws Exception {
         // Initialize the database
-        gradeLevel.setId(UUID.randomUUID().toString());
         gradeLevelRepository.saveAndFlush(gradeLevel);
 
         int databaseSizeBeforeUpdate = gradeLevelRepository.findAll().size();
@@ -252,6 +260,8 @@ class GradeLevelResourceIT {
         // Update the gradeLevel using partial update
         GradeLevel partialUpdatedGradeLevel = new GradeLevel();
         partialUpdatedGradeLevel.setId(gradeLevel.getId());
+
+        partialUpdatedGradeLevel.level(UPDATED_LEVEL);
 
         restGradeLevelMockMvc
             .perform(
@@ -265,13 +275,13 @@ class GradeLevelResourceIT {
         List<GradeLevel> gradeLevelList = gradeLevelRepository.findAll();
         assertThat(gradeLevelList).hasSize(databaseSizeBeforeUpdate);
         GradeLevel testGradeLevel = gradeLevelList.get(gradeLevelList.size() - 1);
+        assertThat(testGradeLevel.getLevel()).isEqualTo(UPDATED_LEVEL);
     }
 
     @Test
     @Transactional
     void fullUpdateGradeLevelWithPatch() throws Exception {
         // Initialize the database
-        gradeLevel.setId(UUID.randomUUID().toString());
         gradeLevelRepository.saveAndFlush(gradeLevel);
 
         int databaseSizeBeforeUpdate = gradeLevelRepository.findAll().size();
@@ -279,6 +289,8 @@ class GradeLevelResourceIT {
         // Update the gradeLevel using partial update
         GradeLevel partialUpdatedGradeLevel = new GradeLevel();
         partialUpdatedGradeLevel.setId(gradeLevel.getId());
+
+        partialUpdatedGradeLevel.level(UPDATED_LEVEL);
 
         restGradeLevelMockMvc
             .perform(
@@ -292,13 +304,14 @@ class GradeLevelResourceIT {
         List<GradeLevel> gradeLevelList = gradeLevelRepository.findAll();
         assertThat(gradeLevelList).hasSize(databaseSizeBeforeUpdate);
         GradeLevel testGradeLevel = gradeLevelList.get(gradeLevelList.size() - 1);
+        assertThat(testGradeLevel.getLevel()).isEqualTo(UPDATED_LEVEL);
     }
 
     @Test
     @Transactional
     void patchNonExistingGradeLevel() throws Exception {
         int databaseSizeBeforeUpdate = gradeLevelRepository.findAll().size();
-        gradeLevel.setId(UUID.randomUUID().toString());
+        gradeLevel.setId(count.incrementAndGet());
 
         // Create the GradeLevel
         GradeLevelDTO gradeLevelDTO = gradeLevelMapper.toDto(gradeLevel);
@@ -321,7 +334,7 @@ class GradeLevelResourceIT {
     @Transactional
     void patchWithIdMismatchGradeLevel() throws Exception {
         int databaseSizeBeforeUpdate = gradeLevelRepository.findAll().size();
-        gradeLevel.setId(UUID.randomUUID().toString());
+        gradeLevel.setId(count.incrementAndGet());
 
         // Create the GradeLevel
         GradeLevelDTO gradeLevelDTO = gradeLevelMapper.toDto(gradeLevel);
@@ -329,7 +342,7 @@ class GradeLevelResourceIT {
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restGradeLevelMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, UUID.randomUUID().toString())
+                patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(gradeLevelDTO))
             )
@@ -344,7 +357,7 @@ class GradeLevelResourceIT {
     @Transactional
     void patchWithMissingIdPathParamGradeLevel() throws Exception {
         int databaseSizeBeforeUpdate = gradeLevelRepository.findAll().size();
-        gradeLevel.setId(UUID.randomUUID().toString());
+        gradeLevel.setId(count.incrementAndGet());
 
         // Create the GradeLevel
         GradeLevelDTO gradeLevelDTO = gradeLevelMapper.toDto(gradeLevel);
@@ -365,7 +378,6 @@ class GradeLevelResourceIT {
     @Transactional
     void deleteGradeLevel() throws Exception {
         // Initialize the database
-        gradeLevel.setId(UUID.randomUUID().toString());
         gradeLevelRepository.saveAndFlush(gradeLevel);
 
         int databaseSizeBeforeDelete = gradeLevelRepository.findAll().size();

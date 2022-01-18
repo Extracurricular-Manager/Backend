@@ -15,7 +15,8 @@ entity Family {
 }
 
 entity GradeLevel {
-	id String
+	id Long,
+	level String
 }
 
 entity Classroom {

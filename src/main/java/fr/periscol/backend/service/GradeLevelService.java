@@ -82,7 +82,7 @@ public class GradeLevelService {
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public Optional<GradeLevelDTO> findOne(String id) {
+    public Optional<GradeLevelDTO> findOne(Long id) {
         log.debug("Request to get GradeLevel : {}", id);
         return gradeLevelRepository.findById(id).map(gradeLevelMapper::toDto);
     }
@@ -92,7 +92,7 @@ public class GradeLevelService {
      *
      * @param id the id of the entity.
      */
-    public void delete(String id) {
+    public void delete(Long id) {
         log.debug("Request to delete GradeLevel : {}", id);
         gradeLevelRepository.deleteById(id);
     }
