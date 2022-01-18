@@ -84,6 +84,7 @@
         <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
         <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
         <sonar-maven-plugin.version>3.9.0.2155</sonar-maven-plugin.version>
+        <org.springdoc.version>1.5.2</org.springdoc.version>
         <!-- jhipster-needle-maven-property -->
     </properties>
 
@@ -661,6 +662,11 @@
                             <groupId>com.h2database</groupId>
                             <artifactId>h2</artifactId>
                             <version>${h2.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.springdoc</groupId>
+                            <artifactId>springdoc-openapi-ui</artifactId>
+                            <version>${org.springdoc.version}</version>
                         </dependency>
                     </dependencies>
                 </plugin>
