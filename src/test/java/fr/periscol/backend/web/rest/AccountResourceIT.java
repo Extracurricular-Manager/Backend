@@ -101,7 +101,6 @@ class AccountResourceIT {
             .andExpect(jsonPath("$.firstName").value("john"))
             .andExpect(jsonPath("$.lastName").value("doe"))
             .andExpect(jsonPath("$.email").value("john.doe@jhipster.com"))
-            .andExpect(jsonPath("$.imageUrl").value("http://placehold.it/50x50"))
             .andExpect(jsonPath("$.langKey").value("en"))
             .andExpect(jsonPath("$.authorities").value(AuthoritiesConstants.ADMIN));
     }
