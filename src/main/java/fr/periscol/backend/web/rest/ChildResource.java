@@ -41,7 +41,7 @@ public class ChildResource {
     }
 
     /**
-     * {@code POST  /child : Create a new child.
+     * {@code POST  /child} : Create a new child.
      *
      * @param childDTO the childDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new childDTO, or with status {@code 400 (Bad Request)} if the child has already an ID.
