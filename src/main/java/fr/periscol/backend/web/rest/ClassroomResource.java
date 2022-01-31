@@ -41,13 +41,13 @@ public class ClassroomResource {
     }
 
     /**
-     * {@code POST  /classroom} : Create a new classroom.
+     * {@code POST  /classrooms} : Create a new classroom.
      *
      * @param classroomDTO the classroomDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new classroomDTO, or with status {@code 400 (Bad Request)} if the classroom has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/classroom")
+    @PostMapping("/classrooms")
     public ResponseEntity<ClassroomDTO> createClassroom(@RequestBody ClassroomDTO classroomDTO) throws URISyntaxException {
         log.debug("REST request to save Classroom : {}", classroomDTO);
         if (classroomDTO.getId() != null) {
@@ -55,13 +55,13 @@ public class ClassroomResource {
         }
         ClassroomDTO result = classroomService.save(classroomDTO);
         return ResponseEntity
-            .created(new URI("/api/classroom/" + result.getId()))
+            .created(new URI("/api/classrooms/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /classroom/:id} : Updates an existing classroom.
+     * {@code PUT  /classrooms/:id} : Updates an existing classroom.
      *
      * @param id the id of the classroomDTO to save.
      * @param classroomDTO the classroomDTO to update.
@@ -70,7 +70,7 @@ public class ClassroomResource {
      * or with status {@code 500 (Internal Server Error)} if the classroomDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/classroom/{id}")
+    @PutMapping("/classrooms/{id}")
     public ResponseEntity<ClassroomDTO> updateClassroom(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody ClassroomDTO classroomDTO
@@ -95,7 +95,7 @@ public class ClassroomResource {
     }
 
     /**
-     * {@code PATCH  /classroom/:id} : Partial updates given fields of an existing classroom, field will ignore if it is null
+     * {@code PATCH  /classrooms/:id} : Partial updates given fields of an existing classroom, field will ignore if it is null
      *
      * @param id the id of the classroomDTO to save.
      * @param classroomDTO the classroomDTO to update.
@@ -105,7 +105,7 @@ public class ClassroomResource {
      * or with status {@code 500 (Internal Server Error)} if the classroomDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/classroom/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/classrooms/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<ClassroomDTO> partialUpdateClassroom(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody ClassroomDTO classroomDTO
@@ -142,12 +142,12 @@ public class ClassroomResource {
     }
 
     /**
-     * {@code GET  /classroom/:id} : get the "id" classroom.
+     * {@code GET  /classrooms/:id} : get the "id" classroom.
      *
      * @param id the id of the classroomDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the classroomDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/classroom/{id}")
+    @GetMapping("/classrooms/{id}")
     public ResponseEntity<ClassroomDTO> getClassroom(@PathVariable Long id) {
         log.debug("REST request to get Classroom : {}", id);
         Optional<ClassroomDTO> classroomDTO = classroomService.findOne(id);
@@ -155,12 +155,12 @@ public class ClassroomResource {
     }
 
     /**
-     * {@code DELETE  /classroom/:id} : delete the "id" classroom.
+     * {@code DELETE  /classrooms/:id} : delete the "id" classroom.
      *
      * @param id the id of the classroomDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/classroom/{id}")
+    @DeleteMapping("/classrooms/{id}")
     public ResponseEntity<Void> deleteClassroom(@PathVariable Long id) {
         log.debug("REST request to delete Classroom : {}", id);
         classroomService.delete(id);

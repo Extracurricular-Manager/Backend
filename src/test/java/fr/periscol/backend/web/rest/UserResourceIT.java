@@ -7,12 +7,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import fr.periscol.backend.IntegrationTest;
-import fr.periscol.backend.domain.Authority;
+import fr.periscol.backend.domain.Role;
 import fr.periscol.backend.domain.User;
 import fr.periscol.backend.repository.UserRepository;
 import fr.periscol.backend.security.AuthoritiesConstants;
 import fr.periscol.backend.service.dto.AdminUserDTO;
-import fr.periscol.backend.service.dto.UserDTO;
 import fr.periscol.backend.service.mapper.UserMapper;
 import fr.periscol.backend.web.rest.vm.ManagedUserVM;
 import java.time.Instant;
@@ -522,10 +521,10 @@ class UserResourceIT {
         user.setCreatedDate(Instant.now());
         user.setLastModifiedBy(DEFAULT_LOGIN);
         user.setLastModifiedDate(Instant.now());
-        Set<Authority> authorities = new HashSet<>();
-        Authority authority = new Authority();
-        authority.setName(AuthoritiesConstants.USER);
-        authorities.add(authority);
+        Set<Role> authorities = new HashSet<>();
+        Role role = new Role();
+        role.setName(AuthoritiesConstants.USER);
+        authorities.add(role);
         user.setAuthorities(authorities);
 
         AdminUserDTO userDTO = userMapper.userToAdminUserDTO(user);
@@ -547,22 +546,22 @@ class UserResourceIT {
 
     @Test
     void testAuthorityEquals() {
-        Authority authorityA = new Authority();
-        assertThat(authorityA).isNotEqualTo(null).isNotEqualTo(new Object());
-        assertThat(authorityA.hashCode()).isZero();
-        assertThat(authorityA.toString()).isNotNull();
+        Role roleA = new Role();
+        assertThat(roleA).isNotEqualTo(null).isNotEqualTo(new Object());
+        assertThat(roleA.hashCode()).isZero();
+        assertThat(roleA.toString()).isNotNull();
 
-        Authority authorityB = new Authority();
-        assertThat(authorityA).isEqualTo(authorityB);
+        Role roleB = new Role();
+        assertThat(roleA).isEqualTo(roleB);
 
-        authorityB.setName(AuthoritiesConstants.ADMIN);
-        assertThat(authorityA).isNotEqualTo(authorityB);
+        roleB.setName(AuthoritiesConstants.ADMIN);
+        assertThat(roleA).isNotEqualTo(roleB);
 
-        authorityA.setName(AuthoritiesConstants.USER);
-        assertThat(authorityA).isNotEqualTo(authorityB);
+        roleA.setName(AuthoritiesConstants.USER);
+        assertThat(roleA).isNotEqualTo(roleB);
 
-        authorityB.setName(AuthoritiesConstants.USER);
-        assertThat(authorityA).isEqualTo(authorityB).hasSameHashCodeAs(authorityB);
+        roleB.setName(AuthoritiesConstants.USER);
+        assertThat(roleA).isEqualTo(roleB).hasSameHashCodeAs(roleB);
     }
 
     private void assertPersistedUsers(Consumer<List<User>> userAssertion) {

@@ -1,6 +1,6 @@
 package fr.periscol.backend.service.mapper;
 
-import fr.periscol.backend.domain.Authority;
+import fr.periscol.backend.domain.Role;
 import fr.periscol.backend.domain.User;
 import fr.periscol.backend.service.dto.AdminUserDTO;
 import fr.periscol.backend.service.dto.UserDTO;
@@ -52,21 +52,21 @@ public class UserMapper {
             user.setEmail(userDTO.getEmail());
             user.setActivated(userDTO.isActivated());
             user.setLangKey(userDTO.getLangKey());
-            Set<Authority> authorities = this.authoritiesFromStrings(userDTO.getAuthorities());
+            Set<Role> authorities = this.authoritiesFromStrings(userDTO.getAuthorities());
             user.setAuthorities(authorities);
             return user;
         }
     }
 
-    private Set<Authority> authoritiesFromStrings(Set<String> authoritiesAsString) {
-        Set<Authority> authorities = new HashSet<>();
+    private Set<Role> authoritiesFromStrings(Set<String> authoritiesAsString) {
+        Set<Role> authorities = new HashSet<>();
 
         if (authoritiesAsString != null) {
             authorities =
                 authoritiesAsString
                     .stream()
                     .map(string -> {
-                        Authority auth = new Authority();
+                        Role auth = new Role();
                         auth.setName(string);
                         return auth;
                     })

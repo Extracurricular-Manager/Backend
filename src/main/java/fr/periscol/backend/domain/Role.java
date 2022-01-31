@@ -13,8 +13,8 @@ import javax.validation.constraints.Size;
  * An authority (a security role) used by Spring Security.
  */
 @Entity
-@Table(name = "jhi_authority")
-public class Authority implements Serializable {
+@Table(name = "jhi_role")
+public class Role implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,10 +37,10 @@ public class Authority implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Authority)) {
+        if (!(o instanceof Role)) {
             return false;
         }
-        return Objects.equals(name, ((Authority) o).name);
+        return Objects.equals(name, ((Role) o).name);
     }
 
     @Override

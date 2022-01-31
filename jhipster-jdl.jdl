@@ -32,6 +32,9 @@ entity Diet {
 	description String
 }
 
+entity Permission {
+	id String
+}
 
 
 relationship ManyToOne {
@@ -51,5 +54,5 @@ relationship ManyToMany {
 }
 
 
-dto * with mapstruct
-service * with serviceClass
+dto * with mapstruct except Permission
+service * with serviceClass except Permission

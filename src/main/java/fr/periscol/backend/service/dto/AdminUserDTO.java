@@ -1,7 +1,7 @@
 package fr.periscol.backend.service.dto;
 
 import fr.periscol.backend.config.Constants;
-import fr.periscol.backend.domain.Authority;
+import fr.periscol.backend.domain.Role;
 import fr.periscol.backend.domain.User;
 import java.time.Instant;
 import java.util.Set;
@@ -64,7 +64,7 @@ public class AdminUserDTO {
         this.createdDate = user.getCreatedDate();
         this.lastModifiedBy = user.getLastModifiedBy();
         this.lastModifiedDate = user.getLastModifiedDate();
-        this.authorities = user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet());
+        this.authorities = user.getAuthorities().stream().map(Role::getName).collect(Collectors.toSet());
     }
 
     public Long getId() {

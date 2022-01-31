@@ -8,13 +8,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import fr.periscol.backend.IntegrationTest;
 import fr.periscol.backend.config.Constants;
 import fr.periscol.backend.domain.User;
-import fr.periscol.backend.repository.AuthorityRepository;
+import fr.periscol.backend.repository.RoleRepository;
 import fr.periscol.backend.repository.UserRepository;
 import fr.periscol.backend.security.AuthoritiesConstants;
 import fr.periscol.backend.service.UserService;
 import fr.periscol.backend.service.dto.AdminUserDTO;
 import fr.periscol.backend.service.dto.PasswordChangeDTO;
-import fr.periscol.backend.service.dto.UserDTO;
 import fr.periscol.backend.web.rest.vm.KeyAndPasswordVM;
 import fr.periscol.backend.web.rest.vm.ManagedUserVM;
 import java.time.Instant;
@@ -43,7 +42,7 @@ class AccountResourceIT {
     private UserRepository userRepository;
 
     @Autowired
-    private AuthorityRepository authorityRepository;
+    private RoleRepository roleRepository;
 
     @Autowired
     private UserService userService;
@@ -371,7 +370,7 @@ class AccountResourceIT {
         assertThat(userDup).isPresent();
         assertThat(userDup.get().getAuthorities())
             .hasSize(1)
-            .containsExactly(authorityRepository.findById(AuthoritiesConstants.USER).get());
+            .containsExactly(roleRepository.findById(AuthoritiesConstants.USER).get());
     }
 
     @Test

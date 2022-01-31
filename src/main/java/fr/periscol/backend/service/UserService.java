@@ -1,9 +1,9 @@
 package fr.periscol.backend.service;
 
 import fr.periscol.backend.config.Constants;
-import fr.periscol.backend.domain.Authority;
+import fr.periscol.backend.domain.Role;
 import fr.periscol.backend.domain.User;
-import fr.periscol.backend.repository.AuthorityRepository;
+import fr.periscol.backend.repository.RoleRepository;
 import fr.periscol.backend.repository.UserRepository;
 import fr.periscol.backend.security.AuthoritiesConstants;
 import fr.periscol.backend.security.SecurityUtils;
@@ -37,19 +37,19 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final AuthorityRepository authorityRepository;
+    private final RoleRepository roleRepository;
 
     private final CacheManager cacheManager;
 
     public UserService(
         UserRepository userRepository,
         PasswordEncoder passwordEncoder,
-        AuthorityRepository authorityRepository,
+        RoleRepository roleRepository,
         CacheManager cacheManager
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.authorityRepository = authorityRepository;
+        this.roleRepository = roleRepository;
         this.cacheManager = cacheManager;
     }
 
@@ -125,8 +125,8 @@ public class UserService {
         newUser.setActivated(false);
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
-        Set<Authority> authorities = new HashSet<>();
-        authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
+        Set<Role> authorities = new HashSet<>();
+        roleRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
         this.clearUserCaches(newUser);
@@ -163,10 +163,10 @@ public class UserService {
         user.setResetDate(Instant.now());
         user.setActivated(true);
         if (userDTO.getAuthorities() != null) {
-            Set<Authority> authorities = userDTO
+            Set<Role> authorities = userDTO
                 .getAuthorities()
                 .stream()
-                .map(authorityRepository::findById)
+                .map(roleRepository::findById)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toSet());
@@ -199,12 +199,12 @@ public class UserService {
                 }
                 user.setActivated(userDTO.isActivated());
                 user.setLangKey(userDTO.getLangKey());
-                Set<Authority> managedAuthorities = user.getAuthorities();
+                Set<Role> managedAuthorities = user.getAuthorities();
                 managedAuthorities.clear();
                 userDTO
                     .getAuthorities()
                     .stream()
-                    .map(authorityRepository::findById)
+                    .map(roleRepository::findById)
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .forEach(managedAuthorities::add);
@@ -309,7 +309,7 @@ public class UserService {
      */
     @Transactional(readOnly = true)
     public List<String> getAuthorities() {
-        return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
+        return roleRepository.findAll().stream().map(Role::getName).collect(Collectors.toList());
     }
 
     private void clearUserCaches(User user) {

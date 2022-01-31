@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -41,13 +42,13 @@ public class ChildResource {
     }
 
     /**
-     * {@code POST  /child} : Create a new child.
+     * {@code POST  /children} : Create a new child.
      *
      * @param childDTO the childDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new childDTO, or with status {@code 400 (Bad Request)} if the child has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/child")
+    @PostMapping("/children")
     public ResponseEntity<ChildDTO> createChild(@RequestBody ChildDTO childDTO) throws URISyntaxException {
         log.debug("REST request to save Child : {}", childDTO);
         if (childDTO.getId() != null) {
@@ -55,13 +56,13 @@ public class ChildResource {
         }
         ChildDTO result = childService.save(childDTO);
         return ResponseEntity
-            .created(new URI("/api/child/" + result.getId()))
+            .created(new URI("/api/children/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /child/:id} : Updates an existing child.
+     * {@code PUT  /children/:id} : Updates an existing child.
      *
      * @param id the id of the childDTO to save.
      * @param childDTO the childDTO to update.
@@ -70,7 +71,7 @@ public class ChildResource {
      * or with status {@code 500 (Internal Server Error)} if the childDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/child/{id}")
+    @PutMapping("/children/{id}")
     public ResponseEntity<ChildDTO> updateChild(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody ChildDTO childDTO
@@ -95,7 +96,7 @@ public class ChildResource {
     }
 
     /**
-     * {@code PATCH  /child/:id} : Partial updates given fields of an existing child, field will ignore if it is null
+     * {@code PATCH  /children/:id} : Partial updates given fields of an existing child, field will ignore if it is null
      *
      * @param id the id of the childDTO to save.
      * @param childDTO the childDTO to update.
@@ -105,7 +106,7 @@ public class ChildResource {
      * or with status {@code 500 (Internal Server Error)} if the childDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/child/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/children/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<ChildDTO> partialUpdateChild(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody ChildDTO childDTO
@@ -137,18 +138,20 @@ public class ChildResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of children in body.
      */
     @GetMapping("/children")
+    @PreAuthorize("hasAuthority('bar')")
     public List<ChildDTO> getAllChildren(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all Children");
         return childService.findAll();
     }
 
     /**
-     * {@code GET  /child/:id} : get the "id" child.
+     * {@code GET  /children/:id} : get the "id" child.
      *
      * @param id the id of the childDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the childDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/child/{id}")
+    @GetMapping("/children/{id}")
+    @PreAuthorize("hasAuthority('michel')")
     public ResponseEntity<ChildDTO> getChild(@PathVariable Long id) {
         log.debug("REST request to get Child : {}", id);
         Optional<ChildDTO> childDTO = childService.findOne(id);
@@ -156,12 +159,12 @@ public class ChildResource {
     }
 
     /**
-     * {@code DELETE  /child/:id} : delete the "id" child.
+     * {@code DELETE  /children/:id} : delete the "id" child.
      *
      * @param id the id of the childDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/child/{id}")
+    @DeleteMapping("/children/{id}")
     public ResponseEntity<Void> deleteChild(@PathVariable Long id) {
         log.debug("REST request to delete Child : {}", id);
         childService.delete(id);

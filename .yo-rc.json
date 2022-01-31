@@ -45,7 +45,7 @@
     "withAdminUi": true,
     "enableGradleEnterprise": false,
     "languages": ["en", "fr"],
-    "entities": ["Child", "Family", "GradeLevel", "Classroom", "Diet"],
-    "lastLiquibaseTimestamp": 1641315770000
+    "entities": ["Child", "Family", "GradeLevel", "Classroom", "Diet", "Permission"],
+    "lastLiquibaseTimestamp": 1643633464000
   }
 }

@@ -41,13 +41,13 @@ public class GradeLevelResource {
     }
 
     /**
-     * {@code POST  /grade-level} : Create a new gradeLevel.
+     * {@code POST  /grade-levels} : Create a new gradeLevel.
      *
      * @param gradeLevelDTO the gradeLevelDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new gradeLevelDTO, or with status {@code 400 (Bad Request)} if the gradeLevel has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/grade-level")
+    @PostMapping("/grade-levels")
     public ResponseEntity<GradeLevelDTO> createGradeLevel(@RequestBody GradeLevelDTO gradeLevelDTO) throws URISyntaxException {
         log.debug("REST request to save GradeLevel : {}", gradeLevelDTO);
         if (gradeLevelDTO.getId() != null) {
@@ -55,7 +55,7 @@ public class GradeLevelResource {
         }
         GradeLevelDTO result = gradeLevelService.save(gradeLevelDTO);
         return ResponseEntity
-            .created(new URI("/api/grade-level/" + result.getId()))
+            .created(new URI("/api/grade-levels/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -70,7 +70,7 @@ public class GradeLevelResource {
      * or with status {@code 500 (Internal Server Error)} if the gradeLevelDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/grade-level/{id}")
+    @PutMapping("/grade-levels/{id}")
     public ResponseEntity<GradeLevelDTO> updateGradeLevel(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody GradeLevelDTO gradeLevelDTO
@@ -95,7 +95,7 @@ public class GradeLevelResource {
     }
 
     /**
-     * {@code PATCH  /grade-level/:id} : Partial updates given fields of an existing gradeLevel, field will ignore if it is null
+     * {@code PATCH  /grade-levels/:id} : Partial updates given fields of an existing gradeLevel, field will ignore if it is null
      *
      * @param id the id of the gradeLevelDTO to save.
      * @param gradeLevelDTO the gradeLevelDTO to update.
@@ -105,7 +105,7 @@ public class GradeLevelResource {
      * or with status {@code 500 (Internal Server Error)} if the gradeLevelDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/grade-level/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/grade-levels/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<GradeLevelDTO> partialUpdateGradeLevel(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody GradeLevelDTO gradeLevelDTO
@@ -142,12 +142,12 @@ public class GradeLevelResource {
     }
 
     /**
-     * {@code GET  /grade-level/:id} : get the "id" gradeLevel.
+     * {@code GET  /grade-levels/:id} : get the "id" gradeLevel.
      *
      * @param id the id of the gradeLevelDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the gradeLevelDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/grade-level/{id}")
+    @GetMapping("/grade-levels/{id}")
     public ResponseEntity<GradeLevelDTO> getGradeLevel(@PathVariable Long id) {
         log.debug("REST request to get GradeLevel : {}", id);
         Optional<GradeLevelDTO> gradeLevelDTO = gradeLevelService.findOne(id);
@@ -155,12 +155,12 @@ public class GradeLevelResource {
     }
 
     /**
-     * {@code DELETE  /grade-level/:id} : delete the "id" gradeLevel.
+     * {@code DELETE  /grade-levels/:id} : delete the "id" gradeLevel.
      *
      * @param id the id of the gradeLevelDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/grade-level/{id}")
+    @DeleteMapping("/grade-levels/{id}")
     public ResponseEntity<Void> deleteGradeLevel(@PathVariable Long id) {
         log.debug("REST request to delete GradeLevel : {}", id);
         gradeLevelService.delete(id);

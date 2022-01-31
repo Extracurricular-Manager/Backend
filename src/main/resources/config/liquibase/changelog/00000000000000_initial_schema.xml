@@ -43,7 +43,7 @@
             <column name="last_modified_date" type="timestamp"/>
         </createTable>
 
-        <createTable tableName="jhi_authority">
+        <createTable tableName="jhi_role">
             <column name="name" type="varchar(50)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -64,7 +64,7 @@
                                  baseTableName="jhi_user_authority"
                                  constraintName="fk_authority_name"
                                  referencedColumnNames="name"
-                                 referencedTableName="jhi_authority"/>
+                                 referencedTableName="jhi_role"/>
 
         <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="jhi_user_authority"
@@ -85,9 +85,9 @@
         </loadData>
         <dropDefaultValue tableName="jhi_user" columnName="created_date" columnDataType="${datetimeType}"/>
         <loadData
-                  file="config/liquibase/data/authority.csv"
+                  file="config/liquibase/data/role.csv"
                   separator=";"
-                  tableName="jhi_authority"
+                  tableName="jhi_role"
                   usePreparedStatements="true">
             <column name="name" type="string"/>
         </loadData>
