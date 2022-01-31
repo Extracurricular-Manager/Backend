@@ -1,11 +1,9 @@
 package fr.periscol.backend.domain;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -23,6 +21,9 @@ public class Role implements Serializable {
     @Id
     @Column(length = 50)
     private String name;
+
+    /*@OneToMany
+    private List<Permission> permissions;*/
 
     public String getName() {
         return name;

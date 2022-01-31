@@ -138,7 +138,6 @@ public class ChildResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of children in body.
      */
     @GetMapping("/children")
-    @PreAuthorize("hasAuthority('bar')")
     public List<ChildDTO> getAllChildren(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all Children");
         return childService.findAll();
@@ -151,7 +150,6 @@ public class ChildResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the childDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/children/{id}")
-    @PreAuthorize("hasAuthority('michel')")
     public ResponseEntity<ChildDTO> getChild(@PathVariable Long id) {
         log.debug("REST request to get Child : {}", id);
         Optional<ChildDTO> childDTO = childService.findOne(id);
