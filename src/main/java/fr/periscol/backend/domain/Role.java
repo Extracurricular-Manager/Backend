@@ -22,8 +22,8 @@ public class Role implements Serializable {
     @Column(length = 50)
     private String name;
 
-    /*@OneToMany
-    private List<Permission> permissions;*/
+    @OneToMany
+    private List<Permission> permissions;
 
     public String getName() {
         return name;
@@ -31,6 +31,14 @@ public class Role implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Permission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<Permission> permissions) {
+        this.permissions = permissions;
     }
 
     @Override
