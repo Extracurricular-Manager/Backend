@@ -1,0 +1,25 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet author="theog (generated)" id="1643710692370-1">
+        <createTable tableName="jhi_role_permissions">
+            <column name="role_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="permissions_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="theog (generated)" id="1643710692370-2">
+        <addUniqueConstraint columnNames="permissions_id" constraintName="UK_dmeed2te70rqe9uc1am1r6ebv" tableName="jhi_role_permissions"/>
+    </changeSet>
+    <changeSet author="theog (generated)" id="1643710692370-3">
+        <addForeignKeyConstraint baseColumnNames="role_name" baseTableName="jhi_role_permissions" constraintName="FK2ik966xj8wy4eb7efn7yetb9c" deferrable="false" initiallyDeferred="false" referencedColumnNames="name" referencedTableName="jhi_role" validate="true"/>
+    </changeSet>
+    <changeSet author="theog (generated)" id="1643710692370-4">
+        <addForeignKeyConstraint baseColumnNames="permissions_id" baseTableName="jhi_role_permissions" constraintName="FK3hm1729u7807mq84cy1jk2qdu" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="permission" validate="true"/>
+    </changeSet>
+    <changeSet author="theog (generated)" id="1643710692370-5">
+        <dropColumn columnName="IMAGE_URL" tableName="JHI_USER"/>
+    </changeSet>
+</databaseChangeLog>

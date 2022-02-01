@@ -1,0 +1,126 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet author="theog (generated)" id="1643699913663-1">
+        <createTable tableName="child">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="childPK"/>
+            </column>
+            <column name="birthday" type="TIMESTAMP"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="surname" type="VARCHAR(255)"/>
+            <column name="adelphie_id" type="BIGINT"/>
+            <column name="classroom_id" type="BIGINT"/>
+            <column name="grade_level_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="theog (generated)" id="1643699913663-2">
+        <createTable tableName="classroom">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="classroomPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="professor" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="theog (generated)" id="1643699913663-3">
+        <createTable tableName="diet">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="dietPK"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="theog (generated)" id="1643699913663-4">
+        <createTable tableName="family">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="familyPK"/>
+            </column>
+            <column name="postal_adress" type="VARCHAR(255)"/>
+            <column name="refering_parent_name" type="VARCHAR(255)"/>
+            <column name="refering_parent_surname" type="VARCHAR(255)"/>
+            <column name="telephone_number" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="theog (generated)" id="1643699913663-5">
+        <createTable tableName="grade_level">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="grade_levelPK"/>
+            </column>
+            <column name="level" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="theog (generated)" id="1643699913663-6">
+        <createTable tableName="jhi_role">
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="jhi_rolePK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="theog (generated)" id="1643699913663-7">
+        <createTable tableName="jhi_user">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="jhi_userPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="TIMESTAMP"/>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="TIMESTAMP"/>
+            <column name="activated" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="activation_key" type="VARCHAR(20)"/>
+            <column name="email" type="VARCHAR(254)"/>
+            <column name="first_name" type="VARCHAR(50)"/>
+            <column name="lang_key" type="VARCHAR(10)"/>
+            <column name="last_name" type="VARCHAR(50)"/>
+            <column name="login" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password_hash" type="VARCHAR(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reset_date" type="TIMESTAMP"/>
+            <column name="reset_key" type="VARCHAR(20)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="theog (generated)" id="1643699913663-8">
+        <createTable tableName="jhi_user_authority">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="authority_name" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="theog (generated)" id="1643699913663-9">
+        <addUniqueConstraint columnNames="email" constraintName="UC_JHI_USEREMAIL_COL" tableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="theog (generated)" id="1643699913663-10">
+        <addUniqueConstraint columnNames="login" constraintName="UC_JHI_USERLOGIN_COL" tableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="theog (generated)" id="1643699913663-11">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="jhi_user_authority" constraintName="FK290okww5jujghp4el5i7mgwu0" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user" validate="true"/>
+    </changeSet>
+    <changeSet author="theog (generated)" id="1643699913663-12">
+        <addForeignKeyConstraint baseColumnNames="child_id" baseTableName="rel_child__diet" constraintName="FK3c7xo4h6qen9l5db22uwvulfn" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="child" validate="true"/>
+    </changeSet>
+    <changeSet author="theog (generated)" id="1643699913663-13">
+        <addForeignKeyConstraint baseColumnNames="grade_level_id" baseTableName="child" constraintName="FKb1lt83pqn5e1j8m4tp5dd5a8d" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="grade_level" validate="true"/>
+    </changeSet>
+    <changeSet author="theog (generated)" id="1643699913663-14">
+        <addForeignKeyConstraint baseColumnNames="adelphie_id" baseTableName="child" constraintName="FKcieas0yqwe8vn9wadtn4wver" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="family" validate="true"/>
+    </changeSet>
+    <changeSet author="theog (generated)" id="1643699913663-15">
+        <addForeignKeyConstraint baseColumnNames="authority_name" baseTableName="jhi_user_authority" constraintName="FKm0vqukk09j8f47iyeq7kqonab" deferrable="false" initiallyDeferred="false" referencedColumnNames="name" referencedTableName="jhi_role" validate="true"/>
+    </changeSet>
+    <changeSet author="theog (generated)" id="1643699913663-16">
+        <addForeignKeyConstraint baseColumnNames="classroom_id" baseTableName="child" constraintName="FKoal0m1a8seg7abuxcfklupn6i" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="classroom" validate="true"/>
+    </changeSet>
+    <changeSet author="theog (generated)" id="1643699913663-17">
+        <addForeignKeyConstraint baseColumnNames="diet_id" baseTableName="rel_child__diet" constraintName="FKpgf745lwkjk1qpu93g9fc2eow" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="diet" validate="true"/>
+    </changeSet>
+</databaseChangeLog>
