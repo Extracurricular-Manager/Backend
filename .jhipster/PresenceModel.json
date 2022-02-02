@@ -1,0 +1,36 @@
+{
+  "name": "PresenceModel",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "presence",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "date",
+      "fieldType": "LocalDate"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "child",
+      "otherEntityRelationshipName": "presenceModel",
+      "relationshipName": "child",
+      "ownerSide": true
+    }
+  ],
+  "entityTableName": "presence_model",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20220202155702"
+}

@@ -1,0 +1,36 @@
+{
+  "name": "TimeSlotModel",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "timeOfArrival",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "timeOfDeparture",
+      "fieldType": "LocalDate"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "child",
+      "otherEntityRelationshipName": "timeSlotModel",
+      "relationshipName": "child",
+      "ownerSide": true
+    }
+  ],
+  "entityTableName": "time_slot_model",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20220202155701"
+}

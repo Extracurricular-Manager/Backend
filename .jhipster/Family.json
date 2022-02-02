@@ -22,7 +22,14 @@
       "fieldType": "String"
     }
   ],
-  "relationships": [],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "child",
+      "otherEntityRelationshipName": "adelphie",
+      "relationshipName": "children"
+    }
+  ],
   "entityTableName": "family",
   "dto": "mapstruct",
   "pagination": "no",
@@ -32,5 +39,5 @@
   "readOnly": false,
   "embedded": false,
   "applications": "*",
-  "changelogDate": "20220104170247"
+  "changelogDate": "20220202155654"
 }

@@ -1,7 +1,7 @@
 {
   "generator-jhipster": {
     "applicationType": "monolith",
-    "baseName": "Periscol_Backend",
+    "baseName": "Backend",
     "jhipsterVersion": "7.3.1",
     "skipClient": true,
     "skipServer": false,
@@ -15,7 +15,7 @@
     "blueprints": [],
     "otherModules": [],
     "pages": [],
-    "creationTimestamp": 1641315682080,
+    "creationTimestamp": 1643817049004,
     "serviceDiscoveryType": "no",
     "reactive": false,
     "authenticationType": "jwt",
@@ -35,9 +35,7 @@
     "clientFramework": "no",
     "enableTranslation": false,
     "nativeLanguage": "fr",
-    "monorepository": true,
-    "skipCommitHook": true,
-    "jwtSecretKey": "ZTk2NDJjZjg2ZWQwODQxYjlkN2IxZGEzMjk3NTFlZTM2Yjk1ZGYyOWVmN2JkNjZkMDc0NjkzZDg1YWQxOWVmOGZjODE3ODFiMGI4YTQ0YTYxZTVkNzZmYWJiNDcyMjZjNWZiNWM1MWY4MDZkN2UxMzE5YWZkNGU1YTNhYTY4NWM=",
+    "jwtSecretKey": "NmYxNjExMjMzMDVhOTllYTI0NjQ5ZTMxMmQwY2JiMzZhOWRiYTk1MzY5MDBiOTI0OTU1ODA3ZDEwZGUyNDMzZTQxOTRhOWI2NTYwZjNkODdmY2ZkY2E0Yzc1NDUxMzAzYjZjZjZlZjBmNDExYWMzMjQxMzE1YjZhM2E1YTlmM2E=",
     "devServerPort": 9060,
     "clientPackageManager": "npm",
     "clientTheme": "none",
@@ -45,7 +43,23 @@
     "withAdminUi": true,
     "enableGradleEnterprise": false,
     "languages": ["en", "fr"],
-    "entities": ["Child", "Family", "GradeLevel", "Classroom", "Diet"],
-    "lastLiquibaseTimestamp": 1641315770000
+    "entities": [
+      "Child",
+      "Family",
+      "GradeLevel",
+      "Classroom",
+      "Diet",
+      "RoleRole",
+      "UserCustom",
+      "Model",
+      "TimeSlotModel",
+      "PresenceModel",
+      "ServiceMetadata",
+      "Facturation",
+      "TarifBase",
+      "Modifier",
+      "Tarification"
+    ],
+    "lastLiquibaseTimestamp": 1643817427000
   }
 }

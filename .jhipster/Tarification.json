@@ -1,0 +1,15 @@
+{
+  "name": "Tarification",
+  "fields": [],
+  "relationships": [],
+  "entityTableName": "tarification",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20220202155707"
+}

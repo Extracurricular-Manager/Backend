@@ -6,11 +6,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fr.periscol.backend</groupId>
-    <artifactId>periscol-backend</artifactId>
+    <artifactId>backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>Periscol Backend</name>
-    <description>Description for Periscol_Backend</description>
+    <name>Backend</name>
+    <description>Description for Backend</description>
 
     <repositories>
         <!-- jhipster-needle-maven-repository -->
@@ -31,7 +31,7 @@
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <start-class>fr.periscol.backend.PeriscolBackendApp</start-class>
+        <start-class>fr.periscol.backend.BackendApp</start-class>
         <argLine>-Djava.security.egd=file:/dev/./urandom -Xmx256m</argLine>
         <m2e.apt.activation>jdt_apt</m2e.apt.activation>
         <run.addResources>false</run.addResources>
@@ -309,11 +309,6 @@
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>tech.jhipster</groupId>
-            <artifactId>jhipster-framework</artifactId>
-            <version>7.2.0</version>
-        </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>
 
@@ -585,7 +580,7 @@
                             </platforms>
                         </from>
                         <to>
-                            <image>periscol_backend:latest</image>
+                            <image>backend:latest</image>
                         </to>
                         <container>
                             <entrypoint>
@@ -622,9 +617,9 @@
                         <changeLogFile>${project.basedir}/src/main/resources/config/liquibase/master.xml</changeLogFile>
                         <diffChangeLogFile>${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
                         <driver>org.h2.Driver</driver>
-                        <url>jdbc:h2:file:${project.build.directory}/h2db/db/periscol_backend</url>
+                        <url>jdbc:h2:file:${project.build.directory}/h2db/db/backend</url>
                         <defaultSchemaName></defaultSchemaName>
-                        <username>Periscol_Backend</username>
+                        <username>Backend</username>
                         <password></password>
                         <referenceUrl>hibernate:spring:fr.periscol.backend.domain?dialect=org.hibernate.dialect.H2Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
                         <verbose>true</verbose>

@@ -1,0 +1,35 @@
+{
+  "name": "Facturation",
+  "fields": [
+    {
+      "fieldName": "schoolService",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "cost",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "payed",
+      "fieldType": "Boolean"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "child",
+      "otherEntityRelationshipName": "facturation",
+      "relationshipName": "childs"
+    }
+  ],
+  "entityTableName": "facturation",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20220202155704"
+}

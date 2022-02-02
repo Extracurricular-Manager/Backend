@@ -1,6 +1,6 @@
 package fr.periscol.backend;
 
-import fr.periscol.backend.PeriscolBackendApp;
+import fr.periscol.backend.BackendApp;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -12,6 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@SpringBootTest(classes = PeriscolBackendApp.class)
+@SpringBootTest(classes = BackendApp.class)
 public @interface IntegrationTest {
 }

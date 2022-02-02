@@ -3,7 +3,7 @@ package fr.periscol.backend.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Properties specific to Periscol Backend.
+ * Properties specific to Backend.
  * <p>
  * Properties are configured in the {@code application.yml} file.
  * See {@link tech.jhipster.config.JHipsterProperties} for a good example.

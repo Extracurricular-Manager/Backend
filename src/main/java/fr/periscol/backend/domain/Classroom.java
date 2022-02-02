@@ -1,6 +1,9 @@
 package fr.periscol.backend.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 
 /**
@@ -22,6 +25,13 @@ public class Classroom implements Serializable {
 
     @Column(name = "professor")
     private String professor;
+
+    @OneToMany(mappedBy = "classroom")
+    @JsonIgnoreProperties(
+        value = { "classroom", "adelphie", "gradeLevel", "diets", "timeSlotModel", "presenceModel", "tarif", "facturation" },
+        allowSetters = true
+    )
+    private Set<Child> children = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -62,6 +72,37 @@ public class Classroom implements Serializable {
 
     public void setProfessor(String professor) {
         this.professor = professor;
+    }
+
+    public Set<Child> getChildren() {
+        return this.children;
+    }
+
+    public void setChildren(Set<Child> children) {
+        if (this.children != null) {
+            this.children.forEach(i -> i.setClassroom(null));
+        }
+        if (children != null) {
+            children.forEach(i -> i.setClassroom(this));
+        }
+        this.children = children;
+    }
+
+    public Classroom children(Set<Child> children) {
+        this.setChildren(children);
+        return this;
+    }
+
+    public Classroom addChildren(Child child) {
+        this.children.add(child);
+        child.setClassroom(this);
+        return this;
+    }
+
+    public Classroom removeChildren(Child child) {
+        this.children.remove(child);
+        child.setClassroom(null);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

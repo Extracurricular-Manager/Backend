@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -88,6 +89,34 @@ public class ChildService {
      */
     public Page<ChildDTO> findAllWithEagerRelationships(Pageable pageable) {
         return childRepository.findAllWithEagerRelationships(pageable).map(childMapper::toDto);
+    }
+
+    /**
+     *  Get all the children where TimeSlotModel is {@code null}.
+     *  @return the list of entities.
+     */
+    @Transactional(readOnly = true)
+    public List<ChildDTO> findAllWhereTimeSlotModelIsNull() {
+        log.debug("Request to get all children where TimeSlotModel is null");
+        return StreamSupport
+            .stream(childRepository.findAll().spliterator(), false)
+            .filter(child -> child.getTimeSlotModel() == null)
+            .map(childMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    /**
+     *  Get all the children where PresenceModel is {@code null}.
+     *  @return the list of entities.
+     */
+    @Transactional(readOnly = true)
+    public List<ChildDTO> findAllWherePresenceModelIsNull() {
+        log.debug("Request to get all children where PresenceModel is null");
+        return StreamSupport
+            .stream(childRepository.findAll().spliterator(), false)
+            .filter(child -> child.getPresenceModel() == null)
+            .map(childMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**

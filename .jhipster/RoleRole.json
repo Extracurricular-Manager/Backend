@@ -1,0 +1,32 @@
+{
+  "name": "RoleRole",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "permissions",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "userCustom",
+      "otherEntityRelationshipName": "roles",
+      "relationshipName": "users",
+      "ownerSide": false
+    }
+  ],
+  "entityTableName": "role_role",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20220202155658"
+}

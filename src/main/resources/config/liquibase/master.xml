@@ -15,7 +15,28 @@
     <property name="datetimeType" value="datetime" dbms="oracle, mssql, postgresql, h2"/>
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220202155653_added_entity_Child.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220202155654_added_entity_Family.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220202155655_added_entity_GradeLevel.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220202155656_added_entity_Classroom.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220202155657_added_entity_Diet.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220202155658_added_entity_RoleRole.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220202155659_added_entity_UserCustom.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220202155700_added_entity_Model.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220202155701_added_entity_TimeSlotModel.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220202155702_added_entity_PresenceModel.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220202155703_added_entity_ServiceMetadata.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220202155704_added_entity_Facturation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220202155705_added_entity_TarifBase.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220202155706_added_entity_Modifier.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220202155707_added_entity_Tarification.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20220202155653_added_entity_constraints_Child.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220202155658_added_entity_constraints_RoleRole.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220202155700_added_entity_constraints_Model.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220202155701_added_entity_constraints_TimeSlotModel.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220202155702_added_entity_constraints_PresenceModel.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220202155659_added_entity_constraints_UserCustom.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

@@ -22,19 +22,19 @@
     {
       "relationshipType": "many-to-one",
       "otherEntityName": "classroom",
-      "otherEntityRelationshipName": "child",
+      "otherEntityRelationshipName": "children",
       "relationshipName": "classroom"
     },
     {
       "relationshipType": "many-to-one",
       "otherEntityName": "family",
-      "otherEntityRelationshipName": "child",
+      "otherEntityRelationshipName": "children",
       "relationshipName": "adelphie"
     },
     {
       "relationshipType": "many-to-one",
       "otherEntityName": "gradeLevel",
-      "otherEntityRelationshipName": "child",
+      "otherEntityRelationshipName": "children",
       "relationshipName": "gradeLevel"
     },
     {
@@ -43,6 +43,32 @@
       "otherEntityRelationshipName": "children",
       "relationshipName": "diet",
       "ownerSide": true
+    },
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "timeSlotModel",
+      "otherEntityRelationshipName": "child",
+      "relationshipName": "timeSlotModel",
+      "ownerSide": false
+    },
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "presenceModel",
+      "otherEntityRelationshipName": "child",
+      "relationshipName": "presenceModel",
+      "ownerSide": false
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "tarifBase",
+      "otherEntityRelationshipName": "children",
+      "relationshipName": "tarif"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "facturation",
+      "otherEntityRelationshipName": "childs",
+      "relationshipName": "facturation"
     }
   ],
   "entityTableName": "child",
@@ -54,5 +80,5 @@
   "readOnly": false,
   "embedded": false,
   "applications": "*",
-  "changelogDate": "20220104170246"
+  "changelogDate": "20220202155653"
 }

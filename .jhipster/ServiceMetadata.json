@@ -1,0 +1,32 @@
+{
+  "name": "ServiceMetadata",
+  "fields": [
+    {
+      "fieldName": "module",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "endPoint",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "model",
+      "otherEntityRelationshipName": "serviceMetadata",
+      "relationshipName": "model",
+      "ownerSide": false
+    }
+  ],
+  "entityTableName": "service_metadata",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20220202155703"
+}

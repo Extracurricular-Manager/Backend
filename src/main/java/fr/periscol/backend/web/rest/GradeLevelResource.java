@@ -56,7 +56,7 @@ public class GradeLevelResource {
         GradeLevelDTO result = gradeLevelService.save(gradeLevelDTO);
         return ResponseEntity
             .created(new URI("/api/grade-levels/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -72,7 +72,7 @@ public class GradeLevelResource {
      */
     @PutMapping("/grade-levels/{id}")
     public ResponseEntity<GradeLevelDTO> updateGradeLevel(
-        @PathVariable(value = "id", required = false) final String id,
+        @PathVariable(value = "id", required = false) final Long id,
         @RequestBody GradeLevelDTO gradeLevelDTO
     ) throws URISyntaxException {
         log.debug("REST request to update GradeLevel : {}, {}", id, gradeLevelDTO);
@@ -90,7 +90,7 @@ public class GradeLevelResource {
         GradeLevelDTO result = gradeLevelService.save(gradeLevelDTO);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, gradeLevelDTO.getId()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, gradeLevelDTO.getId().toString()))
             .body(result);
     }
 
@@ -107,7 +107,7 @@ public class GradeLevelResource {
      */
     @PatchMapping(value = "/grade-levels/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<GradeLevelDTO> partialUpdateGradeLevel(
-        @PathVariable(value = "id", required = false) final String id,
+        @PathVariable(value = "id", required = false) final Long id,
         @RequestBody GradeLevelDTO gradeLevelDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update GradeLevel partially : {}, {}", id, gradeLevelDTO);
@@ -126,7 +126,7 @@ public class GradeLevelResource {
 
         return ResponseUtil.wrapOrNotFound(
             result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, gradeLevelDTO.getId())
+            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, gradeLevelDTO.getId().toString())
         );
     }
 
@@ -148,7 +148,7 @@ public class GradeLevelResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the gradeLevelDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/grade-levels/{id}")
-    public ResponseEntity<GradeLevelDTO> getGradeLevel(@PathVariable String id) {
+    public ResponseEntity<GradeLevelDTO> getGradeLevel(@PathVariable Long id) {
         log.debug("REST request to get GradeLevel : {}", id);
         Optional<GradeLevelDTO> gradeLevelDTO = gradeLevelService.findOne(id);
         return ResponseUtil.wrapOrNotFound(gradeLevelDTO);
@@ -161,9 +161,12 @@ public class GradeLevelResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/grade-levels/{id}")
-    public ResponseEntity<Void> deleteGradeLevel(@PathVariable String id) {
+    public ResponseEntity<Void> deleteGradeLevel(@PathVariable Long id) {
         log.debug("REST request to delete GradeLevel : {}", id);
         gradeLevelService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id)).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
+            .build();
     }
 }

@@ -3,10 +3,21 @@
   "fields": [
     {
       "fieldName": "id",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "level",
       "fieldType": "String"
     }
   ],
-  "relationships": [],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "child",
+      "otherEntityRelationshipName": "gradeLevel",
+      "relationshipName": "children"
+    }
+  ],
   "entityTableName": "grade_level",
   "dto": "mapstruct",
   "pagination": "no",
@@ -16,5 +27,5 @@
   "readOnly": false,
   "embedded": false,
   "applications": "*",
-  "changelogDate": "20220104170248"
+  "changelogDate": "20220202155655"
 }

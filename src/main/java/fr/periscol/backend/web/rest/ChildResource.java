@@ -9,6 +9,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -134,10 +135,23 @@ public class ChildResource {
      * {@code GET  /children} : get all the children.
      *
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
+     * @param filter the filter of the request.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of children in body.
      */
     @GetMapping("/children")
-    public List<ChildDTO> getAllChildren(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+    public List<ChildDTO> getAllChildren(
+        @RequestParam(required = false) String filter,
+        @RequestParam(required = false, defaultValue = "false") boolean eagerload
+    ) {
+        if ("timeslotmodel-is-null".equals(filter)) {
+            log.debug("REST request to get all Childs where timeSlotModel is null");
+            return childService.findAllWhereTimeSlotModelIsNull();
+        }
+
+        if ("presencemodel-is-null".equals(filter)) {
+            log.debug("REST request to get all Childs where presenceModel is null");
+            return childService.findAllWherePresenceModelIsNull();
+        }
         log.debug("REST request to get all Children");
         return childService.findAll();
     }

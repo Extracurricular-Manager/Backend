@@ -31,18 +31,37 @@ public class Child implements Serializable {
     private ZonedDateTime birthday;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = { "children" }, allowSetters = true)
     private Classroom classroom;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = { "children" }, allowSetters = true)
     private Family adelphie;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = { "children" }, allowSetters = true)
     private GradeLevel gradeLevel;
 
     @ManyToMany
     @JoinTable(name = "rel_child__diet", joinColumns = @JoinColumn(name = "child_id"), inverseJoinColumns = @JoinColumn(name = "diet_id"))
     @JsonIgnoreProperties(value = { "children" }, allowSetters = true)
     private Set<Diet> diets = new HashSet<>();
+
+    @JsonIgnoreProperties(value = { "child" }, allowSetters = true)
+    @OneToOne(mappedBy = "child")
+    private TimeSlotModel timeSlotModel;
+
+    @JsonIgnoreProperties(value = { "child" }, allowSetters = true)
+    @OneToOne(mappedBy = "child")
+    private PresenceModel presenceModel;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "children" }, allowSetters = true)
+    private TarifBase tarif;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "childs" }, allowSetters = true)
+    private Facturation facturation;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -159,6 +178,70 @@ public class Child implements Serializable {
     public Child removeDiet(Diet diet) {
         this.diets.remove(diet);
         diet.getChildren().remove(this);
+        return this;
+    }
+
+    public TimeSlotModel getTimeSlotModel() {
+        return this.timeSlotModel;
+    }
+
+    public void setTimeSlotModel(TimeSlotModel timeSlotModel) {
+        if (this.timeSlotModel != null) {
+            this.timeSlotModel.setChild(null);
+        }
+        if (timeSlotModel != null) {
+            timeSlotModel.setChild(this);
+        }
+        this.timeSlotModel = timeSlotModel;
+    }
+
+    public Child timeSlotModel(TimeSlotModel timeSlotModel) {
+        this.setTimeSlotModel(timeSlotModel);
+        return this;
+    }
+
+    public PresenceModel getPresenceModel() {
+        return this.presenceModel;
+    }
+
+    public void setPresenceModel(PresenceModel presenceModel) {
+        if (this.presenceModel != null) {
+            this.presenceModel.setChild(null);
+        }
+        if (presenceModel != null) {
+            presenceModel.setChild(this);
+        }
+        this.presenceModel = presenceModel;
+    }
+
+    public Child presenceModel(PresenceModel presenceModel) {
+        this.setPresenceModel(presenceModel);
+        return this;
+    }
+
+    public TarifBase getTarif() {
+        return this.tarif;
+    }
+
+    public void setTarif(TarifBase tarifBase) {
+        this.tarif = tarifBase;
+    }
+
+    public Child tarif(TarifBase tarifBase) {
+        this.setTarif(tarifBase);
+        return this;
+    }
+
+    public Facturation getFacturation() {
+        return this.facturation;
+    }
+
+    public void setFacturation(Facturation facturation) {
+        this.facturation = facturation;
+    }
+
+    public Child facturation(Facturation facturation) {
+        this.setFacturation(facturation);
         return this;
     }
 

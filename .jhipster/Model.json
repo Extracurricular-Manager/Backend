@@ -1,0 +1,28 @@
+{
+  "name": "Model",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "Long"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "serviceMetadata",
+      "otherEntityRelationshipName": "model",
+      "relationshipName": "serviceMetadata",
+      "ownerSide": true
+    }
+  ],
+  "entityTableName": "model",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20220202155700"
+}

@@ -15,7 +15,8 @@ entity Family {
 }
 
 entity GradeLevel {
-	id String
+	id Long,
+	level String
 }
 
 entity Classroom {
@@ -32,17 +33,95 @@ entity Diet {
 }
 
 
+entity RoleRole {
+    name String
+    permissions String
+}
 
-relationship ManyToOne {
-	Child{classroom} to Classroom
+entity UserCustom {
+	id Long
+    name String
+    login String
+    password String
+}
+
+
+entity Model {
+    id Long
+}
+
+entity TimeSlotModel {
+	name String
+    timeOfArrival LocalDate,
+    timeOfDeparture LocalDate,
+}
+
+entity PresenceModel {
+	name String
+    presence Boolean,
+    date LocalDate
+}
+
+entity ServiceMetadata {
+    module String
+    endPoint String
+}
+
+entity Facturation {
+    schoolService String   
+    cost Long
+    payed Boolean
+}
+
+entity TarifBase {
+    id Long
+    price Long
+    name String
+    comment String
+}
+
+entity Modifier {
+    id Long
+    name String
+}
+
+entity Tarification {
+}
+
+relationship OneToMany {
+	TarifBase{children} to Child{tarif}
+}
+
+relationship OneToOne {
+	TimeSlotModel to Child
+}
+
+relationship OneToOne {
+	PresenceModel to Child
+}
+
+relationship OneToMany {
+	Facturation{childs} to Child{facturation}
+}
+
+relationship ManyToMany {
+	UserCustom{roles} to RoleRole{users}
+}
+
+relationship OneToOne {
+	Model to ServiceMetadata
 }
 
 relationship ManyToOne {
-	Child{adelphie} to Family
+	Child{classroom} to Classroom{children}
 }
 
 relationship ManyToOne {
-	Child{gradeLevel} to GradeLevel
+	Child{adelphie} to Family{children}
+}
+
+relationship ManyToOne {
+	Child{gradeLevel} to GradeLevel{children}
 }
 
 relationship ManyToMany {
@@ -50,5 +129,5 @@ relationship ManyToMany {
 }
 
 
-dto * with mapstruct
-service * with serviceClass
+dto * with mapstruct except Model, ServiceMetadata
+service * with serviceClass except Permission, RoleRole, Model, ServiceMetadata
