@@ -27,5 +27,4 @@ public class User {
     @Column(name = "password_hash", length = 60, nullable = false)
     private String password;
 
-
 }
