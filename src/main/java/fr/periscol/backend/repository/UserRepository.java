@@ -17,7 +17,7 @@ import java.util.Optional;
  * Spring Data SQL repository for the UserCustom entity.
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, String> {
     @Query(
         value = "select distinct userCustom from User userCustom left join fetch userCustom.roles",
         countQuery = "select count(distinct userCustom) from User userCustom"
@@ -27,8 +27,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select distinct userCustom from User userCustom left join fetch userCustom.roles")
     List<User> findAllWithEagerRelationships();
 
-    @Query("select userCustom from User userCustom left join fetch userCustom.roles where userCustom.id =:id")
-    Optional<User> findOneWithEagerRelationships(@Param("id") Long id);
+    @Query("select userCustom from User userCustom left join fetch userCustom.roles where userCustom.name =:name")
+    Optional<User> findOneWithEagerRelationships(@Param("name") String name);
 
 
     public Optional<UserDTO> findOneWithRolesByLogin(String login);

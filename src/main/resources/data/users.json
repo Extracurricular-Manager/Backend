@@ -1,0 +1,11 @@
+[
+  {
+    "name": "admin",
+    "login": "admin",
+    "password": "$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC",
+    "isActivated": true,
+    "roles": [
+      "ROLE_ADMIN"
+    ]
+  }
+]

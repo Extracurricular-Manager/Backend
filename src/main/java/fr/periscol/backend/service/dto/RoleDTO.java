@@ -1,29 +1,19 @@
 package fr.periscol.backend.service.dto;
 
-import fr.periscol.backend.domain.Permission;
+import fr.periscol.backend.domain.Role;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * A DTO for the {@link fr.periscol.backend.domain.RoleRole} entity.
+ * A DTO for the {@link Role} entity.
  */
-public class RoleRoleDTO implements Serializable {
-
-    private Long id;
+public class RoleDTO implements Serializable {
 
     private String name;
 
     private List<PermissionDTO> permissions;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -46,27 +36,26 @@ public class RoleRoleDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof RoleRoleDTO)) {
+        if (!(o instanceof RoleDTO)) {
             return false;
         }
 
-        RoleRoleDTO roleRoleDTO = (RoleRoleDTO) o;
-        if (this.id == null) {
+        RoleDTO roleDTO = (RoleDTO) o;
+        if (this.name == null) {
             return false;
         }
-        return Objects.equals(this.id, roleRoleDTO.id);
+        return Objects.equals(this.name, roleDTO.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hash(this.name);
     }
 
     // prettier-ignore
     @Override
     public String toString() {
         return "RoleRoleDTO{" +
-            "id=" + getId() +
             ", name='" + getName() + "'" +
             ", permissions='" + getPermissions() + "'" +
             "}";

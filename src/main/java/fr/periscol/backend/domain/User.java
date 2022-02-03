@@ -1,6 +1,7 @@
 package fr.periscol.backend.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,14 +17,10 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-
     @Column(name = "name")
     private String name;
 
+    @Id
     @Column(name = "login")
     private String login;
 
@@ -39,30 +36,18 @@ public class User implements Serializable {
         joinColumns = @JoinColumn(name = "user_custom_id"),
         inverseJoinColumns = @JoinColumn(name = "roles_id")
     )
-    @JsonIgnoreProperties(value = { "users" }, allowSetters = true)
-    private Set<RoleRole> roles = new HashSet<>();
+    @JsonIgnoreProperties(value = { "users.json" }, allowSetters = true)
+    private Set<Role> roles = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
-    public Long getId() {
-        return this.id;
-    }
-
-    public User id(Long id) {
-        this.setId(id);
-        return this;
+    @JsonProperty("isActivated")
+    public void setActivated(boolean activated) {
+        this.isActivated = activated;
     }
 
     public boolean isActivated() {
         return isActivated;
-    }
-
-    public void setActivated(boolean activated) {
-        isActivated = activated;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -104,30 +89,32 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public Set<RoleRole> getRoles() {
+    public Set<Role> getRoles() {
         return this.roles;
     }
 
-    public void setRoles(Set<RoleRole> roleRoles) {
-        this.roles = roleRoles;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
-    public User roles(Set<RoleRole> roleRoles) {
-        this.setRoles(roleRoles);
+    public User roles(Set<Role> roles) {
+        this.setRoles(roles);
         return this;
     }
 
-    public User addRoles(RoleRole roleRole) {
-        this.roles.add(roleRole);
-        roleRole.getUsers().add(this);
+    public User addRoles(Role role) {
+        this.roles.add(role);
+        role.getUsers().add(this);
         return this;
     }
 
-    public User removeRoles(RoleRole roleRole) {
-        this.roles.remove(roleRole);
-        roleRole.getUsers().remove(this);
+    public User removeRoles(Role role) {
+        this.roles.remove(role);
+        role.getUsers().remove(this);
         return this;
     }
+
+
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -139,7 +126,7 @@ public class User implements Serializable {
         if (!(o instanceof User)) {
             return false;
         }
-        return id != null && id.equals(((User) o).id);
+        return name != null && name.equals(((User) o).name);
     }
 
     @Override
@@ -152,7 +139,6 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "UserCustom{" +
-            "id=" + getId() +
             ", name='" + getName() + "'" +
             ", login='" + getLogin() + "'" +
             ", password='" + getPassword() + "'" +

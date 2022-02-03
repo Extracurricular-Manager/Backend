@@ -1,6 +1,6 @@
 package fr.periscol.backend.repository;
 
-import fr.periscol.backend.domain.RoleRole;
+import fr.periscol.backend.domain.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface RoleRoleRepository extends JpaRepository<RoleRole, Long> {}
+public interface RoleRepository extends JpaRepository<Role, String> {}

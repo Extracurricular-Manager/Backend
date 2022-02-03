@@ -12,23 +12,13 @@ import java.util.Set;
  */
 public class UserDTO implements Serializable {
 
-    private Long id;
-
     private String name;
 
     private String login;
 
     private String password;
 
-    private Set<RoleRoleDTO> roles = new HashSet<>();
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private Set<RoleDTO> roles = new HashSet<>();
 
     public String getName() {
         return name;
@@ -54,11 +44,11 @@ public class UserDTO implements Serializable {
         this.password = password;
     }
 
-    public Set<RoleRoleDTO> getRoles() {
+    public Set<RoleDTO> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<RoleRoleDTO> roles) {
+    public void setRoles(Set<RoleDTO> roles) {
         this.roles = roles;
     }
 
@@ -72,26 +62,25 @@ public class UserDTO implements Serializable {
         }
 
         UserDTO userDTO = (UserDTO) o;
-        if (this.id == null) {
+        if (this.name == null) {
             return false;
         }
-        return Objects.equals(this.id, userDTO.id);
+        return Objects.equals(this.name, userDTO.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hash(this.name);
     }
 
     // prettier-ignore
     @Override
     public String toString() {
         return "UserCustomDTO{" +
-            "id=" + getId() +
             ", name='" + getName() + "'" +
             ", login='" + getLogin() + "'" +
             ", password='" + getPassword() + "'" +
-            ", roles=" + getRoles() +
+            ", roles.json=" + getRoles() +
             "}";
     }
 }

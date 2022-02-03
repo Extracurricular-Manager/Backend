@@ -9,19 +9,15 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * A RoleRole.
+ * A Role.
  */
 @Entity
-@Table(name = "role_role")
-public class RoleRole implements Serializable {
+@Table(name = "role")
+public class Role implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-
     @Column(name = "name")
     private String name;
 
@@ -33,24 +29,18 @@ public class RoleRole implements Serializable {
     @JsonIgnoreProperties(value = { "roles" }, allowSetters = true)
     private Set<User> users = new HashSet<>();
 
-    public Long getId() {
-        return this.id;
+    public Role(String name) {
+        this.name = name;
     }
 
-    public RoleRole id(Long id) {
-        this.setId(id);
-        return this;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public Role() {
     }
 
     public String getName() {
         return this.name;
     }
 
-    public RoleRole name(String name) {
+    public Role name(String name) {
         this.setName(name);
         return this;
     }
@@ -73,18 +63,18 @@ public class RoleRole implements Serializable {
         this.users = users;
     }
 
-    public RoleRole users(Set<User> users) {
+    public Role users(Set<User> users) {
         this.setUsers(users);
         return this;
     }
 
-    public RoleRole addUsers(User user) {
+    public Role addUsers(User user) {
         this.users.add(user);
         user.getRoles().add(this);
         return this;
     }
 
-    public RoleRole removeUsers(User user) {
+    public Role removeUsers(User user) {
         this.users.remove(user);
         user.getRoles().remove(this);
         return this;
@@ -105,10 +95,10 @@ public class RoleRole implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof RoleRole)) {
+        if (!(o instanceof Role)) {
             return false;
         }
-        return id != null && id.equals(((RoleRole) o).id);
+        return name != null && name.equals(((Role) o).name);
     }
 
     @Override
@@ -121,7 +111,6 @@ public class RoleRole implements Serializable {
     @Override
     public String toString() {
         return "RoleRole{" +
-            "id=" + getId() +
             ", name='" + getName() + "'" +
             ", permissions='" + getPermissions() + "'" +
             "}";

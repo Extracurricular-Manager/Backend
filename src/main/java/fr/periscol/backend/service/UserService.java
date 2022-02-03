@@ -58,7 +58,7 @@ public class UserService {
         log.debug("Request to partially update UserCustom : {}", userDTO);
 
         return userRepository
-            .findById(userDTO.getId())
+            .findById(userDTO.getName())
             .map(existingUserCustom -> {
                 userMapper.partialUpdate(existingUserCustom, userDTO);
 
@@ -95,22 +95,22 @@ public class UserService {
     /**
      * Get one userCustom by id.
      *
-     * @param id the id of the entity.
+     * @param name the id of the entity.
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public Optional<UserDTO> findOne(Long id) {
-        log.debug("Request to get UserCustom : {}", id);
-        return userRepository.findOneWithEagerRelationships(id).map(userMapper::toDto);
+    public Optional<UserDTO> findOne(String name) {
+        log.debug("Request to get UserCustom : {}", name);
+        return userRepository.findOneWithEagerRelationships(name).map(userMapper::toDto);
     }
 
     /**
      * Delete the userCustom by id.
      *
-     * @param id the id of the entity.
+     * @param name the id of the entity.
      */
-    public void delete(Long id) {
-        log.debug("Request to delete UserCustom : {}", id);
-        userRepository.deleteById(id);
+    public void delete(String name) {
+        log.debug("Request to delete UserCustom : {}", name);
+        userRepository.deleteById(name);
     }
 }
