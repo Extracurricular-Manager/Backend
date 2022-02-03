@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,13 +26,12 @@ public class RoleRole implements Serializable {
     private String name;
 
     @Column(name = "permissions")
-    private String permissions;
+    @OneToMany
+    private List<Permission> permissions;
 
     @ManyToMany(mappedBy = "roles")
     @JsonIgnoreProperties(value = { "roles" }, allowSetters = true)
-    private Set<UserCustom> users = new HashSet<>();
-
-    // jhipster-needle-entity-add-field - JHipster will add fields here
+    private Set<User> users = new HashSet<>();
 
     public Long getId() {
         return this.id;
@@ -59,48 +59,43 @@ public class RoleRole implements Serializable {
         this.name = name;
     }
 
-    public String getPermissions() {
-        return this.permissions;
-    }
-
-    public RoleRole permissions(String permissions) {
-        this.setPermissions(permissions);
-        return this;
-    }
-
-    public void setPermissions(String permissions) {
-        this.permissions = permissions;
-    }
-
-    public Set<UserCustom> getUsers() {
+    public Set<User> getUsers() {
         return this.users;
     }
 
-    public void setUsers(Set<UserCustom> userCustoms) {
+    public void setUsers(Set<User> users) {
         if (this.users != null) {
             this.users.forEach(i -> i.removeRoles(this));
         }
-        if (userCustoms != null) {
-            userCustoms.forEach(i -> i.addRoles(this));
+        if (users != null) {
+            users.forEach(i -> i.addRoles(this));
         }
-        this.users = userCustoms;
+        this.users = users;
     }
 
-    public RoleRole users(Set<UserCustom> userCustoms) {
-        this.setUsers(userCustoms);
+    public RoleRole users(Set<User> users) {
+        this.setUsers(users);
         return this;
     }
 
-    public RoleRole addUsers(UserCustom userCustom) {
-        this.users.add(userCustom);
-        userCustom.getRoles().add(this);
+    public RoleRole addUsers(User user) {
+        this.users.add(user);
+        user.getRoles().add(this);
         return this;
     }
 
-    public RoleRole removeUsers(UserCustom userCustom) {
-        this.users.remove(userCustom);
-        userCustom.getRoles().remove(this);
+    public RoleRole removeUsers(User user) {
+        this.users.remove(user);
+        user.getRoles().remove(this);
         return this;
+    }
+
+    public List<Permission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<Permission> permissions) {
+        this.permissions = permissions;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

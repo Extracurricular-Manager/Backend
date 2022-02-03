@@ -1,6 +1,9 @@
 package fr.periscol.backend.service.dto;
 
+import fr.periscol.backend.domain.Permission;
+
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -12,7 +15,7 @@ public class RoleRoleDTO implements Serializable {
 
     private String name;
 
-    private String permissions;
+    private List<PermissionDTO> permissions;
 
     public Long getId() {
         return id;
@@ -30,11 +33,11 @@ public class RoleRoleDTO implements Serializable {
         this.name = name;
     }
 
-    public String getPermissions() {
+    public List<PermissionDTO> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(String permissions) {
+    public void setPermissions(List<PermissionDTO> permissions) {
         this.permissions = permissions;
     }
 

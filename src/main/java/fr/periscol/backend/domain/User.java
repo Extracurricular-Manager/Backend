@@ -11,8 +11,8 @@ import java.util.Set;
  * A UserCustom.
  */
 @Entity
-@Table(name = "user_custom")
-public class UserCustom implements Serializable {
+@Table(name = "user")
+public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -30,6 +30,9 @@ public class UserCustom implements Serializable {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "activated")
+    private boolean isActivated;
+
     @ManyToMany
     @JoinTable(
         name = "rel_user_custom__roles",
@@ -45,9 +48,17 @@ public class UserCustom implements Serializable {
         return this.id;
     }
 
-    public UserCustom id(Long id) {
+    public User id(Long id) {
         this.setId(id);
         return this;
+    }
+
+    public boolean isActivated() {
+        return isActivated;
+    }
+
+    public void setActivated(boolean activated) {
+        isActivated = activated;
     }
 
     public void setId(Long id) {
@@ -58,7 +69,7 @@ public class UserCustom implements Serializable {
         return this.name;
     }
 
-    public UserCustom name(String name) {
+    public User name(String name) {
         this.setName(name);
         return this;
     }
@@ -71,7 +82,7 @@ public class UserCustom implements Serializable {
         return this.login;
     }
 
-    public UserCustom login(String login) {
+    public User login(String login) {
         this.setLogin(login);
         return this;
     }
@@ -84,7 +95,7 @@ public class UserCustom implements Serializable {
         return this.password;
     }
 
-    public UserCustom password(String password) {
+    public User password(String password) {
         this.setPassword(password);
         return this;
     }
@@ -101,18 +112,18 @@ public class UserCustom implements Serializable {
         this.roles = roleRoles;
     }
 
-    public UserCustom roles(Set<RoleRole> roleRoles) {
+    public User roles(Set<RoleRole> roleRoles) {
         this.setRoles(roleRoles);
         return this;
     }
 
-    public UserCustom addRoles(RoleRole roleRole) {
+    public User addRoles(RoleRole roleRole) {
         this.roles.add(roleRole);
         roleRole.getUsers().add(this);
         return this;
     }
 
-    public UserCustom removeRoles(RoleRole roleRole) {
+    public User removeRoles(RoleRole roleRole) {
         this.roles.remove(roleRole);
         roleRole.getUsers().remove(this);
         return this;
@@ -125,10 +136,10 @@ public class UserCustom implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof UserCustom)) {
+        if (!(o instanceof User)) {
             return false;
         }
-        return id != null && id.equals(((UserCustom) o).id);
+        return id != null && id.equals(((User) o).id);
     }
 
     @Override

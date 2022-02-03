@@ -1,14 +1,16 @@
 package fr.periscol.backend.service.dto;
 
+import fr.periscol.backend.domain.User;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 /**
- * A DTO for the {@link fr.periscol.backend.domain.UserCustom} entity.
+ * A DTO for the {@link User} entity.
  */
-public class UserCustomDTO implements Serializable {
+public class UserDTO implements Serializable {
 
     private Long id;
 
@@ -65,15 +67,15 @@ public class UserCustomDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof UserCustomDTO)) {
+        if (!(o instanceof UserDTO)) {
             return false;
         }
 
-        UserCustomDTO userCustomDTO = (UserCustomDTO) o;
+        UserDTO userDTO = (UserDTO) o;
         if (this.id == null) {
             return false;
         }
-        return Objects.equals(this.id, userCustomDTO.id);
+        return Objects.equals(this.id, userDTO.id);
     }
 
     @Override
