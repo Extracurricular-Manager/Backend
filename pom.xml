@@ -26,6 +26,7 @@
 		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 		<mysql.version>8.0.21</mysql.version>
 		<org.hsqlbdb.version>2.5.1</org.hsqlbdb.version>
+		<org.springdoc.version>1.5.2</org.springdoc.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -143,11 +144,18 @@
 			<artifactId>hsqldb</artifactId>
 			<version>${org.hsqlbdb.version}</version>
 		</dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.12.0</version>
         </dependency>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>${org.springdoc.version}</version>
+		</dependency>
     </dependencies>
 
 	<build>
