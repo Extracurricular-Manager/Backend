@@ -18,6 +18,16 @@ public class UserDTO implements Serializable {
 
     private String password;
 
+    private boolean isActivated;
+
+    public boolean isActivated() {
+        return isActivated;
+    }
+
+    public void setActivated(boolean activated) {
+        isActivated = activated;
+    }
+
     private Set<RoleDTO> roles = new HashSet<>();
 
     public String getName() {

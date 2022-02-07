@@ -2,10 +2,10 @@ package fr.periscol.backend.config;
 
 import fr.periscol.backend.security.*;
 import fr.periscol.backend.security.jwt.*;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -20,33 +20,44 @@ import org.springframework.web.filter.CorsFilter;
 import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 import tech.jhipster.config.JHipsterProperties;
 
+import javax.sql.DataSource;
+
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @Import(SecurityProblemSupport.class)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final JHipsterProperties jHipsterProperties;
-
     private final TokenProvider tokenProvider;
-
     private final CorsFilter corsFilter;
     private final SecurityProblemSupport problemSupport;
+    private final DataSource dataSource;
 
     public SecurityConfiguration(
-        TokenProvider tokenProvider,
-        CorsFilter corsFilter,
-        JHipsterProperties jHipsterProperties,
-        SecurityProblemSupport problemSupport
-    ) {
+            TokenProvider tokenProvider,
+            CorsFilter corsFilter,
+            JHipsterProperties jHipsterProperties,
+            SecurityProblemSupport problemSupport,
+            DataSource dataSource) {
         this.tokenProvider = tokenProvider;
         this.corsFilter = corsFilter;
         this.problemSupport = problemSupport;
         this.jHipsterProperties = jHipsterProperties;
+        this.dataSource = dataSource;
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.jdbcAuthentication()
+                .passwordEncoder(passwordEncoder())
+                .dataSource(dataSource)
+                .usersByUsernameQuery("select login,password,activated from USER where login = ?")
+                .authoritiesByUsernameQuery("with T3 as (select USER_CUSTOM_ID, ROLE_NAME, PERMISSIONS_NAME from (select USER_CUSTOM_ID, ROLE_NAME, PERMISSIONS_NAME from (select USER_CUSTOM_ID, ROLES_ID from REL_USER_CUSTOM__ROLES where USER_CUSTOM_ID = ?) as T2 join ROLE_PERMISSIONS on (T2.ROLES_ID = ROLE_PERMISSIONS.ROLE_NAME))) select * from (select  USER_CUSTOM_ID, ROLE_NAME from T3) union (select USER_CUSTOM_ID, PERMISSIONS_NAME from T3)");
     }
 
     @Override

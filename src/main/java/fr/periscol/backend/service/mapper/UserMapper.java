@@ -9,9 +9,11 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring", uses = { RoleMapper.class })
 public interface UserMapper extends EntityMapper<UserDTO, User> {
+    @Mapping(target = "activated", source = "activated")
     @Mapping(target = "roles", source = "roles", qualifiedByName = "idSet")
     UserDTO toDto(User s);
 
+    @Mapping(target = "activated", source = "activated")
     @Mapping(target = "removeRoles", ignore = true)
     User toEntity(UserDTO userDTO);
 }

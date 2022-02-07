@@ -22,7 +22,7 @@ public class Role implements Serializable {
     private String name;
 
     @Column(name = "permissions")
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     private List<Permission> permissions;
 
     @ManyToMany(mappedBy = "roles")

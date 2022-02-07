@@ -5,6 +5,7 @@ import fr.periscol.backend.service.dto.UserDTO;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -31,5 +32,6 @@ public interface UserRepository extends JpaRepository<User, String> {
     Optional<User> findOneWithEagerRelationships(@Param("name") String name);
 
 
-    public Optional<UserDTO> findOneWithRolesByLogin(String login);
+    @EntityGraph(attributePaths = "roles")
+    Optional<User> findOneWithRolesByLogin(String login);
 }
