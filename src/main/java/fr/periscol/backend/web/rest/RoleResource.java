@@ -3,6 +3,7 @@ package fr.periscol.backend.web.rest;
 import fr.periscol.backend.domain.Role;
 import fr.periscol.backend.repository.RoleRepository;
 import fr.periscol.backend.service.RoleService;
+import fr.periscol.backend.service.dto.PermissionDTO;
 import fr.periscol.backend.service.dto.RoleDTO;
 import fr.periscol.backend.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
@@ -170,5 +171,21 @@ public class RoleResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, name.toString()))
             .build();
+    }
+
+    @GetMapping("/role-roles/permission/{name}")
+    public ResponseEntity<List<PermissionDTO>> getPermissionFromRole(@PathVariable String name){
+        log.debug("REST request to get Permission from RoleRole : {}", name);
+        Optional<RoleDTO> roleDTO = roleService.findOne(name);
+        if(roleDTO.isEmpty()){
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        else{
+            List<PermissionDTO> permissions = roleService.getPermissions(name);
+            if(permissions.isEmpty()){
+                throw new BadRequestAlertException("No permissions", ENTITY_NAME, "idinvalid");
+            }
+            return ResponseEntity.ok(permissions);
+        }
     }
 }
