@@ -3,6 +3,9 @@ package fr.periscol.backend.web.rest;
 import fr.periscol.backend.domain.User;
 import fr.periscol.backend.repository.UserRepository;
 import fr.periscol.backend.service.UserService;
+import fr.periscol.backend.service.dto.NewUserDTO;
+import fr.periscol.backend.service.dto.RoleDTO;
+import fr.periscol.backend.service.dto.RoleNameDTO;
 import fr.periscol.backend.service.dto.UserDTO;
 import fr.periscol.backend.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
@@ -50,22 +53,22 @@ public class UserCustomResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/user-customs")
-    public ResponseEntity<UserDTO> createUserCustom(@RequestBody UserDTO userDTO) throws URISyntaxException {
+    public ResponseEntity<UserDTO> createUserCustom(@RequestBody NewUserDTO userDTO) throws URISyntaxException {
         log.debug("REST request to save UserCustom : {}", userDTO);
         if (userDTO.getName() != null) {
             throw new BadRequestAlertException("A new userCustom cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        UserDTO result = userService.save(userDTO);
+        UserDTO result = userService.createNewUser(userDTO);
         return ResponseEntity
-            .created(new URI("/api/user-customs/" + result.getName()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getName().toString()))
-            .body(result);
+                .created(new URI("/api/user-customs/" + result.getName()))
+                .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getName().toString()))
+                .body(result);
     }
 
     /**
      * {@code PUT  /user-customs/:id} : Updates an existing userCustom.
      *
-     * @param name the id of the userCustomDTO to save.
+     * @param name    the id of the userCustomDTO to save.
      * @param userDTO the userCustomDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated userCustomDTO,
      * or with status {@code 400 (Bad Request)} if the userCustomDTO is not valid,
@@ -74,8 +77,8 @@ public class UserCustomResource {
      */
     @PutMapping("/user-customs/{id}")
     public ResponseEntity<UserDTO> updateUserCustom(
-        @PathVariable(value = "id", required = false) final String name,
-        @RequestBody UserDTO userDTO
+            @PathVariable(value = "id", required = false) final String name,
+            @RequestBody UserDTO userDTO
     ) throws URISyntaxException {
         log.debug("REST request to update UserCustom : {}, {}", name, userDTO);
         if (userDTO.getName() == null) {
@@ -91,15 +94,15 @@ public class UserCustomResource {
 
         UserDTO result = userService.save(userDTO);
         return ResponseEntity
-            .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, userDTO.getName().toString()))
-            .body(result);
+                .ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, userDTO.getName().toString()))
+                .body(result);
     }
 
     /**
      * {@code PATCH  /user-customs/:id} : Partial updates given fields of an existing userCustom, field will ignore if it is null
      *
-     * @param name the id of the userCustomDTO to save.
+     * @param name    the id of the userCustomDTO to save.
      * @param userDTO the userCustomDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated userCustomDTO,
      * or with status {@code 400 (Bad Request)} if the userCustomDTO is not valid,
@@ -107,10 +110,10 @@ public class UserCustomResource {
      * or with status {@code 500 (Internal Server Error)} if the userCustomDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/user-customs/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/user-customs/{id}", consumes = {"application/json", "application/merge-patch+json"})
     public ResponseEntity<UserDTO> partialUpdateUserCustom(
-        @PathVariable(value = "id", required = false) final String name,
-        @RequestBody UserDTO userDTO
+            @PathVariable(value = "id", required = false) final String name,
+            @RequestBody UserDTO userDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update UserCustom partially : {}, {}", name, userDTO);
         if (userDTO.getName() == null) {
@@ -127,8 +130,8 @@ public class UserCustomResource {
         Optional<UserDTO> result = userService.partialUpdate(userDTO);
 
         return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, userDTO.getName().toString())
+                result,
+                HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, userDTO.getName().toString())
         );
     }
 
@@ -168,8 +171,48 @@ public class UserCustomResource {
         log.debug("REST request to delete UserCustom : {}", name);
         userService.delete(name);
         return ResponseEntity
-            .noContent()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, name.toString()))
-            .build();
+                .noContent()
+                .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, name))
+                .build();
     }
+
+    /**
+     * {@code GET  /user-customs/:id/roles} : get all roles of userCustom.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of roles of userCustom in body.
+     */
+    @GetMapping("/user-customs/{name}/roles")
+    public ResponseEntity<List<RoleDTO>> getAllRoles(@PathVariable String name) {
+        log.debug("REST request to get all roles of a UserCustom : {}", name);
+        return ResponseEntity.ok(userService.getAllRoles(name));
+    }
+
+
+    /**
+     * {@code DELETE  /user-customs/:id/role/:role} : delete a role of userCustom.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of roles of userCustom in body.
+     */
+    @DeleteMapping("/user-customs/{name}/role/{role}")
+    public ResponseEntity<List<RoleDTO>> deleteRole(@PathVariable String name, @PathVariable String role) {
+        log.debug("REST request to get all roles of a UserCustom : {}", name);
+        userService.deleteRole(name, role);
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * {@code PATCH  /user-customs/:name/role} : add a role to userCustom.
+     *
+     * @return the {@link ResponseEntity} with status {@code 201 (CREATED)} if role added, {@code 204 (NO CONTENT)} if role already associated
+     */
+    @PatchMapping("/user-customs/{name}/role")
+    public ResponseEntity<Void> addRoleToUser(@PathVariable String name, @RequestBody RoleNameDTO roleName) throws URISyntaxException {
+        log.debug("REST request to get add a role to a UserCustom : {}", name);
+        final var result = userService.addRole(name, roleName);
+        if(!result)
+            return ResponseEntity.noContent().build();
+        else
+            return ResponseEntity.created(new URI("/api/role-roles/" + roleName)).build();
+    }
+
 }

@@ -2,19 +2,20 @@ package fr.periscol.backend.service;
 
 import fr.periscol.backend.domain.User;
 import fr.periscol.backend.repository.UserRepository;
+import fr.periscol.backend.service.dto.NewUserDTO;
+import fr.periscol.backend.service.dto.RoleDTO;
+import fr.periscol.backend.service.dto.RoleNameDTO;
 import fr.periscol.backend.service.dto.UserDTO;
 import fr.periscol.backend.service.mapper.UserMapper;
+import fr.periscol.backend.web.rest.errors.NotFoundAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -28,10 +29,13 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final RoleService roleService;
+
     private final UserMapper userMapper;
 
-    public UserService(UserRepository userRepository, UserMapper userMapper) {
+    public UserService(UserRepository userRepository, RoleService roleService, UserMapper userMapper) {
         this.userRepository = userRepository;
+        this.roleService = roleService;
         this.userMapper = userMapper;
     }
 
@@ -112,5 +116,78 @@ public class UserService {
     public void delete(String name) {
         log.debug("Request to delete UserCustom : {}", name);
         userRepository.deleteById(name);
+    }
+
+
+    /**
+     * Get all roles of a User
+     *
+     * @param name the name of the entity
+     * @return the list of all roles of the entity
+     */
+    public List<RoleDTO> getAllRoles(String name) {
+        log.debug("Request to get all roles of user : {}", name);
+        return findOne(name).map(UserDTO::getRoles).map(ArrayList::new).orElse(new ArrayList<>());
+    }
+
+
+    /**
+     * Remove a role from a User
+     *
+     * @param name the name of the entity
+     */
+    public void deleteRole(String name, String role) {
+        log.debug("Request to remove a from user : {}", name);
+        final var userOpt = findOne(name);
+        if(userOpt.isPresent()) {
+            final var user = userOpt.get();
+            user.setRoles(user.getRoles()
+                    .stream()
+                    .filter(r -> !r.getName().equals(role))
+                    .collect(Collectors.toSet())
+            );
+            partialUpdate(user);
+        }
+    }
+
+    /**
+     * @param name the name of the user to add the role
+     * @param roleName the name of the role
+     * @return true if the role is added, false if the role is already present for this user
+     */
+    public boolean addRole(String name, RoleNameDTO roleName) {
+        log.debug("Request to add a role to a user : {}", name);
+        final var roleOpt = roleService.findOne(roleName.getRoleName());
+        final var userOpt = findOne(name);
+        if(roleOpt.isPresent() && userOpt.isPresent()) {
+            final var role = roleOpt.get();
+            final var user = userOpt.get();
+            if(!user.getRoles().contains(role)) {
+                final var roles = new HashSet<>(user.getRoles());
+                roles.add(role);
+                final var newUser = new UserDTO();
+                newUser.setRoles(roles);
+                partialUpdate(newUser);
+                return true;
+            } else
+                return false;
+        } else if(roleOpt.isEmpty())
+            throw new NotFoundAlertException("Specified role does not exist.");
+        else
+            throw new NotFoundAlertException("Specified user does not exist.");
+    }
+
+
+    /**
+     * Save a new User.
+     *
+     * @param newUser the entity to save.
+     * @return the persisted entity.
+     */
+    public UserDTO createNewUser(NewUserDTO newUser) {
+        log.debug("Request to save UserCustom : {}", newUser);
+        User user = userMapper.toUser(newUser);
+        user = userRepository.save(user);
+        return userMapper.toDto(user);
     }
 }
