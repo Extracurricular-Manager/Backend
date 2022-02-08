@@ -30,14 +30,30 @@ class UserPermissionsIT {
     @Autowired
     private MockMvc mockMvc;
 
+    private String getAdminToken() throws Exception {
+        String JSONtoken = mockMvc.perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content("{\"username\":\"admin\",\"password\":\"admin\"}")).andReturn().getResponse().getContentAsString();
+        return (JSONtoken.split(":")[1]).split("\"")[1];
+    }
+
+    private String getUserToken() throws Exception {
+        String JSONtoken = mockMvc.perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content("{\"username\":\"user\",\"password\":\"admin\"}")).andReturn().getResponse().getContentAsString();
+        return (JSONtoken.split(":")[1]).split("\"")[1];
+    }
+
     @Test
     @Transactional
-    void testPermissionOK() throws Exception {
-        String JSONtoken = mockMvc.perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content("{\"username\":\"admin\",\"password\":\"admin\"}")).andReturn().getResponse().getContentAsString();
-        String token = (JSONtoken.split(":")[1]).split("\"")[1];
+    void testPermissionAdminOK() throws Exception {
+        String token = getAdminToken();
         mockMvc.perform(get("/api/children").header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk());
-        //assert(true);
+    }
+
+    @Test
+    @Transactional
+    void testPermissionUserOK() throws Exception{
+        String token = getUserToken();
+        mockMvc.perform(get("/api/children").header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk());
     }
 
     @Test
