@@ -68,7 +68,7 @@ public class UserService {
         log.debug("Request to partially update UserCustom : {}", userDTO);
 
         return userRepository
-            .findById(userDTO.getName())
+            .findById(userDTO.getLogin())
             .map(existingUserCustom -> {
                 userMapper.partialUpdate(existingUserCustom, userDTO);
 
@@ -167,7 +167,7 @@ public class UserService {
      */
     public boolean addRole(String name, RoleNameDTO roleName) {
         log.debug("Request to add a role to a user : {}", name);
-        final var roleOpt = roleService.findOne(roleName.getRoleName());
+        final var roleOpt = roleService.findOne(roleName.getName());
         final var userOpt = findOne(name);
         if(roleOpt.isPresent() && userOpt.isPresent()) {
             final var role = roleOpt.get();
@@ -177,7 +177,7 @@ public class UserService {
                 roles.add(role);
                 final var newUser = new UserDTO();
                 newUser.setRoles(roles);
-                newUser.setName(name);
+                newUser.setLogin(name);
                 partialUpdate(newUser);
                 return true;
             } else
@@ -213,7 +213,7 @@ public class UserService {
         final var userOpt = findOneUser(name);
         if(userOpt.isPresent()) {
             final var user = userOpt.get();
-            user.setPassword(passwordEncoder.encode(password.getNewPassword()));
+            user.setPassword(passwordEncoder.encode(password.getPassword()));
             user.setActivated(false);
             userRepository.save(user);
         } else
@@ -226,7 +226,7 @@ public class UserService {
         final var userOpt = findOneUser(name);
         if(userOpt.isPresent()) {
             final var user = userOpt.get();
-            user.setPassword(passwordEncoder.encode(password.getNewPassword()));
+            user.setPassword(passwordEncoder.encode(password.getPassword()));
             user.setActivated(true);
             userRepository.save(user);
         } else
