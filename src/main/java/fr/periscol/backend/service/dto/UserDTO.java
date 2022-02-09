@@ -16,8 +16,6 @@ public class UserDTO implements Serializable {
 
     private String login;
 
-    private String password;
-
     private boolean isActivated;
 
     public boolean isActivated() {
@@ -44,14 +42,6 @@ public class UserDTO implements Serializable {
 
     public void setLogin(String login) {
         this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public Set<RoleDTO> getRoles() {
@@ -89,7 +79,6 @@ public class UserDTO implements Serializable {
         return "UserCustomDTO{" +
             ", name='" + getName() + "'" +
             ", login='" + getLogin() + "'" +
-            ", password='" + getPassword() + "'" +
             ", roles.json=" + getRoles() +
             "}";
     }

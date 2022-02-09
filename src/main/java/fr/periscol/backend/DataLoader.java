@@ -7,8 +7,11 @@ import fr.periscol.backend.domain.Role;
 import fr.periscol.backend.domain.User;
 import fr.periscol.backend.service.RoleService;
 import fr.periscol.backend.service.UserService;
+import fr.periscol.backend.service.dto.NewUserDTO;
+import fr.periscol.backend.service.dto.RoleNameDTO;
 import fr.periscol.backend.service.mapper.RoleMapper;
 import fr.periscol.backend.service.mapper.UserMapper;
+import fr.periscol.backend.web.rest.vm.PasswordVM;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -44,14 +47,24 @@ public class DataLoader {
 
         final var users = mapper.readValue(readResource("data/users.json"), new TypeReference<List<User>>() {});
 
-        for(final var user: users)
-            user.setRoles(user.getRoles()
-                    .stream()
-                    .map(r -> roleService.findOne(r.getName()).get())
-                    .map(roleMapper::toEntity)
-                    .collect(Collectors.toSet()));
+        users.stream().filter(u -> userService.findOne(u.getName()).isEmpty())
+                .map(this::toNewUserDto)
+                .forEach(userService::createNewUser);
 
-        users.stream().filter(u -> userService.findOne(u.getName()).isEmpty()).forEach(u -> userService.save(userMapper.toDto(u)));
+        // Active user created from resources/data
+        for(final var user: users)
+            for(final var role: user.getRoles()) {
+                userService.addRole(user.getName(), new RoleNameDTO(role.getName()));
+                userService.changePassword(user.getName(), new PasswordVM(user.getPassword()));
+            }
+    }
+
+    private NewUserDTO toNewUserDto(User user) {
+        final var dto = new NewUserDTO();
+        dto.setName(user.getName());
+        dto.setLogin(user.getLogin());
+        dto.setDefaultPassword(user.getPassword());
+        return dto;
     }
 
     private InputStream readResource(String name) {

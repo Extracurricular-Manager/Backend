@@ -8,6 +8,7 @@ import fr.periscol.backend.service.dto.RoleDTO;
 import fr.periscol.backend.service.dto.RoleNameDTO;
 import fr.periscol.backend.service.dto.UserDTO;
 import fr.periscol.backend.web.rest.errors.BadRequestAlertException;
+import fr.periscol.backend.web.rest.vm.PasswordVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -213,6 +214,31 @@ public class UserCustomResource {
             return ResponseEntity.noContent().build();
         else
             return ResponseEntity.created(new URI("/api/role-roles/" + roleName)).build();
+    }
+
+    /**
+     * {@code PATCH  /user-customs/:name/reset-password} : Reset password for a User with a default password.
+     * The user is disabled until the user change the password
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} if password reset
+     */
+    @PatchMapping("/user-customs/{name}/reset-password/")
+    public ResponseEntity<Void> resetPassword(@PathVariable String name, @RequestBody PasswordVM password) {
+        log.debug("REST request to reset password of a UserCustom : {}", name);
+        userService.resetPassword(name, password);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * {@code PATCH  /user-customs/:name/change-password} : Change the password of the user
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} if password reset
+     */
+    @PatchMapping("/user-customs/{name}/change-password/")
+    public ResponseEntity<Void> changePassword(@PathVariable String name, @RequestBody PasswordVM password) {
+        log.debug("REST request to change password of a UserCustom : {}", name);
+        userService.changePassword(name, password);
+        return ResponseEntity.ok().build();
     }
 
 }

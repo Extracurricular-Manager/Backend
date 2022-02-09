@@ -20,5 +20,6 @@ public interface UserMapper extends EntityMapper<UserDTO, User> {
 
     @Named(value = "fromNewUserDTO")
     @Mapping(target="activated", expression = "java(false)")
+    @Mapping(target="password", source="defaultPassword")
     User toUser(NewUserDTO dto);
 }

@@ -7,11 +7,14 @@ import fr.periscol.backend.service.dto.RoleDTO;
 import fr.periscol.backend.service.dto.RoleNameDTO;
 import fr.periscol.backend.service.dto.UserDTO;
 import fr.periscol.backend.service.mapper.UserMapper;
+import fr.periscol.backend.web.rest.errors.LoginAlreadyUsedException;
 import fr.periscol.backend.web.rest.errors.NotFoundAlertException;
+import fr.periscol.backend.web.rest.vm.PasswordVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,11 +34,14 @@ public class UserService {
 
     private final RoleService roleService;
 
+    private final PasswordEncoder passwordEncoder;
+
     private final UserMapper userMapper;
 
-    public UserService(UserRepository userRepository, RoleService roleService, UserMapper userMapper) {
+    public UserService(UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
     }
 
@@ -105,7 +111,11 @@ public class UserService {
     @Transactional(readOnly = true)
     public Optional<UserDTO> findOne(String name) {
         log.debug("Request to get UserCustom : {}", name);
-        return userRepository.findOneWithEagerRelationships(name).map(userMapper::toDto);
+        return findOneUser(name).map(userMapper::toDto);
+    }
+
+    private Optional<User> findOneUser(String name) {
+        return userRepository.findOneWithEagerRelationships(name);
     }
 
     /**
@@ -167,6 +177,7 @@ public class UserService {
                 roles.add(role);
                 final var newUser = new UserDTO();
                 newUser.setRoles(roles);
+                newUser.setName(name);
                 partialUpdate(newUser);
                 return true;
             } else
@@ -185,9 +196,40 @@ public class UserService {
      * @return the persisted entity.
      */
     public UserDTO createNewUser(NewUserDTO newUser) {
-        log.debug("Request to save UserCustom : {}", newUser);
-        User user = userMapper.toUser(newUser);
+        log.debug("Request to create new User : {}", newUser);
+        final var existingUser = findOne(newUser.getName());
+        if(existingUser.isPresent())
+            throw new LoginAlreadyUsedException();
+
+        var user = userMapper.toUser(newUser);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user = userRepository.save(user);
         return userMapper.toDto(user);
+    }
+
+
+    public void resetPassword(String name, PasswordVM password) {
+        log.debug("Request to change password of a User : {}", name);
+        final var userOpt = findOneUser(name);
+        if(userOpt.isPresent()) {
+            final var user = userOpt.get();
+            user.setPassword(passwordEncoder.encode(password.getNewPassword()));
+            user.setActivated(false);
+            userRepository.save(user);
+        } else
+            throw new NotFoundAlertException("User not found");
+    }
+
+
+    public void changePassword(String name, PasswordVM password) {
+        log.debug("Request to change password of a User : {}", name);
+        final var userOpt = findOneUser(name);
+        if(userOpt.isPresent()) {
+            final var user = userOpt.get();
+            user.setPassword(passwordEncoder.encode(password.getNewPassword()));
+            user.setActivated(true);
+            userRepository.save(user);
+        } else
+            throw new NotFoundAlertException("User not found");
     }
 }

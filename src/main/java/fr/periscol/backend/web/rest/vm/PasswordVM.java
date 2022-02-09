@@ -3,19 +3,9 @@ package fr.periscol.backend.web.rest.vm;
 /**
  * View Model object for storing the user's key and password.
  */
-public class KeyAndPasswordVM {
-
-    private String key;
+public class PasswordVM {
 
     private String newPassword;
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
 
     public String getNewPassword() {
         return newPassword;
@@ -24,4 +14,10 @@ public class KeyAndPasswordVM {
     public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
     }
+
+    public PasswordVM(String newPassword) {
+        this.newPassword = newPassword;
+    }
+
+    public PasswordVM() {}
 }

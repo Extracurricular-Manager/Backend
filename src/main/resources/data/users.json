@@ -2,7 +2,7 @@
   {
     "name": "admin",
     "login": "admin",
-    "password": "$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC",
+    "password": "admin",
     "isActivated": true,
     "roles": [
       "ROLE_ADMIN"
@@ -11,7 +11,7 @@
   {
     "name": "user",
     "login": "user",
-    "password": "$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC",
+    "password": "user",
     "isActivated": true,
     "roles": [
       "ROLE_USER"

@@ -8,7 +8,7 @@ public class NotFoundAlertException extends AbstractThrowableProblem {
     private static final long serialVersionUID = 1L;
 
     public NotFoundAlertException(String detail) {
-        super(null,"Resource not found", Status.NOT_FOUND, detail);
+        super(ErrorConstants.INVALID_PASSWORD_TYPE,"Resource not found", Status.NOT_FOUND, detail);
     }
 
 }
