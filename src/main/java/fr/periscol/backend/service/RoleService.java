@@ -1,7 +1,9 @@
 package fr.periscol.backend.service;
 
+import fr.periscol.backend.domain.Permission;
 import fr.periscol.backend.domain.Role;
 import fr.periscol.backend.repository.RoleRepository;
+import fr.periscol.backend.service.dto.PermissionDTO;
 import fr.periscol.backend.service.dto.RoleDTO;
 import fr.periscol.backend.service.mapper.RoleMapper;
 import org.slf4j.Logger;
@@ -9,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -86,6 +89,11 @@ public class RoleService {
     public Optional<RoleDTO> findOne(String name) {
         log.debug("Request to get RoleRole : {}", name);
         return roleRepository.findById(name).map(roleMapper::toDto);
+    }
+
+    public List<PermissionDTO> getPermissions(String name){
+        log.debug("Request to get Permissions from RoleRole : {}", name);
+        return findOne(name).map(RoleDTO::getPermissions).map(ArrayList::new).orElse(new ArrayList());
     }
 
     /**
