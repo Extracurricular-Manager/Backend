@@ -1,20 +1,17 @@
 package fr.periscol.backend.service;
 
-import fr.periscol.backend.domain.Permission;
 import fr.periscol.backend.domain.Role;
 import fr.periscol.backend.repository.RoleRepository;
 import fr.periscol.backend.service.dto.PermissionDTO;
 import fr.periscol.backend.service.dto.RoleDTO;
 import fr.periscol.backend.service.mapper.RoleMapper;
+import fr.periscol.backend.web.rest.errors.NotFoundAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -30,9 +27,12 @@ public class RoleService {
 
     private final RoleMapper roleMapper;
 
-    public RoleService(RoleRepository roleRepository, RoleMapper roleMapper) {
+    private final PermissionService permissionService;
+
+    public RoleService(RoleRepository roleRepository, RoleMapper roleMapper, PermissionService permissionService) {
         this.roleRepository = roleRepository;
         this.roleMapper = roleMapper;
+        this.permissionService = permissionService;
     }
 
     /**
@@ -91,9 +91,43 @@ public class RoleService {
         return roleRepository.findById(name).map(roleMapper::toDto);
     }
 
+    /**
+     * Get the list of the permissions of a given roleRole
+     * @param name the id of the role
+     * @return the list of the permissions
+     */
     public List<PermissionDTO> getPermissions(String name){
         log.debug("Request to get Permissions from RoleRole : {}", name);
-        return findOne(name).map(RoleDTO::getPermissions).map(ArrayList::new).orElse(new ArrayList());
+        return findOne(name).map(RoleDTO::getPermissions).map(ArrayList::new).orElse(new ArrayList<>());
+    }
+
+    /**
+     * Add a permission to a given role.
+     *
+     * @param name the name of the role to add the permission
+     * @param permissionDTO the name of the role
+     * @return true if the permission is added, false if the permission is already present for this role
+     */
+    public boolean addPermission(String name, PermissionDTO permissionDTO) {
+        log.debug("Request to add a permission to a role : {}", name);
+        final var permissionOpt = permissionService.findOne(permissionDTO.getName());
+        final var roleOpt = findOne(name);
+        if(permissionOpt.isPresent() && roleOpt.isPresent()) {
+            final var permission = permissionOpt.get();
+            final var roleDTO = roleOpt.get();
+            if(! roleDTO.getPermissions().contains(permission.getName())) {
+                final List<PermissionDTO> permissions = new ArrayList<>(roleDTO.getPermissions());
+                permissions.add(permission);
+                final var newRole = new RoleDTO();
+                newRole.setPermissions(permissions);
+                partialUpdate(newRole);
+                return true;
+            } else
+                return false;
+        } else if(permissionOpt.isEmpty())
+            throw new NotFoundAlertException("Specified permission does not exist.");
+        else
+            throw new NotFoundAlertException("Specified role does not exist.");
     }
 
     /**

@@ -36,7 +36,7 @@ class UserPermissionsIT {
     }
 
     private String getUserToken() throws Exception {
-        String JSONtoken = mockMvc.perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content("{\"username\":\"user\",\"password\":\"admin\"}")).andReturn().getResponse().getContentAsString();
+        String JSONtoken = mockMvc.perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content("{\"username\":\"user\",\"password\":\"user\"}")).andReturn().getResponse().getContentAsString();
         return (JSONtoken.split(":")[1]).split("\"")[1];
     }
 
