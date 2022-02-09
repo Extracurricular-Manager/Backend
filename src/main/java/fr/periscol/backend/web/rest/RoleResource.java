@@ -170,7 +170,13 @@ public class RoleResource {
             .build();
     }
 
-    @GetMapping("/role-roles/permission/{name}")
+    /**
+     * {@code GET /role-roles/:id/permission} : get the permission of the "id" roleRole.
+     * @param name the id of the roleRoleDTO to get the permissions from.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the permissions associated,
+     * or with status {@code 400 (Bad Request)} if the RoleRole can not be found.
+     */
+    @GetMapping("/role-roles/{name}/permission")
     public ResponseEntity<List<PermissionDTO>> getPermissionFromRole(@PathVariable String name){
         log.debug("REST request to get Permission from RoleRole : {}", name);
         Optional<RoleDTO> roleDTO = roleService.findOne(name);
@@ -179,10 +185,28 @@ public class RoleResource {
         }
         else{
             List<PermissionDTO> permissions = roleService.getPermissions(name);
-            if(permissions.isEmpty()){
-                throw new BadRequestAlertException("No permissions", ENTITY_NAME, "idinvalid");
-            }
             return ResponseEntity.ok(permissions);
+        }
+    }
+    //Si existe déjà -> noContent
+    //Si creer -> created
+
+    /**
+     * {@code PATCH /role-roles/:id/permission} : add a permission of the "id" roleRole
+     * @param name the id of the roleRoleDTO to add the permission from.
+     * @param permissionDTO the permissionDTO to add.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} if the permission is added,
+     * or with status {@code 204 (NO_CONTENT)} if the role have already the permission.
+     */
+    @PatchMapping("/role-roles/{name}/permission")
+    public ResponseEntity<Void> addPermissionToRole(@PathVariable String name, @RequestBody PermissionDTO permissionDTO) throws URISyntaxException {
+        log.debug("REST request to get add a permission to a role : {}", name);
+        boolean created = roleService.addPermission(name, permissionDTO);
+        if (created){
+            return ResponseEntity.created(new URI("/api/permission/" + permissionDTO.getName())).build();
+        }
+        else{
+            return ResponseEntity.noContent().build();
         }
     }
 }
