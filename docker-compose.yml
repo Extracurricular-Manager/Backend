@@ -23,6 +23,7 @@ services:
 
   frontend:
     image: nginx
+    restart: always
     ports:
       - "80:80"
     build:
