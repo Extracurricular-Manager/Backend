@@ -26,10 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.*;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @IntegrationTest
 @ExtendWith(MockitoExtension.class)
@@ -121,27 +119,7 @@ public class UserResourceIT {
                 .andExpect(jsonPath("$.[*].name").value(hasItem(role1Name)))
                 .andExpect(jsonPath("$.[*].name").value(hasItem(role2Name)));
     }
-    /*
-    @Test
-    @Transactional
-    public void addPermissionFromRole() throws Exception{
-        roleRepository.saveAndFlush(role);
-        permissionRepository.saveAndFlush(permission);
-        int databaseSizeBeforeUpdate = roleRepository.findAll().size();
-        String permissionJson = new ObjectMapper().writeValueAsString(permission);
-        restRoleMockMvc.perform(patch(ENTITY_API_URL_BEGINNING + role.getName() + ENTITY_API_URL_ENDING)
-                        .contentType("application/json")
-                        .content(permissionJson))
-                .andExpect(status().isCreated());
-        List<Role> roleList = roleRepository.findAll();
-        assertThat(roleList).hasSize(databaseSizeBeforeUpdate);
-        int index = roleList.indexOf(role);
-        assert(index != -1);
-        Role roleDatabase = roleList.get(index);
-        Permission permissionDataBase = roleDatabase.getPermissions().get(roleDatabase.getPermissions().size() - 1);
-        assertThat(permissionDataBase).isEqualTo(permission);
-    }
-     */
+
     @Test
     @Transactional
     public void addRoleFromUser() throws Exception{
@@ -160,5 +138,20 @@ public class UserResourceIT {
         Set<Role> roleSet = userDatabase.getRoles();
         assert(roleSet.size() == 3);
         assertThat(roleSet).contains(role);
+    }
+
+    @Test
+    @Transactional
+    public void deleteRoleFromRole() throws Exception{
+        String nameRoleToDelete = "ROLE_PERSO_BIS";
+        restUserMockMvc.perform(delete(ENTITY_API_URL_BEGINNING + user.getLogin() + ENTITY_API_URL_ROLE + nameRoleToDelete))
+                .andExpect(status().isNoContent());
+        List<User> userList = userRepository.findAll();
+        int index = userList.indexOf(user);
+        assert(index != -1);
+        User userDatabase = userList.get(index);
+        Set<Role> roleSet = userDatabase.getRoles();
+        assert(roleSet.size() == 1);
+        assertThat(roleSet).doesNotContain(new Role("ROLE_PERSO_BIS")).contains(new Role("ROLE_PERSO"));
     }
 }
