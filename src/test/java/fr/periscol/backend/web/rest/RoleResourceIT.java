@@ -4,13 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.periscol.backend.IntegrationTest;
 import fr.periscol.backend.domain.Permission;
 import fr.periscol.backend.domain.Role;
-import fr.periscol.backend.domain.User;
 import fr.periscol.backend.repository.PermissionRepository;
 import fr.periscol.backend.repository.RoleRepository;
-import fr.periscol.backend.service.PermissionService;
 import fr.periscol.backend.service.RoleService;
-import fr.periscol.backend.service.dto.PermissionDTO;
-import fr.periscol.backend.service.dto.RoleDTO;
 import fr.periscol.backend.service.mapper.PermissionMapper;
 import static org.assertj.core.api.Assertions.assertThat;
 import fr.periscol.backend.service.mapper.RoleMapper;
@@ -26,22 +22,17 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 
 @IntegrationTest
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
-public class RoleIT {
+public class RoleResourceIT {
 
     private static final String ENTITY_API_URL_BEGINNING = "/api/role-roles/";
     private static final String ENTITY_API_URL_ENDING = "/permission";
