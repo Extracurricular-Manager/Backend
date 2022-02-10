@@ -148,4 +148,13 @@ public class RoleIT {
         List<Permission> permissionList = roleDatabase.getPermissions();
         assertThat(permissionList).isNotEmpty().doesNotContain(new Permission("perm2"));
     }
+
+    @Test
+    @Transactional
+    public void deleteAbsentPermissionFromRole() throws Exception{
+        roleRepository.saveAndFlush(role);
+        String namePermissionToDelete = "toto";
+        restRoleMockMvc.perform(delete(ENTITY_API_URL_BEGINNING + role.getName() + ENTITY_API_URL_ENDING + "/" + namePermissionToDelete))
+                .andExpect(status().isBadRequest());
+    }
 }
