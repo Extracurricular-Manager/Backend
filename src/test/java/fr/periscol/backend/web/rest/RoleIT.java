@@ -133,4 +133,19 @@ public class RoleIT {
         Permission permissionDataBase = roleDatabase.getPermissions().get(roleDatabase.getPermissions().size() - 1);
         assertThat(permissionDataBase).isEqualTo(permission);
     }
+
+    @Test
+    @Transactional
+    public void deletePermissionFromRole() throws Exception{
+        roleRepository.saveAndFlush(role);
+        String namePermissionToDelete = "perm2";
+        restRoleMockMvc.perform(delete(ENTITY_API_URL_BEGINNING + role.getName() + ENTITY_API_URL_ENDING + "/" + namePermissionToDelete))
+                .andExpect(status().isNoContent());
+        List<Role> roleList = roleRepository.findAll();
+        int index = roleList.indexOf(role);
+        assert(index != -1);
+        Role roleDatabase = roleList.get(index);
+        List<Permission> permissionList = roleDatabase.getPermissions();
+        assertThat(permissionList).isNotEmpty().doesNotContain(new Permission("perm2"));
+    }
 }

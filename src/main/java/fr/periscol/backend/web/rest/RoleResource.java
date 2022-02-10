@@ -188,8 +188,6 @@ public class RoleResource {
             return ResponseEntity.ok(permissions);
         }
     }
-    //Si existe déjà -> noContent
-    //Si creer -> created
 
     /**
      * {@code PATCH /role-roles/:id/permission} : add a permission of the "id" roleRole
@@ -208,5 +206,17 @@ public class RoleResource {
         else{
             return ResponseEntity.noContent().build();
         }
+    }
+
+    /**
+     * {@code DELETE  /role-roles/:id/permission/:permission} : delete a permission of a role.
+     *
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)} when the permission is successfully delete.
+     */
+    @DeleteMapping("/role-roles/{nameRole}/permission/{namePermission}")
+    public ResponseEntity<Void> deletePermissionFromRole(@PathVariable String nameRole, @PathVariable String namePermission){
+        log.debug("REST request to delete a permission {} to a role : {}", namePermission, nameRole);
+        roleService.deletePermission(nameRole, namePermission);
+        return ResponseEntity.noContent().build();
     }
 }
