@@ -1,5 +1,7 @@
 package fr.periscol.backend.web.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.assertj.core.api.Assertions.assertThat;
 import fr.periscol.backend.IntegrationTest;
 import static org.hamcrest.Matchers.hasItem;
 import fr.periscol.backend.domain.Role;
@@ -22,12 +24,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -38,8 +38,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserResourceIT {
 
     private static final String ENTITY_API_URL_BEGINNING = "/api/user/";
-    private static final String ENTITY_API_URL_ENDING = "/role/";
-    private static final String ENTITY_API_URL_ENDING_SEVERAL = "/roles";
+    private static final String ENTITY_API_URL_ROLE = "/role/";
+    private static final String ENTITY_API_URL_ROLE_SEVERAL = "/roles";
 
     @Autowired
     private UserRepository userRepository;
@@ -115,10 +115,50 @@ public class UserResourceIT {
         Iterator<Role> iterator = user.getRoles().iterator();
         String role1Name = iterator.next().getName();
         String role2Name = iterator.next().getName();
-        restUserMockMvc.perform(get(ENTITY_API_URL_BEGINNING + id + ENTITY_API_URL_ENDING_SEVERAL))
+        restUserMockMvc.perform(get(ENTITY_API_URL_BEGINNING + id + ENTITY_API_URL_ROLE_SEVERAL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.[*].name").value(hasItem(role1Name)))
                 .andExpect(jsonPath("$.[*].name").value(hasItem(role2Name)));
+    }
+    /*
+    @Test
+    @Transactional
+    public void addPermissionFromRole() throws Exception{
+        roleRepository.saveAndFlush(role);
+        permissionRepository.saveAndFlush(permission);
+        int databaseSizeBeforeUpdate = roleRepository.findAll().size();
+        String permissionJson = new ObjectMapper().writeValueAsString(permission);
+        restRoleMockMvc.perform(patch(ENTITY_API_URL_BEGINNING + role.getName() + ENTITY_API_URL_ENDING)
+                        .contentType("application/json")
+                        .content(permissionJson))
+                .andExpect(status().isCreated());
+        List<Role> roleList = roleRepository.findAll();
+        assertThat(roleList).hasSize(databaseSizeBeforeUpdate);
+        int index = roleList.indexOf(role);
+        assert(index != -1);
+        Role roleDatabase = roleList.get(index);
+        Permission permissionDataBase = roleDatabase.getPermissions().get(roleDatabase.getPermissions().size() - 1);
+        assertThat(permissionDataBase).isEqualTo(permission);
+    }
+     */
+    @Test
+    @Transactional
+    public void addRoleFromUser() throws Exception{
+        roleRepository.saveAndFlush(role);
+        int databaseSizeBeforeUpdate = userRepository.findAll().size();
+        String roleJson = new ObjectMapper().writeValueAsString(role);
+        restUserMockMvc.perform(patch(ENTITY_API_URL_BEGINNING + user.getLogin() + ENTITY_API_URL_ROLE)
+                .contentType("application/json")
+                .content(roleJson))
+                .andExpect(status().isCreated());
+        List<User> userList = userRepository.findAll();
+        assertThat(userList).hasSize(databaseSizeBeforeUpdate);
+        int index = userList.indexOf(user);
+        assert(index != -1);
+        User userDatabase = userList.get(index);
+        Set<Role> roleSet = userDatabase.getRoles();
+        assert(roleSet.size() == 3);
+        assertThat(roleSet).contains(role);
     }
 }
