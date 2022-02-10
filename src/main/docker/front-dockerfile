@@ -1,5 +1,5 @@
 FROM nginx
-WORKDIR /
+WORKDIR /src
 COPY ../docs/* /usr/share/nginx/html
-COPY ../src/main/docker/nginx.conf /etc/nginx/nginx.conf
+COPY main/docker/nginx.conf /etc/nginx/nginx.conf
 EXPOSE 80
