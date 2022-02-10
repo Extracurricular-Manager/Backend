@@ -132,6 +132,35 @@ public class RoleService {
     }
 
     /**
+     * Delete a Permission of a given role
+     *
+     * @param nameRole the name of the role to delete from.
+     * @param namePermission the name of the permission to delete.
+     */
+    public void deletePermission(String nameRole, String namePermission){
+        log.debug("Request to delete a permission {} to a role : {}", namePermission, nameRole);
+        Optional<RoleDTO> roleDTOOptional = findOne(nameRole);
+        if(roleDTOOptional.isPresent()){
+            RoleDTO updatedRoleDTO = roleDTOOptional.get();
+            Optional<PermissionDTO> permissionDTOOptional = permissionService.findOne(namePermission);
+            if(permissionDTOOptional.isEmpty()){
+                throw new NotFoundAlertException("Specified permission does not exist.");
+            }
+            PermissionDTO permissionDTO = permissionDTOOptional.get();
+            if(! updatedRoleDTO.getPermissions().contains(permissionDTO)){
+                throw new NotFoundAlertException("Specified role does not have this permission.");
+            }
+            List<PermissionDTO> permissionDTOList = updatedRoleDTO.getPermissions();
+            permissionDTOList.remove(permissionDTO);
+            updatedRoleDTO.setPermissions(permissionDTOList);
+            partialUpdate(updatedRoleDTO);
+        }
+        else{
+            throw new NotFoundAlertException("Specified role does not exist.");
+        }
+    }
+
+    /**
      * Delete the roleRole by id.
      *
      * @param name the id of the entity.
