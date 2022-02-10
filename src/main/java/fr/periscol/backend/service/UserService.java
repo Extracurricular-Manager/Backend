@@ -156,12 +156,23 @@ public class UserService {
         final var userOpt = findOne(name);
         if(userOpt.isPresent()) {
             final var user = userOpt.get();
+            final var realRoleOpt = roleService.findOne(role);
+            if (realRoleOpt.isEmpty()){
+                throw new NotFoundAlertException("Specified role does not exist.");
+            }
+            final var realRole = realRoleOpt.get();
+            if (! user.getRoles().contains(realRole)){
+                throw new NotFoundAlertException("Specified role does not exist in this user.");
+            }
             user.setRoles(user.getRoles()
                     .stream()
                     .filter(r -> !r.getName().equals(role))
                     .collect(Collectors.toSet())
             );
             partialUpdate(user);
+        }
+        else{
+            throw new NotFoundAlertException("Specified user does not exist.");
         }
     }
 
