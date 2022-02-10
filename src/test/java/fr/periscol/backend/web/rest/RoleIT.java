@@ -155,6 +155,6 @@ public class RoleIT {
         roleRepository.saveAndFlush(role);
         String namePermissionToDelete = "toto";
         restRoleMockMvc.perform(delete(ENTITY_API_URL_BEGINNING + role.getName() + ENTITY_API_URL_ENDING + "/" + namePermissionToDelete))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 }
