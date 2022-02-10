@@ -64,8 +64,11 @@ public class RoleIT {
     @Autowired
     private MockMvc restRoleMockMvc;
 
-    @Mock
+    @Autowired
     private PermissionRepository permissionRepository;
+
+    @Mock
+    private PermissionRepository permissionServiceMock;
 
     @Autowired
     private PermissionMapper permissionMapper;
@@ -116,15 +119,18 @@ public class RoleIT {
     public void addPermissionFromRole() throws Exception{
         roleRepository.saveAndFlush(role);
         permissionRepository.saveAndFlush(permission);
+        int databaseSizeBeforeUpdate = roleRepository.findAll().size();
         String permissionJson = new ObjectMapper().writeValueAsString(permission);
         restRoleMockMvc.perform(patch(ENTITY_API_URL_BEGINNING + role.getName() + ENTITY_API_URL_ENDING)
                         .contentType("application/json")
                         .content(permissionJson))
                 .andExpect(status().isCreated());
-        Optional<RoleDTO> roleDatabaseOpt = roleServiceMock.findOne(role.getName());
-        assert(roleDatabaseOpt.isPresent());
-        RoleDTO roleDatabase = roleDatabaseOpt.get();
-        PermissionDTO permissionDTODataBase = roleDatabase.getPermissions().get(roleDatabase.getPermissions().size() - 1);
-        assertThat(permissionDTODataBase.getName()).isEqualTo(permission.getName());
+        List<Role> roleList = roleRepository.findAll();
+        assertThat(roleList).hasSize(databaseSizeBeforeUpdate);
+        int index = roleList.indexOf(role);
+        assert(index != -1);
+        Role roleDatabase = roleList.get(index);
+        Permission permissionDataBase = roleDatabase.getPermissions().get(roleDatabase.getPermissions().size() - 1);
+        assertThat(permissionDataBase).isEqualTo(permission);
     }
 }

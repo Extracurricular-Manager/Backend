@@ -43,7 +43,7 @@ public class PermissionResource {
     /**
      * {@code GET  /permissions} : get all the permissions.
      *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of permisions in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of permissions in body.
      */
     @GetMapping("/permissions")
     public List<PermissionDTO> getAllPermissions() {

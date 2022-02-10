@@ -269,10 +269,10 @@ public class Child implements Serializable {
     @Override
     public String toString() {
         return "Child{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", surname='" + getSurname() + "'" +
-            ", birthday='" + getBirthday() + "'" +
-            "}";
+                "id=" + getId() +
+                ", name='" + getName() + "'" +
+                ", surname='" + getSurname() + "'" +
+                ", birthday='" + getBirthday() + "'" +
+                "}";
     }
 }
