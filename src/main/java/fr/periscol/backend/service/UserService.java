@@ -12,6 +12,7 @@ import fr.periscol.backend.web.rest.errors.NotFoundAlertException;
 import fr.periscol.backend.web.rest.vm.PasswordVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -125,7 +126,11 @@ public class UserService {
      */
     public void delete(String name) {
         log.debug("Request to delete UserCustom : {}", name);
-        userRepository.deleteById(name);
+        try {
+            userRepository.deleteById(name);
+        } catch(EmptyResultDataAccessException e) {
+            throw new NotFoundAlertException("'%s' doesn't exist".formatted(name));
+        }
     }
 
 

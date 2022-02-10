@@ -56,8 +56,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.jdbcAuthentication()
                 .passwordEncoder(passwordEncoder())
                 .dataSource(dataSource)
-                .usersByUsernameQuery("select login,password,activated from USER where login = ?")
-                .authoritiesByUsernameQuery("with T3 as (select USER_CUSTOM_ID, ROLE_NAME, PERMISSIONS_NAME from (select USER_CUSTOM_ID, ROLE_NAME, PERMISSIONS_NAME from (select USER_CUSTOM_ID, ROLES_ID from REL_USER_CUSTOM__ROLES where USER_CUSTOM_ID = ?) as T2 join ROLE_PERMISSIONS on (T2.ROLES_ID = ROLE_PERMISSIONS.ROLE_NAME))) select * from (select  USER_CUSTOM_ID, ROLE_NAME from T3) union (select USER_CUSTOM_ID, PERMISSIONS_NAME from T3)");
+                .usersByUsernameQuery("select login,password, activated from USER where login = ?")
+                .authoritiesByUsernameQuery("with T3 as (select USER_ID, ROLE_NAME, PERMISSIONS_NAME from (select USER_ID, ROLE_NAME, PERMISSIONS_NAME from (select USER_ID, ROLES_ID from REL_USER_ROLES where USER_ID = ?) as T2 join ROLE_PERMISSIONS on (T2.ROLES_ID = ROLE_PERMISSIONS.ROLE_NAME))) select * from (select  USER_ID, ROLE_NAME from T3) union (select USER_ID, PERMISSIONS_NAME from T3)");
     }
 
     @Override
@@ -96,17 +96,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
             .authorizeRequests()
             .antMatchers("/api/authenticate").permitAll()
-            .antMatchers("/api/register").permitAll()
-            .antMatchers("/api/activate").permitAll()
-            .antMatchers("/api/account/reset-password/init").permitAll()
-            .antMatchers("/api/account/reset-password/finish").permitAll()
-            .antMatchers("/api/admin/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/api/**").authenticated()
-            .antMatchers("/management/health").permitAll()
-            .antMatchers("/management/health/**").permitAll()
-            .antMatchers("/management/info").permitAll()
-            .antMatchers("/management/prometheus").permitAll()
-            .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
         .and()
             .httpBasic()
         .and()

@@ -1,8 +1,6 @@
 package fr.periscol.backend.repository;
 
 import fr.periscol.backend.domain.User;
-import fr.periscol.backend.service.dto.UserDTO;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -20,15 +18,15 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
     @Query(
-        value = "select distinct userCustom from User userCustom left join fetch userCustom.roles",
-        countQuery = "select count(distinct userCustom) from User userCustom"
+        value = "select distinct user from User user left join fetch user.roles",
+        countQuery = "select count(distinct user) from User user"
     )
     Page<User> findAllWithEagerRelationships(Pageable pageable);
 
-    @Query("select distinct userCustom from User userCustom left join fetch userCustom.roles")
+    @Query("select distinct user from User user left join fetch user.roles")
     List<User> findAllWithEagerRelationships();
 
-    @Query("select userCustom from User userCustom left join fetch userCustom.roles where userCustom.login =:name")
+    @Query("select user from User user left join fetch user.roles where user.login =:name")
     Optional<User> findOneWithEagerRelationships(@Param("name") String name);
 
 
