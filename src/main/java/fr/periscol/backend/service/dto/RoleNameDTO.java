@@ -2,17 +2,20 @@ package fr.periscol.backend.service.dto;
 
 public class RoleNameDTO {
 
-    private String roleName;
+    private String name;
 
-    public RoleNameDTO(String roleName) {
-        this.roleName = roleName;
+    public RoleNameDTO(String name) {
+        this.name = name;
     }
 
-    public String getRoleName() {
-        return roleName;
+    public RoleNameDTO() {
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

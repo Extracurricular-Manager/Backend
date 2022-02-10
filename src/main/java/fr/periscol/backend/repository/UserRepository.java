@@ -28,7 +28,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query("select distinct userCustom from User userCustom left join fetch userCustom.roles")
     List<User> findAllWithEagerRelationships();
 
-    @Query("select userCustom from User userCustom left join fetch userCustom.roles where userCustom.name =:name")
+    @Query("select userCustom from User userCustom left join fetch userCustom.roles where userCustom.login =:name")
     Optional<User> findOneWithEagerRelationships(@Param("name") String name);
 
 

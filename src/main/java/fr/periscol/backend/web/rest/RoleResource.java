@@ -53,9 +53,6 @@ public class RoleResource {
     @PostMapping("/role-roles")
     public ResponseEntity<RoleDTO> createRoleRole(@RequestBody RoleDTO roleDTO) throws URISyntaxException {
         log.debug("REST request to save RoleRole : {}", roleDTO);
-        if (roleDTO.getName() != null) {
-            throw new BadRequestAlertException("A new roleRole cannot already have an ID", ENTITY_NAME, "idexists");
-        }
         RoleDTO result = roleService.save(roleDTO);
         return ResponseEntity
             .created(new URI("/api/role-roles/" + result.getName()))

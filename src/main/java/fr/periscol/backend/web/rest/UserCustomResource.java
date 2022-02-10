@@ -13,10 +13,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -53,12 +55,10 @@ public class UserCustomResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new userCustomDTO, or with status {@code 400 (Bad Request)} if the userCustom has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/user-customs")
-    public ResponseEntity<UserDTO> createUserCustom(@RequestBody NewUserDTO userDTO) throws URISyntaxException {
+    public ResponseEntity<UserDTO> createUserCustom(@Valid @RequestBody NewUserDTO userDTO) throws URISyntaxException {
         log.debug("REST request to save UserCustom : {}", userDTO);
-        if (userDTO.getName() != null) {
-            throw new BadRequestAlertException("A new userCustom cannot already have an ID", ENTITY_NAME, "idexists");
-        }
         UserDTO result = userService.createNewUser(userDTO);
         return ResponseEntity
                 .created(new URI("/api/user-customs/" + result.getName()))
@@ -76,6 +76,7 @@ public class UserCustomResource {
      * or with status {@code 500 (Internal Server Error)} if the userCustomDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PutMapping("/user-customs/{id}")
     public ResponseEntity<UserDTO> updateUserCustom(
             @PathVariable(value = "id", required = false) final String name,
@@ -111,6 +112,7 @@ public class UserCustomResource {
      * or with status {@code 500 (Internal Server Error)} if the userCustomDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PatchMapping(value = "/user-customs/{id}", consumes = {"application/json", "application/merge-patch+json"})
     public ResponseEntity<UserDTO> partialUpdateUserCustom(
             @PathVariable(value = "id", required = false) final String name,
@@ -142,6 +144,7 @@ public class UserCustomResource {
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of userCustoms in body.
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/user-customs")
     public List<UserDTO> getAllUserCustoms(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all UserCustoms");
@@ -154,6 +157,7 @@ public class UserCustomResource {
      * @param name the id of the userCustomDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the userCustomDTO, or with status {@code 404 (Not Found)}.
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/user-customs/{name}")
     public ResponseEntity<UserDTO> getUserCustom(@PathVariable String name) {
         log.debug("REST request to get UserCustom : {}", name);
@@ -167,6 +171,7 @@ public class UserCustomResource {
      * @param name the id of the userCustomDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/user-customs/{name}")
     public ResponseEntity<Void> deleteUserCustom(@PathVariable String name) {
         log.debug("REST request to delete UserCustom : {}", name);
@@ -182,6 +187,7 @@ public class UserCustomResource {
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of roles of userCustom in body.
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/user-customs/{name}/roles")
     public ResponseEntity<List<RoleDTO>> getAllRoles(@PathVariable String name) {
         log.debug("REST request to get all roles of a UserCustom : {}", name);
@@ -194,6 +200,7 @@ public class UserCustomResource {
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of roles of userCustom in body.
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/user-customs/{name}/role/{role}")
     public ResponseEntity<List<RoleDTO>> deleteRole(@PathVariable String name, @PathVariable String role) {
         log.debug("REST request to get all roles of a UserCustom : {}", name);
@@ -206,6 +213,7 @@ public class UserCustomResource {
      *
      * @return the {@link ResponseEntity} with status {@code 201 (CREATED)} if role added, {@code 204 (NO CONTENT)} if role already associated
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PatchMapping("/user-customs/{name}/role")
     public ResponseEntity<Void> addRoleToUser(@PathVariable String name, @RequestBody RoleNameDTO roleName) throws URISyntaxException {
         log.debug("REST request to get add a role to a UserCustom : {}", name);
@@ -222,7 +230,8 @@ public class UserCustomResource {
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} if password reset
      */
-    @PatchMapping("/user-customs/{name}/reset-password/")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PatchMapping("/user-customs/{name}/reset-password")
     public ResponseEntity<Void> resetPassword(@PathVariable String name, @RequestBody PasswordVM password) {
         log.debug("REST request to reset password of a UserCustom : {}", name);
         userService.resetPassword(name, password);
@@ -234,7 +243,8 @@ public class UserCustomResource {
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} if password reset
      */
-    @PatchMapping("/user-customs/{name}/change-password/")
+    @PreAuthorize("#name == authentication.principal.username")
+    @PatchMapping("/user-customs/{name}/change-password")
     public ResponseEntity<Void> changePassword(@PathVariable String name, @RequestBody PasswordVM password) {
         log.debug("REST request to change password of a UserCustom : {}", name);
         userService.changePassword(name, password);

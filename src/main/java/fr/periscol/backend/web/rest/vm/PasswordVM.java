@@ -1,22 +1,25 @@
 package fr.periscol.backend.web.rest.vm;
 
+import javax.validation.constraints.Size;
+
 /**
  * View Model object for storing the user's key and password.
  */
 public class PasswordVM {
 
-    private String newPassword;
+    @Size(min = 4, max = 100)
+    private String password;
 
-    public String getNewPassword() {
-        return newPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setNewPassword(String newPassword) {
-        this.newPassword = newPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public PasswordVM(String newPassword) {
-        this.newPassword = newPassword;
+    public PasswordVM(String password) {
+        this.password = password;
     }
 
     public PasswordVM() {}
