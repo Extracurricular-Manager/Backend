@@ -1,14 +1,9 @@
 package fr.periscol.backend.service;
 
 import fr.periscol.backend.domain.Permission;
-import fr.periscol.backend.domain.TarifBase;
-import fr.periscol.backend.domain.User;
 import fr.periscol.backend.repository.PermissionRepository;
-import fr.periscol.backend.repository.TarifBaseRepository;
 import fr.periscol.backend.service.dto.PermissionDTO;
-import fr.periscol.backend.service.dto.TarifBaseDTO;
 import fr.periscol.backend.service.mapper.PermissionMapper;
-import fr.periscol.backend.service.mapper.TarifBaseMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
