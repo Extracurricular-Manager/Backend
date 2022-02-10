@@ -32,8 +32,8 @@ public class User implements Serializable {
 
     @ManyToMany
     @JoinTable(
-        name = "rel_user_custom__roles",
-        joinColumns = @JoinColumn(name = "user_custom_id"),
+        name = "rel_user_roles",
+        joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "roles_id")
     )
     @JsonIgnoreProperties(value = { "users.json" }, allowSetters = true)
@@ -138,7 +138,7 @@ public class User implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "UserCustom{" +
+        return "User{" +
             ", name='" + getName() + "'" +
             ", login='" + getLogin() + "'" +
             ", password='" + getPassword() + "'" +
