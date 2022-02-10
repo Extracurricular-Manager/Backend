@@ -1,9 +1,11 @@
 package fr.periscol.backend.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,7 +31,7 @@ public class Child implements Serializable {
     private String surname;
 
     @Column(name = "birthday")
-    private ZonedDateTime birthday;
+    private LocalDate birthday;
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "children" }, allowSetters = true)
@@ -105,16 +107,16 @@ public class Child implements Serializable {
         this.surname = surname;
     }
 
-    public ZonedDateTime getBirthday() {
+    public LocalDate getBirthday() {
         return this.birthday;
     }
 
-    public Child birthday(ZonedDateTime birthday) {
+    public Child birthday(LocalDate birthday) {
         this.setBirthday(birthday);
         return this;
     }
 
-    public void setBirthday(ZonedDateTime birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 

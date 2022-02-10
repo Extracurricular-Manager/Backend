@@ -1,6 +1,9 @@
 package fr.periscol.backend.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Objects;
@@ -17,7 +20,8 @@ public class ChildDTO implements Serializable {
 
     private String surname;
 
-    private ZonedDateTime birthday;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate birthday;
 
     private ClassroomDTO classroom;
 
@@ -55,11 +59,11 @@ public class ChildDTO implements Serializable {
         this.surname = surname;
     }
 
-    public ZonedDateTime getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(ZonedDateTime birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 

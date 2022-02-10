@@ -13,10 +13,8 @@ import fr.periscol.backend.repository.ChildRepository;
 import fr.periscol.backend.service.ChildService;
 import fr.periscol.backend.service.dto.ChildDTO;
 import fr.periscol.backend.service.mapper.ChildMapper;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -51,8 +49,8 @@ class ChildResourceIT {
     private static final String DEFAULT_SURNAME = "AAAAAAAAAA";
     private static final String UPDATED_SURNAME = "BBBBBBBBBB";
 
-    private static final ZonedDateTime DEFAULT_BIRTHDAY = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_BIRTHDAY = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final LocalDate DEFAULT_BIRTHDAY = LocalDate.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final LocalDate UPDATED_BIRTHDAY = LocalDate.now(ZoneId.systemDefault());
 
     private static final String ENTITY_API_URL = "/api/children";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
