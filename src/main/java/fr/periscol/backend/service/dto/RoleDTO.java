@@ -55,7 +55,7 @@ public class RoleDTO implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "RoleRoleDTO{" +
+        return "RoleDTO{" +
             ", name='" + getName() + "'" +
             ", permissions='" + getPermissions() + "'" +
             "}";

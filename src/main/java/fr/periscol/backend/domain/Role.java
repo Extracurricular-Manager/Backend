@@ -110,7 +110,7 @@ public class Role implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "RoleRole{" +
+        return "Role{" +
             ", name='" + getName() + "'" +
             ", permissions='" + getPermissions() + "'" +
             "}";
