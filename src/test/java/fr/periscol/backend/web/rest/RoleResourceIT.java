@@ -34,7 +34,7 @@ import java.util.List;
 @WithMockUser
 public class RoleResourceIT {
 
-    private static final String ENTITY_API_URL_BEGINNING = "/api/role-roles/";
+    private static final String ENTITY_API_URL_BEGINNING = "/api/role/";
     private static final String ENTITY_API_URL_ENDING = "/permission";
 
     @Autowired

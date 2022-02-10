@@ -13,8 +13,5 @@ import java.util.Set;
 public interface RoleMapper extends EntityMapper<RoleDTO, Role> {
 
     @Named("idSet")
-    //@BeanMapping(ignoreByDefault = true)
-    //@Mapping(target = "name", source = "permission.name")
-    //@Mapping(target = "permissionDto.name", source = "permission.name")
     Set<RoleDTO> toDtoIdSet(Set<Role> role);
 }

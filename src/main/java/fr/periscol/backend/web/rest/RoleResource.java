@@ -29,7 +29,7 @@ public class RoleResource {
 
     private final Logger log = LoggerFactory.getLogger(RoleResource.class);
 
-    private static final String ENTITY_NAME = "roleRole";
+    private static final String ENTITY_NAME = "role";
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -44,38 +44,38 @@ public class RoleResource {
     }
 
     /**
-     * {@code POST  /role-roles.json} : Create a new roleRole.
+     * {@code POST  /role.json} : Create a new role.
      *
-     * @param roleDTO the roleRoleDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new roleRoleDTO, or with status {@code 400 (Bad Request)} if the roleRole has already an ID.
+     * @param roleDTO the roleDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new roleDTO, or with status {@code 400 (Bad Request)} if the role has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/role-roles")
-    public ResponseEntity<RoleDTO> createRoleRole(@RequestBody RoleDTO roleDTO) throws URISyntaxException {
-        log.debug("REST request to save RoleRole : {}", roleDTO);
+    @PostMapping("/roles")
+    public ResponseEntity<RoleDTO> createRole(@RequestBody RoleDTO roleDTO) throws URISyntaxException {
+        log.debug("REST request to save Role : {}", roleDTO);
         RoleDTO result = roleService.save(roleDTO);
         return ResponseEntity
-            .created(new URI("/api/role-roles/" + result.getName()))
+            .created(new URI("/api/role/" + result.getName()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getName().toString()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /role-roles.json/:id} : Updates an existing roleRole.
+     * {@code PUT  /role.json/:id} : Updates an existing role.
      *
-     * @param name the id of the roleRoleDTO to save.
-     * @param roleDTO the roleRoleDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated roleRoleDTO,
-     * or with status {@code 400 (Bad Request)} if the roleRoleDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the roleRoleDTO couldn't be updated.
+     * @param name the id of the roleDTO to save.
+     * @param roleDTO the roleDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated roleDTO,
+     * or with status {@code 400 (Bad Request)} if the roleDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the roleDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/role-roles/{name}")
-    public ResponseEntity<RoleDTO> updateRoleRole(
+    @PutMapping("/role/{name}")
+    public ResponseEntity<RoleDTO> updateRole(
         @PathVariable(value = "name", required = false) final String name,
         @RequestBody RoleDTO roleDTO
     ) throws URISyntaxException {
-        log.debug("REST request to update RoleRole : {}, {}", name, roleDTO);
+        log.debug("REST request to update Role : {}, {}", name, roleDTO);
         if (roleDTO.getName() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
@@ -95,22 +95,22 @@ public class RoleResource {
     }
 
     /**
-     * {@code PATCH  /role-roles.json/:id} : Partial updates given fields of an existing roleRole, field will ignore if it is null
+     * {@code PATCH  /role.json/:id} : Partial updates given fields of an existing role, field will ignore if it is null
      *
-     * @param name the id of the roleRoleDTO to save.
-     * @param roleDTO the roleRoleDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated roleRoleDTO,
-     * or with status {@code 400 (Bad Request)} if the roleRoleDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the roleRoleDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the roleRoleDTO couldn't be updated.
+     * @param name the id of the roleDTO to save.
+     * @param roleDTO the roleDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated roleDTO,
+     * or with status {@code 400 (Bad Request)} if the roleDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the roleDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the roleDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/role-roles/{name}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<RoleDTO> partialUpdateRoleRole(
+    @PatchMapping(value = "/role/{name}", consumes = { "application/json", "application/merge-patch+json" })
+    public ResponseEntity<RoleDTO> partialUpdateRole(
         @PathVariable(value = "name", required = false) final String name,
         @RequestBody RoleDTO roleDTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update RoleRole partially : {}, {}", name, roleDTO);
+        log.debug("REST request to partial update Role partially : {}, {}", name, roleDTO);
         if (roleDTO.getName() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
@@ -131,38 +131,38 @@ public class RoleResource {
     }
 
     /**
-     * {@code GET  /role-roles.json} : get all the roleRoles.
+     * {@code GET  /roles.json} : get all the roles.
      *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of roleRoles in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of roles in body.
      */
-    @GetMapping("/role-roles")
-    public List<RoleDTO> getAllRoleRoles() {
-        log.debug("REST request to get all RoleRoles");
+    @GetMapping("/roles")
+    public List<RoleDTO> getAllRoles() {
+        log.debug("REST request to get all Roles");
         return roleService.findAll();
     }
 
     /**
-     * {@code GET  /role-roles.json/:id} : get the "id" roleRole.
+     * {@code GET  /role.json/:id} : get the "id" role.
      *
-     * @param name the id of the roleRoleDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the roleRoleDTO, or with status {@code 404 (Not Found)}.
+     * @param name the id of the roleDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the roleDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/role-roles/{name}")
-    public ResponseEntity<RoleDTO> getRoleRole(@PathVariable String name) {
-        log.debug("REST request to get RoleRole : {}", name);
-        Optional<RoleDTO> roleRoleDTO = roleService.findOne(name);
-        return ResponseUtil.wrapOrNotFound(roleRoleDTO);
+    @GetMapping("/role/{name}")
+    public ResponseEntity<RoleDTO> getRole(@PathVariable String name) {
+        log.debug("REST request to get Role : {}", name);
+        Optional<RoleDTO> roleDTO = roleService.findOne(name);
+        return ResponseUtil.wrapOrNotFound(roleDTO);
     }
 
     /**
-     * {@code DELETE  /role-roles.json/:id} : delete the "id" roleRole.
+     * {@code DELETE  /role.json/:id} : delete the "id" role.
      *
-     * @param name the id of the roleRoleDTO to delete.
+     * @param name the id of the roleDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/role-roles/{name}")
-    public ResponseEntity<Void> deleteRoleRole(@PathVariable String name) {
-        log.debug("REST request to delete RoleRole : {}", name);
+    @DeleteMapping("/role/{name}")
+    public ResponseEntity<Void> deleteRole(@PathVariable String name) {
+        log.debug("REST request to delete Role : {}", name);
         roleService.delete(name);
         return ResponseEntity
             .noContent()
@@ -171,14 +171,14 @@ public class RoleResource {
     }
 
     /**
-     * {@code GET /role-roles/:id/permission} : get the permission of the "id" roleRole.
-     * @param name the id of the roleRoleDTO to get the permissions from.
+     * {@code GET /role/:id/permission} : get the permission of the "id" role.
+     * @param name the id of the roleDTO to get the permissions from.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the permissions associated,
-     * or with status {@code 400 (Bad Request)} if the RoleRole can not be found.
+     * or with status {@code 400 (Bad Request)} if the Role can not be found.
      */
-    @GetMapping("/role-roles/{name}/permission")
+    @GetMapping("/role/{name}/permission")
     public ResponseEntity<List<PermissionDTO>> getPermissionFromRole(@PathVariable String name){
-        log.debug("REST request to get Permission from RoleRole : {}", name);
+        log.debug("REST request to get Permission from Role : {}", name);
         Optional<RoleDTO> roleDTO = roleService.findOne(name);
         if(roleDTO.isEmpty()){
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
@@ -190,13 +190,13 @@ public class RoleResource {
     }
 
     /**
-     * {@code PATCH /role-roles/:id/permission} : add a permission of the "id" roleRole
-     * @param name the id of the roleRoleDTO to add the permission from.
+     * {@code PATCH /role/:id/permission} : add a permission of the "id" role.
+     * @param name the id of the roleDTO to add the permission from.
      * @param permissionDTO the permissionDTO to add.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} if the permission is added,
      * or with status {@code 204 (NO_CONTENT)} if the role have already the permission.
      */
-    @PatchMapping("/role-roles/{name}/permission")
+    @PatchMapping("/role/{name}/permission")
     public ResponseEntity<Void> addPermissionToRole(@PathVariable String name, @RequestBody PermissionDTO permissionDTO) throws URISyntaxException {
         log.debug("REST request to get add a permission to a role : {}", name);
         boolean created = roleService.addPermission(name, permissionDTO);
@@ -209,11 +209,11 @@ public class RoleResource {
     }
 
     /**
-     * {@code DELETE  /role-roles/:id/permission/:permission} : delete a permission of a role.
+     * {@code DELETE  /role/:id/permission/:permission} : delete a permission of a role.
      *
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)} when the permission is successfully delete.
      */
-    @DeleteMapping("/role-roles/{nameRole}/permission/{namePermission}")
+    @DeleteMapping("/role/{nameRole}/permission/{namePermission}")
     public ResponseEntity<Void> deletePermissionFromRole(@PathVariable String nameRole, @PathVariable String namePermission){
         log.debug("REST request to delete a permission {} to a role : {}", namePermission, nameRole);
         roleService.deletePermission(nameRole, namePermission);

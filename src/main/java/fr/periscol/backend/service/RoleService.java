@@ -36,68 +36,68 @@ public class RoleService {
     }
 
     /**
-     * Save a roleRole.
+     * Save a role.
      *
      * @param roleDTO the entity to save.
      * @return the persisted entity.
      */
     public RoleDTO save(RoleDTO roleDTO) {
-        log.debug("Request to save RoleRole : {}", roleDTO);
+        log.debug("Request to save Role : {}", roleDTO);
         Role role = roleMapper.toEntity(roleDTO);
         role = roleRepository.save(role);
         return roleMapper.toDto(role);
     }
 
     /**
-     * Partially update a roleRole.
+     * Partially update a role.
      *
      * @param roleDTO the entity to update partially.
      * @return the persisted entity.
      */
     public Optional<RoleDTO> partialUpdate(RoleDTO roleDTO) {
-        log.debug("Request to partially update RoleRole : {}", roleDTO);
+        log.debug("Request to partially update Role : {}", roleDTO);
 
         return roleRepository
             .findById(roleDTO.getName())
-            .map(existingRoleRole -> {
-                roleMapper.partialUpdate(existingRoleRole, roleDTO);
+            .map(existingRole -> {
+                roleMapper.partialUpdate(existingRole, roleDTO);
 
-                return existingRoleRole;
+                return existingRole;
             })
             .map(roleRepository::save)
             .map(roleMapper::toDto);
     }
 
     /**
-     * Get all the roleRoles.
+     * Get all the roles.
      *
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
     public List<RoleDTO> findAll() {
-        log.debug("Request to get all RoleRoles");
+        log.debug("Request to get all Roles");
         return roleRepository.findAll().stream().map(roleMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**
-     * Get one roleRole by id.
+     * Get one role by id.
      *
      * @param name the id of the entity.
      * @return the entity.
      */
     @Transactional(readOnly = true)
     public Optional<RoleDTO> findOne(String name) {
-        log.debug("Request to get RoleRole : {}", name);
+        log.debug("Request to get Role : {}", name);
         return roleRepository.findById(name).map(roleMapper::toDto);
     }
 
     /**
-     * Get the list of the permissions of a given roleRole
+     * Get the list of the permissions of a given role
      * @param name the id of the role
      * @return the list of the permissions
      */
     public List<PermissionDTO> getPermissions(String name){
-        log.debug("Request to get Permissions from RoleRole : {}", name);
+        log.debug("Request to get Permissions from Role : {}", name);
         return findOne(name).map(RoleDTO::getPermissions).map(ArrayList::new).orElse(new ArrayList<>());
     }
 
@@ -161,12 +161,12 @@ public class RoleService {
     }
 
     /**
-     * Delete the roleRole by id.
+     * Delete the role by id.
      *
      * @param name the id of the entity.
      */
     public void delete(String name) {
-        log.debug("Request to delete RoleRole : {}", name);
+        log.debug("Request to delete Role : {}", name);
         roleRepository.deleteById(name);
     }
 }
