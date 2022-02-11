@@ -7,6 +7,6 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {})
 public interface MetaDataBackendMapper extends EntityMapper<MetaDataBackendDTO, MetaDataBackend>{
 
-    @Mapping(target = "nameOfSchool", source = "nameOfSchool")
+    @Mapping(target = "id", source = "id")
     MetaDataBackendDTO toDto(MetaDataBackend entity);
 }
