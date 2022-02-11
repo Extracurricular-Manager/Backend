@@ -9,6 +9,7 @@ import fr.periscol.backend.domain.User;
 import fr.periscol.backend.repository.RoleRepository;
 import fr.periscol.backend.repository.UserRepository;
 import fr.periscol.backend.service.UserService;
+import fr.periscol.backend.service.dto.NewUserDTO;
 import fr.periscol.backend.service.mapper.RoleMapper;
 import fr.periscol.backend.service.mapper.UserMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,7 +70,7 @@ public class UserResourceIT {
     private User user;
 
     private Role role;
-//TODO password 3 char -> ne dois pas marcher
+
     private User createEntityUser(EntityManager em){
         User user = new User().name("Jojo").password("Lapin");
         user.setLogin("JojoBis");
@@ -104,6 +105,19 @@ public class UserResourceIT {
     public void initTest() {
         user = createEntityUser(em);
         role = createEntityRole(em);
+    }
+
+    @Test
+    @Transactional
+    public void errorUserWithPasswordNotLongEnough() throws Exception {
+        NewUserDTO wrongUser = new NewUserDTO();
+        wrongUser.setLogin("Sophie");
+        wrongUser.setDefaultPassword("12");
+        String userJson = new ObjectMapper().writeValueAsString(wrongUser);
+        restUserMockMvc.perform(post(ENTITY_API_URL_BEGINNING)
+                .contentType("application/json")
+                .content(userJson))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
