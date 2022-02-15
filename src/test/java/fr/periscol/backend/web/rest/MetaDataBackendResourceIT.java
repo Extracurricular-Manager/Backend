@@ -70,5 +70,6 @@ public class MetaDataBackendResourceIT {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.nameOfSchool").value(name))
                 .andExpect(jsonPath("$.version").value(metaDataBackend.getVersion()));
+        assert(metaDataBackendRepository.findAll().size() == 1);
     }
 }

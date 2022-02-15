@@ -1,18 +1,15 @@
 package fr.periscol.backend.domain;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.annotation.Transient;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "MetaDataBackend")
 public class MetaDataBackend {
 
     @Id
+    @GeneratedValue()
+    private Long id;
+
     @Column(name = "name_of_school", nullable = false)
     private String nameOfSchool;
 
@@ -34,5 +31,13 @@ public class MetaDataBackend {
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

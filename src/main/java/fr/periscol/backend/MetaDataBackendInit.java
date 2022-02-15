@@ -2,10 +2,8 @@ package fr.periscol.backend;
 
 import fr.periscol.backend.domain.MetaDataBackend;
 import fr.periscol.backend.repository.MetaDataBackendRepository;
-import fr.periscol.backend.service.MetaDataBackendService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +31,7 @@ public class MetaDataBackendInit {
 
     private MetaDataBackend createBeanMetaDataBackendInit(){
         MetaDataBackend metaDataBackend = new MetaDataBackend();
-        //initialisation with empty String for id
+        //initialisation with empty String for school
         metaDataBackend.setNameOfSchool("");
         metaDataBackend.setVersion(versionInProperties);
         return metaDataBackend;
