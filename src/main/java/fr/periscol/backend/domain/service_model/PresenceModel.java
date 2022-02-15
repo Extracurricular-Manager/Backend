@@ -1,17 +1,18 @@
-package fr.periscol.backend.domain;
+package fr.periscol.backend.domain.service_model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import fr.periscol.backend.domain.Child;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
- * A TimeSlotModel.
+ * A PresenceModel.
  */
 @Entity
-@Table(name = "time_slot_model")
-public class TimeSlotModel implements Serializable {
+@Table(name = "presence_model")
+public class PresenceModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,11 +24,11 @@ public class TimeSlotModel implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "time_of_arrival")
-    private LocalDate timeOfArrival;
+    @Column(name = "presence")
+    private Boolean presence;
 
-    @Column(name = "time_of_departure")
-    private LocalDate timeOfDeparture;
+    @Column(name = "date")
+    private LocalDate date;
 
     @JsonIgnoreProperties(
         value = { "classroom", "adelphie", "gradeLevel", "diets", "timeSlotModel", "presenceModel", "tarif", "facturation" },
@@ -43,7 +44,7 @@ public class TimeSlotModel implements Serializable {
         return this.id;
     }
 
-    public TimeSlotModel id(Long id) {
+    public PresenceModel id(Long id) {
         this.setId(id);
         return this;
     }
@@ -56,7 +57,7 @@ public class TimeSlotModel implements Serializable {
         return this.name;
     }
 
-    public TimeSlotModel name(String name) {
+    public PresenceModel name(String name) {
         this.setName(name);
         return this;
     }
@@ -65,30 +66,30 @@ public class TimeSlotModel implements Serializable {
         this.name = name;
     }
 
-    public LocalDate getTimeOfArrival() {
-        return this.timeOfArrival;
+    public Boolean getPresence() {
+        return this.presence;
     }
 
-    public TimeSlotModel timeOfArrival(LocalDate timeOfArrival) {
-        this.setTimeOfArrival(timeOfArrival);
+    public PresenceModel presence(Boolean presence) {
+        this.setPresence(presence);
         return this;
     }
 
-    public void setTimeOfArrival(LocalDate timeOfArrival) {
-        this.timeOfArrival = timeOfArrival;
+    public void setPresence(Boolean presence) {
+        this.presence = presence;
     }
 
-    public LocalDate getTimeOfDeparture() {
-        return this.timeOfDeparture;
+    public LocalDate getDate() {
+        return this.date;
     }
 
-    public TimeSlotModel timeOfDeparture(LocalDate timeOfDeparture) {
-        this.setTimeOfDeparture(timeOfDeparture);
+    public PresenceModel date(LocalDate date) {
+        this.setDate(date);
         return this;
     }
 
-    public void setTimeOfDeparture(LocalDate timeOfDeparture) {
-        this.timeOfDeparture = timeOfDeparture;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public Child getChild() {
@@ -99,7 +100,7 @@ public class TimeSlotModel implements Serializable {
         this.child = child;
     }
 
-    public TimeSlotModel child(Child child) {
+    public PresenceModel child(Child child) {
         this.setChild(child);
         return this;
     }
@@ -111,10 +112,10 @@ public class TimeSlotModel implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof TimeSlotModel)) {
+        if (!(o instanceof PresenceModel)) {
             return false;
         }
-        return id != null && id.equals(((TimeSlotModel) o).id);
+        return id != null && id.equals(((PresenceModel) o).id);
     }
 
     @Override
@@ -126,11 +127,11 @@ public class TimeSlotModel implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "TimeSlotModel{" +
+        return "PresenceModel{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", timeOfArrival='" + getTimeOfArrival() + "'" +
-            ", timeOfDeparture='" + getTimeOfDeparture() + "'" +
+            ", presence='" + getPresence() + "'" +
+            ", date='" + getDate() + "'" +
             "}";
     }
 }

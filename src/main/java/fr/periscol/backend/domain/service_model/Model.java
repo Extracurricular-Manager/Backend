@@ -1,4 +1,4 @@
-package fr.periscol.backend.domain;
+package fr.periscol.backend.domain.service_model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

@@ -1,9 +1,9 @@
-package fr.periscol.backend.service;
+package fr.periscol.backend.service.service_model;
 
-import fr.periscol.backend.domain.PresenceModel;
-import fr.periscol.backend.repository.PresenceModelRepository;
-import fr.periscol.backend.service.dto.PresenceModelDTO;
-import fr.periscol.backend.service.mapper.PresenceModelMapper;
+import fr.periscol.backend.domain.service_model.PresenceModel;
+import fr.periscol.backend.repository.service_model.PresenceModelRepository;
+import fr.periscol.backend.service.dto.service_model.PresenceModelDTO;
+import fr.periscol.backend.service.mapper.service_model.PresenceModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,6 @@ public class PresenceModelService {
     private final Logger log = LoggerFactory.getLogger(PresenceModelService.class);
 
     private final PresenceModelRepository presenceModelRepository;
-
     private final PresenceModelMapper presenceModelMapper;
 
     public PresenceModelService(PresenceModelRepository presenceModelRepository, PresenceModelMapper presenceModelMapper) {

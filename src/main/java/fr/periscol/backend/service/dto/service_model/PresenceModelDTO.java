@@ -1,11 +1,14 @@
-package fr.periscol.backend.service.dto;
+package fr.periscol.backend.service.dto.service_model;
+
+import fr.periscol.backend.domain.service_model.PresenceModel;
+import fr.periscol.backend.service.dto.ChildDTO;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
 /**
- * A DTO for the {@link fr.periscol.backend.domain.PresenceModel} entity.
+ * A DTO for the {@link PresenceModel} entity.
  */
 public class PresenceModelDTO implements Serializable {
 

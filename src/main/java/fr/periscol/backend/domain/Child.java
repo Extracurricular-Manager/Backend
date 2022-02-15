@@ -1,12 +1,12 @@
 package fr.periscol.backend.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import fr.periscol.backend.domain.service_model.PeriodModel;
+import fr.periscol.backend.domain.service_model.PresenceModel;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -52,7 +52,7 @@ public class Child implements Serializable {
 
     @JsonIgnoreProperties(value = { "child" }, allowSetters = true)
     @OneToOne(mappedBy = "child")
-    private TimeSlotModel timeSlotModel;
+    private PeriodModel periodModel;
 
     @JsonIgnoreProperties(value = { "child" }, allowSetters = true)
     @OneToOne(mappedBy = "child")
@@ -184,22 +184,22 @@ public class Child implements Serializable {
         return this;
     }
 
-    public TimeSlotModel getTimeSlotModel() {
-        return this.timeSlotModel;
+    public PeriodModel getTimeSlotModel() {
+        return this.periodModel;
     }
 
-    public void setTimeSlotModel(TimeSlotModel timeSlotModel) {
-        if (this.timeSlotModel != null) {
-            this.timeSlotModel.setChild(null);
+    public void setTimeSlotModel(PeriodModel periodModel) {
+        if (this.periodModel != null) {
+            this.periodModel.setChild(null);
         }
-        if (timeSlotModel != null) {
-            timeSlotModel.setChild(this);
+        if (periodModel != null) {
+            periodModel.setChild(this);
         }
-        this.timeSlotModel = timeSlotModel;
+        this.periodModel = periodModel;
     }
 
-    public Child timeSlotModel(TimeSlotModel timeSlotModel) {
-        this.setTimeSlotModel(timeSlotModel);
+    public Child timeSlotModel(PeriodModel periodModel) {
+        this.setTimeSlotModel(periodModel);
         return this;
     }
 

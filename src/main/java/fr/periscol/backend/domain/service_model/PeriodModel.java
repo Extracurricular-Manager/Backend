@@ -1,17 +1,18 @@
-package fr.periscol.backend.domain;
+package fr.periscol.backend.domain.service_model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import fr.periscol.backend.domain.Child;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
- * A PresenceModel.
+ * A TimeSlotModel.
  */
 @Entity
-@Table(name = "presence_model")
-public class PresenceModel implements Serializable {
+@Table(name = "period_model")
+public class PeriodModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,11 +24,11 @@ public class PresenceModel implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "presence")
-    private Boolean presence;
+    @Column(name = "begin")
+    private LocalDate begin;
 
-    @Column(name = "date")
-    private LocalDate date;
+    @Column(name = "end")
+    private LocalDate end;
 
     @JsonIgnoreProperties(
         value = { "classroom", "adelphie", "gradeLevel", "diets", "timeSlotModel", "presenceModel", "tarif", "facturation" },
@@ -43,7 +44,7 @@ public class PresenceModel implements Serializable {
         return this.id;
     }
 
-    public PresenceModel id(Long id) {
+    public PeriodModel id(Long id) {
         this.setId(id);
         return this;
     }
@@ -56,7 +57,7 @@ public class PresenceModel implements Serializable {
         return this.name;
     }
 
-    public PresenceModel name(String name) {
+    public PeriodModel name(String name) {
         this.setName(name);
         return this;
     }
@@ -65,30 +66,30 @@ public class PresenceModel implements Serializable {
         this.name = name;
     }
 
-    public Boolean getPresence() {
-        return this.presence;
+    public LocalDate getBegin() {
+        return this.begin;
     }
 
-    public PresenceModel presence(Boolean presence) {
-        this.setPresence(presence);
+    public PeriodModel timeOfArrival(LocalDate timeOfArrival) {
+        this.setBegin(timeOfArrival);
         return this;
     }
 
-    public void setPresence(Boolean presence) {
-        this.presence = presence;
+    public void setBegin(LocalDate timeOfArrival) {
+        this.begin = timeOfArrival;
     }
 
-    public LocalDate getDate() {
-        return this.date;
+    public LocalDate getEnd() {
+        return this.end;
     }
 
-    public PresenceModel date(LocalDate date) {
-        this.setDate(date);
+    public PeriodModel timeOfDeparture(LocalDate timeOfDeparture) {
+        this.setEnd(timeOfDeparture);
         return this;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setEnd(LocalDate timeOfDeparture) {
+        this.end = timeOfDeparture;
     }
 
     public Child getChild() {
@@ -99,7 +100,7 @@ public class PresenceModel implements Serializable {
         this.child = child;
     }
 
-    public PresenceModel child(Child child) {
+    public PeriodModel child(Child child) {
         this.setChild(child);
         return this;
     }
@@ -111,10 +112,10 @@ public class PresenceModel implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof PresenceModel)) {
+        if (!(o instanceof PeriodModel)) {
             return false;
         }
-        return id != null && id.equals(((PresenceModel) o).id);
+        return id != null && id.equals(((PeriodModel) o).id);
     }
 
     @Override
@@ -126,11 +127,11 @@ public class PresenceModel implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "PresenceModel{" +
+        return "TimeSlotModel{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", presence='" + getPresence() + "'" +
-            ", date='" + getDate() + "'" +
+            ", timeOfArrival='" + getBegin() + "'" +
+            ", timeOfDeparture='" + getEnd() + "'" +
             "}";
     }
 }

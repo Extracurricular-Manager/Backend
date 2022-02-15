@@ -1,8 +1,9 @@
-package fr.periscol.backend.web.rest;
+package fr.periscol.backend.web.rest.service_model;
 
-import fr.periscol.backend.repository.TimeSlotModelRepository;
-import fr.periscol.backend.service.TimeSlotModelService;
-import fr.periscol.backend.service.dto.TimeSlotModelDTO;
+import fr.periscol.backend.domain.service_model.PeriodModel;
+import fr.periscol.backend.repository.service_model.PeriodRepository;
+import fr.periscol.backend.service.service_model.TimeSlotModelService;
+import fr.periscol.backend.service.dto.service_model.PeriodModelDTO;
 import fr.periscol.backend.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,42 +20,39 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * REST controller for managing {@link fr.periscol.backend.domain.TimeSlotModel}.
+ * REST controller for managing {@link PeriodModel}.
  */
 @RestController
 @RequestMapping("/api")
-public class TimeSlotModelResource {
+public class PeriodModelResource {
 
-    private final Logger log = LoggerFactory.getLogger(TimeSlotModelResource.class);
+    private final Logger log = LoggerFactory.getLogger(PeriodModelResource.class);
 
     private static final String ENTITY_NAME = "timeSlotModel";
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final TimeSlotModelService timeSlotModelService;
+    private final TimeSlotModelService periodModelService;
 
-    private final TimeSlotModelRepository timeSlotModelRepository;
+    private final PeriodRepository periodRepository;
 
-    public TimeSlotModelResource(TimeSlotModelService timeSlotModelService, TimeSlotModelRepository timeSlotModelRepository) {
-        this.timeSlotModelService = timeSlotModelService;
-        this.timeSlotModelRepository = timeSlotModelRepository;
+    public PeriodModelResource(TimeSlotModelService periodModelService, PeriodRepository periodRepository) {
+        this.periodModelService = periodModelService;
+        this.periodRepository = periodRepository;
     }
 
     /**
-     * {@code POST  /time-slot-models} : Create a new timeSlotModel.
+     * {@code POST  /period} : Create a new timeSlotModel.
      *
-     * @param timeSlotModelDTO the timeSlotModelDTO to create.
+     * @param periodModelDTO the timeSlotModelDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new timeSlotModelDTO, or with status {@code 400 (Bad Request)} if the timeSlotModel has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/time-slot-models")
-    public ResponseEntity<TimeSlotModelDTO> createTimeSlotModel(@RequestBody TimeSlotModelDTO timeSlotModelDTO) throws URISyntaxException {
-        log.debug("REST request to save TimeSlotModel : {}", timeSlotModelDTO);
-        if (timeSlotModelDTO.getId() != null) {
-            throw new BadRequestAlertException("A new timeSlotModel cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        TimeSlotModelDTO result = timeSlotModelService.save(timeSlotModelDTO);
+    @PostMapping("/period-service")
+    public ResponseEntity<PeriodModelDTO> createPeriodModel(@RequestBody PeriodModelDTO periodModelDTO) throws URISyntaxException {
+        log.debug("REST request to save PeriodModel : {}", periodModelDTO);
+        PeriodModelDTO result = periodModelService.save(periodModelDTO);
         return ResponseEntity
             .created(new URI("/api/time-slot-models/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
@@ -65,33 +63,33 @@ public class TimeSlotModelResource {
      * {@code PUT  /time-slot-models/:id} : Updates an existing timeSlotModel.
      *
      * @param id the id of the timeSlotModelDTO to save.
-     * @param timeSlotModelDTO the timeSlotModelDTO to update.
+     * @param periodModelDTO the timeSlotModelDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated timeSlotModelDTO,
      * or with status {@code 400 (Bad Request)} if the timeSlotModelDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the timeSlotModelDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/time-slot-models/{id}")
-    public ResponseEntity<TimeSlotModelDTO> updateTimeSlotModel(
+    public ResponseEntity<PeriodModelDTO> updateTimeSlotModel(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody TimeSlotModelDTO timeSlotModelDTO
+        @RequestBody PeriodModelDTO periodModelDTO
     ) throws URISyntaxException {
-        log.debug("REST request to update TimeSlotModel : {}, {}", id, timeSlotModelDTO);
-        if (timeSlotModelDTO.getId() == null) {
+        log.debug("REST request to update TimeSlotModel : {}, {}", id, periodModelDTO);
+        if (periodModelDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, timeSlotModelDTO.getId())) {
+        if (!Objects.equals(id, periodModelDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
-        if (!timeSlotModelRepository.existsById(id)) {
+        if (!periodRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        TimeSlotModelDTO result = timeSlotModelService.save(timeSlotModelDTO);
+        PeriodModelDTO result = periodModelService.save(periodModelDTO);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, timeSlotModelDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, periodModelDTO.getId().toString()))
             .body(result);
     }
 
@@ -99,7 +97,7 @@ public class TimeSlotModelResource {
      * {@code PATCH  /time-slot-models/:id} : Partial updates given fields of an existing timeSlotModel, field will ignore if it is null
      *
      * @param id the id of the timeSlotModelDTO to save.
-     * @param timeSlotModelDTO the timeSlotModelDTO to update.
+     * @param periodModelDTO the timeSlotModelDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated timeSlotModelDTO,
      * or with status {@code 400 (Bad Request)} if the timeSlotModelDTO is not valid,
      * or with status {@code 404 (Not Found)} if the timeSlotModelDTO is not found,
@@ -107,27 +105,27 @@ public class TimeSlotModelResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/time-slot-models/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<TimeSlotModelDTO> partialUpdateTimeSlotModel(
+    public ResponseEntity<PeriodModelDTO> partialUpdateTimeSlotModel(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody TimeSlotModelDTO timeSlotModelDTO
+        @RequestBody PeriodModelDTO periodModelDTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update TimeSlotModel partially : {}, {}", id, timeSlotModelDTO);
-        if (timeSlotModelDTO.getId() == null) {
+        log.debug("REST request to partial update TimeSlotModel partially : {}, {}", id, periodModelDTO);
+        if (periodModelDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, timeSlotModelDTO.getId())) {
+        if (!Objects.equals(id, periodModelDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
-        if (!timeSlotModelRepository.existsById(id)) {
+        if (!periodRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<TimeSlotModelDTO> result = timeSlotModelService.partialUpdate(timeSlotModelDTO);
+        Optional<PeriodModelDTO> result = periodModelService.partialUpdate(periodModelDTO);
 
         return ResponseUtil.wrapOrNotFound(
             result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, timeSlotModelDTO.getId().toString())
+            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, periodModelDTO.getId().toString())
         );
     }
 
@@ -137,9 +135,9 @@ public class TimeSlotModelResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of timeSlotModels in body.
      */
     @GetMapping("/time-slot-models")
-    public List<TimeSlotModelDTO> getAllTimeSlotModels() {
+    public List<PeriodModelDTO> getAllTimeSlotModels() {
         log.debug("REST request to get all TimeSlotModels");
-        return timeSlotModelService.findAll();
+        return periodModelService.findAll();
     }
 
     /**
@@ -149,9 +147,9 @@ public class TimeSlotModelResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the timeSlotModelDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/time-slot-models/{id}")
-    public ResponseEntity<TimeSlotModelDTO> getTimeSlotModel(@PathVariable Long id) {
+    public ResponseEntity<PeriodModelDTO> getTimeSlotModel(@PathVariable Long id) {
         log.debug("REST request to get TimeSlotModel : {}", id);
-        Optional<TimeSlotModelDTO> timeSlotModelDTO = timeSlotModelService.findOne(id);
+        Optional<PeriodModelDTO> timeSlotModelDTO = periodModelService.findOne(id);
         return ResponseUtil.wrapOrNotFound(timeSlotModelDTO);
     }
 
@@ -164,7 +162,7 @@ public class TimeSlotModelResource {
     @DeleteMapping("/time-slot-models/{id}")
     public ResponseEntity<Void> deleteTimeSlotModel(@PathVariable Long id) {
         log.debug("REST request to delete TimeSlotModel : {}", id);
-        timeSlotModelService.delete(id);
+        periodModelService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))

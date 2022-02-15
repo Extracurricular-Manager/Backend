@@ -1,13 +1,16 @@
-package fr.periscol.backend.service.dto;
+package fr.periscol.backend.service.dto.service_model;
+
+import fr.periscol.backend.domain.service_model.PeriodModel;
+import fr.periscol.backend.service.dto.ChildDTO;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
 /**
- * A DTO for the {@link fr.periscol.backend.domain.TimeSlotModel} entity.
+ * A DTO for the {@link PeriodModel} entity.
  */
-public class TimeSlotModelDTO implements Serializable {
+public class PeriodModelDTO implements Serializable {
 
     private Long id;
 
@@ -64,15 +67,15 @@ public class TimeSlotModelDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof TimeSlotModelDTO)) {
+        if (!(o instanceof PeriodModelDTO)) {
             return false;
         }
 
-        TimeSlotModelDTO timeSlotModelDTO = (TimeSlotModelDTO) o;
+        PeriodModelDTO periodModelDTO = (PeriodModelDTO) o;
         if (this.id == null) {
             return false;
         }
-        return Objects.equals(this.id, timeSlotModelDTO.id);
+        return Objects.equals(this.id, periodModelDTO.id);
     }
 
     @Override

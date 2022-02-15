@@ -1,6 +1,6 @@
-package fr.periscol.backend.repository;
+package fr.periscol.backend.repository.service_model;
 
-import fr.periscol.backend.domain.TimeSlotModel;
+import fr.periscol.backend.domain.service_model.PeriodModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface TimeSlotModelRepository extends JpaRepository<TimeSlotModel, Long> {}
+public interface PeriodRepository extends JpaRepository<PeriodModel, Long> {}

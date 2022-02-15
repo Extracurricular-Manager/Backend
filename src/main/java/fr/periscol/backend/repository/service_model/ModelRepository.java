@@ -1,6 +1,6 @@
-package fr.periscol.backend.repository;
+package fr.periscol.backend.repository.service_model;
 
-import fr.periscol.backend.domain.Model;
+import fr.periscol.backend.domain.service_model.Model;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
