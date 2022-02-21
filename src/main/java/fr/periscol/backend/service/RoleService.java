@@ -58,7 +58,7 @@ public class RoleService {
         log.debug("Request to partially update Role : {}", roleDTO);
 
         return roleRepository
-            .findById(roleDTO.getName())
+            .findById(roleDTO.getId())
             .map(existingRole -> {
                 roleMapper.partialUpdate(existingRole, roleDTO);
 
@@ -82,36 +82,36 @@ public class RoleService {
     /**
      * Get one role by id.
      *
-     * @param name the id of the entity.
+     * @param id the id of the entity.
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public Optional<RoleDTO> findOne(String name) {
-        log.debug("Request to get Role : {}", name);
-        return roleRepository.findById(name).map(roleMapper::toDto);
+    public Optional<RoleDTO> findOne(Long id) {
+        log.debug("Request to get Role : {}", id);
+        return roleRepository.findById(id).map(roleMapper::toDto);
     }
 
     /**
      * Get the list of the permissions of a given role
-     * @param name the id of the role
+     * @param id the id of the role
      * @return the list of the permissions
      */
-    public List<PermissionDTO> getPermissions(String name){
-        log.debug("Request to get Permissions from Role : {}", name);
-        return findOne(name).map(RoleDTO::getPermissions).map(ArrayList::new).orElse(new ArrayList<>());
+    public List<PermissionDTO> getPermissions(Long id) {
+        log.debug("Request to get Permissions from Role : {}", id);
+        return findOne(id).map(RoleDTO::getPermissions).map(ArrayList::new).orElse(new ArrayList<>());
     }
 
     /**
      * Add a permission to a given role.
      *
-     * @param name the name of the role to add the permission
+     * @param id the id of the role to add the permission
      * @param permissionDTO the name of the role
      * @return true if the permission is added, false if the permission is already present for this role
      */
-    public boolean addPermission(String name, PermissionDTO permissionDTO) {
-        log.debug("Request to add a permission to a role : {}", name);
-        final var permissionOpt = permissionService.findOne(permissionDTO.getName());
-        final var roleOpt = findOne(name);
+    public boolean addPermission(Long id, PermissionDTO permissionDTO) {
+        log.debug("Request to add a permission to a role : {}", id);
+        final var permissionOpt = permissionService.findOne(permissionDTO.getId());
+        final var roleOpt = findOne(id);
         if(permissionOpt.isPresent() && roleOpt.isPresent()) {
             final var permission = permissionOpt.get();
             final var roleDTO = roleOpt.get();
@@ -119,7 +119,7 @@ public class RoleService {
                 final List<PermissionDTO> permissions = new ArrayList<>(roleDTO.getPermissions());
                 permissions.add(permission);
                 final var newRole = new RoleDTO();
-                newRole.setName(name);
+                newRole.setName(roleDTO.getName());
                 newRole.setPermissions(permissions);
                 partialUpdate(newRole);
                 return true;
@@ -134,15 +134,15 @@ public class RoleService {
     /**
      * Delete a Permission of a given role
      *
-     * @param nameRole the name of the role to delete from.
-     * @param namePermission the name of the permission to delete.
+     * @param idRole the name of the role to delete from.
+     * @param idPermission the id of the permission to delete.
      */
-    public void deletePermission(String nameRole, String namePermission){
-        log.debug("Request to delete a permission {} to a role : {}", namePermission, nameRole);
-        Optional<RoleDTO> roleDTOOptional = findOne(nameRole);
+    public void deletePermission(Long idRole, Long idPermission){
+        log.debug("Request to delete a permission {} to a role : {}", idPermission, idRole);
+        Optional<RoleDTO> roleDTOOptional = findOne(idRole);
         if(roleDTOOptional.isPresent()){
             RoleDTO updatedRoleDTO = roleDTOOptional.get();
-            Optional<PermissionDTO> permissionDTOOptional = permissionService.findOne(namePermission);
+            Optional<PermissionDTO> permissionDTOOptional = permissionService.findOne(idPermission);
             if(permissionDTOOptional.isEmpty()){
                 throw new NotFoundAlertException("Specified permission does not exist.");
             }
@@ -163,10 +163,10 @@ public class RoleService {
     /**
      * Delete the role by id.
      *
-     * @param name the id of the entity.
+     * @param id the id of the entity.
      */
-    public void delete(String name) {
-        log.debug("Request to delete Role : {}", name);
-        roleRepository.deleteById(name);
+    public void delete(Long id) {
+        log.debug("Request to delete Role : {}", id);
+        roleRepository.deleteById(id);
     }
 }

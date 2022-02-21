@@ -51,7 +51,7 @@ public class PermissionService {
         log.debug("Request to partially update Permission : {}", permissionDto);
 
         return repository
-                .findById(permissionDto.getName())
+                .findById(permissionDto.getId())
                 .map(existingTarifBase -> {
                     mapper.partialUpdate(existingTarifBase, permissionDto);
                     return existingTarifBase;
@@ -74,22 +74,22 @@ public class PermissionService {
     /**
      * Get one permission by name.
      *
-     * @param name the name of the entity.
+     * @param id the id of the entity.
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public Optional<PermissionDTO> findOne(String name) {
-        log.debug("Request to get Permission : {}", name);
-        return repository.findById(name).map(mapper::toDto);
+    public Optional<PermissionDTO> findOne(Long id) {
+        log.debug("Request to get Permission : {}", id);
+        return repository.findById(id).map(mapper::toDto);
     }
 
     /**
      * Delete the permission by name.
      *
-     * @param name the name of the entity.
+     * @param id the name of the entity.
      */
-    public void delete(String name) {
-        log.debug("Request to delete Permission : {}", name);
-        repository.deleteById(name);
+    public void delete(Long id) {
+        log.debug("Request to delete Permission : {}", id);
+        repository.deleteById(id);
     }
 }

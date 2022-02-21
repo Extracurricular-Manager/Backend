@@ -10,6 +10,7 @@ import org.mapstruct.Mapping;
 public interface PermissionMapper extends EntityMapper<PermissionDTO, Permission> {
 
     @Mapping(source = "name", target = "name")
+    @Mapping(source = "id", target = "id")
     PermissionDTO toDto(Permission entity);
 
 }

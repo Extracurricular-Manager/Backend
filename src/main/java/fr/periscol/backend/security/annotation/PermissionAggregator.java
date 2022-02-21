@@ -54,7 +54,7 @@ public class PermissionAggregator {
 
                         authorities.stream()
                             .map(Permission::new)
-                            .filter(perm -> service.findOne(perm.getName()).isEmpty())
+                            .filter(perm -> service.findOne(perm.getId()).isEmpty())
                             .forEach(perm -> service.save(mapper.toDto(perm)));
                     }
                 }

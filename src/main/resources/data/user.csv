@@ -1,0 +1,3 @@
+NAME,LOGIN,PASSWORD,ACTIVATED
+admin,admin,admin,true
+user,user,user,true

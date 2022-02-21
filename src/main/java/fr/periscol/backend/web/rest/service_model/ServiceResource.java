@@ -30,7 +30,7 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class ServiceResource {
 
-    private static final String ENTITY_NAME = "Service";
+    private static final String ENTITY_NAME = "service";
 
     private final Logger log = LoggerFactory.getLogger(ServiceResource.class);
 
@@ -86,10 +86,6 @@ public class ServiceResource {
         if (id == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "id null");
         }
-
-        /*if (service.findOne(id).isEmpty()) {
-            throw new NotFoundAlertException("Service not found");
-        }*/
 
         Optional<ServiceMetadataDTO> result = service.partialUpdate(id, serviceMetadataDTO);
 

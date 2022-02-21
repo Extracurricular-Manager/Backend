@@ -52,15 +52,15 @@ public class PermissionResource {
     }
 
     /**
-     * {@code GET  /permissions/:name} : get the "name" permission.
+     * {@code GET  /permissions/:name} : get the "id" permission.
      *
-     * @param name the name of the permissionDTO to retrieve.
+     * @param id the name of the permissionDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the permissionDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/permissions/{name}")
-    public ResponseEntity<PermissionDTO> getPermission(@PathVariable String name) {
-        log.debug("REST request to get Permission : {}", name);
-        Optional<PermissionDTO> permissionDTO = service.findOne(name);
+    @GetMapping("/permissions/{id}")
+    public ResponseEntity<PermissionDTO> getPermission(@PathVariable Long id) {
+        log.debug("REST request to get Permission : {}", id);
+        Optional<PermissionDTO> permissionDTO = service.findOne(id);
         return ResponseUtil.wrapOrNotFound(permissionDTO);
     }
 }

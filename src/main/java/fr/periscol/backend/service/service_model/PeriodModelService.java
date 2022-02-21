@@ -19,15 +19,15 @@ import java.util.stream.Collectors;
  */
 @Service
 @Transactional
-public class TimeSlotModelService {
+public class PeriodModelService {
 
-    private final Logger log = LoggerFactory.getLogger(TimeSlotModelService.class);
+    private final Logger log = LoggerFactory.getLogger(PeriodModelService.class);
 
     private final PeriodRepository periodRepository;
 
     private final TimeSlotModelMapper timeSlotModelMapper;
 
-    public TimeSlotModelService(PeriodRepository periodRepository, TimeSlotModelMapper timeSlotModelMapper) {
+    public PeriodModelService(PeriodRepository periodRepository, TimeSlotModelMapper timeSlotModelMapper) {
         this.periodRepository = periodRepository;
         this.timeSlotModelMapper = timeSlotModelMapper;
     }

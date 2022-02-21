@@ -5,7 +5,7 @@ import fr.periscol.backend.repository.UserRepository;
 import fr.periscol.backend.service.UserService;
 import fr.periscol.backend.service.dto.NewUserDTO;
 import fr.periscol.backend.service.dto.RoleDTO;
-import fr.periscol.backend.service.dto.RoleNameDTO;
+import fr.periscol.backend.service.dto.RoleIdDTO;
 import fr.periscol.backend.service.dto.UserDTO;
 import fr.periscol.backend.web.rest.errors.BadRequestAlertException;
 import fr.periscol.backend.web.rest.vm.PasswordVM;
@@ -201,7 +201,7 @@ public class UserResource {
      */
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/user/{name}/role/{role}")
-    public ResponseEntity<Void> removeRoleFromUser(@PathVariable String name, @PathVariable String role) {
+    public ResponseEntity<Void> removeRoleFromUser(@PathVariable String name, @PathVariable Long role) {
         log.debug("REST request to remove role from a User : {}", name);
         userService.deleteRole(name, role);
         return ResponseEntity.noContent().build();
@@ -214,13 +214,13 @@ public class UserResource {
      */
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PatchMapping("/user/{name}/role")
-    public ResponseEntity<Void> addRoleToUser(@PathVariable String name, @RequestBody RoleNameDTO roleName) throws URISyntaxException {
+    public ResponseEntity<Void> addRoleToUser(@PathVariable String name, @RequestBody RoleIdDTO roleName) throws URISyntaxException {
         log.debug("REST request to get add a role to a User : {}", name);
         final var result = userService.addRole(name, roleName);
         if(!result)
             return ResponseEntity.noContent().build();
         else
-            return ResponseEntity.created(new URI("/api/role-roles/" + roleName)).build();
+            return ResponseEntity.created(new URI("/api/role/" + roleName)).build();
     }
 
     /**

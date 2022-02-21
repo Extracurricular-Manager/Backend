@@ -2,7 +2,7 @@ package fr.periscol.backend.web.rest.service_model;
 
 import fr.periscol.backend.domain.service_model.PeriodModel;
 import fr.periscol.backend.repository.service_model.PeriodRepository;
-import fr.periscol.backend.service.service_model.TimeSlotModelService;
+import fr.periscol.backend.service.service_model.PeriodModelService;
 import fr.periscol.backend.service.dto.service_model.PeriodModelDTO;
 import fr.periscol.backend.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
@@ -28,16 +28,15 @@ public class PeriodModelResource {
 
     private final Logger log = LoggerFactory.getLogger(PeriodModelResource.class);
 
-    private static final String ENTITY_NAME = "timeSlotModel";
+    private static final String ENTITY_NAME = "periodModel";
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final TimeSlotModelService periodModelService;
-
+    private final PeriodModelService periodModelService;
     private final PeriodRepository periodRepository;
 
-    public PeriodModelResource(TimeSlotModelService periodModelService, PeriodRepository periodRepository) {
+    public PeriodModelResource(PeriodModelService periodModelService, PeriodRepository periodRepository) {
         this.periodModelService = periodModelService;
         this.periodRepository = periodRepository;
     }

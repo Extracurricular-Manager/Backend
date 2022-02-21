@@ -27,6 +27,7 @@
 		<mysql.version>8.0.21</mysql.version>
 		<org.hsqlbdb.version>2.5.1</org.hsqlbdb.version>
 		<org.springdoc.version>1.5.2</org.springdoc.version>
+		<opencsv.version>5.5.2</opencsv.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -161,7 +162,14 @@
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
 		</dependency>
-    </dependencies>
+
+		<dependency>
+			<groupId>com.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>${opencsv.version}</version>
+		</dependency>
+
+	</dependencies>
 
 	<build>
 		<plugins>

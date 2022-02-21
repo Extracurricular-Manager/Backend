@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class PermissionDTO {
 
+    private Long id;
     private String name;
 
     public PermissionDTO(String name) {
@@ -18,6 +19,14 @@ public class PermissionDTO {
         this.name = name;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public PermissionDTO() {
     }
 
@@ -26,11 +35,11 @@ public class PermissionDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PermissionDTO that = (PermissionDTO) o;
-        return Objects.equals(name, that.name);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(id);
     }
 }

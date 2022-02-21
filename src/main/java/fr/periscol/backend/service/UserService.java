@@ -4,7 +4,7 @@ import fr.periscol.backend.domain.User;
 import fr.periscol.backend.repository.UserRepository;
 import fr.periscol.backend.service.dto.NewUserDTO;
 import fr.periscol.backend.service.dto.RoleDTO;
-import fr.periscol.backend.service.dto.RoleNameDTO;
+import fr.periscol.backend.service.dto.RoleIdDTO;
 import fr.periscol.backend.service.dto.UserDTO;
 import fr.periscol.backend.service.mapper.UserMapper;
 import fr.periscol.backend.web.rest.errors.LoginAlreadyUsedException;
@@ -151,7 +151,7 @@ public class UserService {
      *
      * @param name the name of the entity
      */
-    public void deleteRole(String name, String role) {
+    public void deleteRole(String name, Long role) {
         log.debug("Request to remove a from user : {}", name);
         final var userOpt = findOne(name);
         if(userOpt.isPresent()) {
@@ -166,7 +166,7 @@ public class UserService {
             }
             user.setRoles(user.getRoles()
                     .stream()
-                    .filter(r -> !r.getName().equals(role))
+                    .filter(r -> !r.getId().equals(role))
                     .collect(Collectors.toSet())
             );
             partialUpdate(user);
@@ -181,9 +181,9 @@ public class UserService {
      * @param roleName the name of the role
      * @return true if the role is added, false if the role is already present for this user
      */
-    public boolean addRole(String name, RoleNameDTO roleName) {
+    public boolean addRole(String name, RoleIdDTO roleName) {
         log.debug("Request to add a role to a user : {}", name);
-        final var roleOpt = roleService.findOne(roleName.getName());
+        final var roleOpt = roleService.findOne(roleName.getId());
         final var userOpt = findOne(name);
         if(roleOpt.isPresent() && userOpt.isPresent()) {
             final var role = roleOpt.get();
@@ -219,6 +219,7 @@ public class UserService {
 
         var user = userMapper.toUser(newUser);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        System.out.println(user.getPassword());
         user = userRepository.save(user);
         return userMapper.toDto(user);
     }
