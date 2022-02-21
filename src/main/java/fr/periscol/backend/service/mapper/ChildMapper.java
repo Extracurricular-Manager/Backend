@@ -20,6 +20,7 @@ public interface ChildMapper extends EntityMapper<ChildDTO, Child> {
     @Mapping(target = "diets", source = "diets", qualifiedByName = "idSet")
     @Mapping(target = "tarif", source = "tarif", qualifiedByName = "id")
     @Mapping(target = "facturation", source = "facturation", qualifiedByName = "id")
+    @Mapping(target = "birthday", source = "birthday")
     ChildDTO toDto(Child s);
 
     @Named("id")

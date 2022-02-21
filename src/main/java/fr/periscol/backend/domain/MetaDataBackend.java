@@ -1,14 +1,24 @@
 package fr.periscol.backend.domain;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Table(name = "MetaDataBackend")
 public class MetaDataBackend {
 
     @Id
-    @GeneratedValue()
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
+    @Type(type="org.hibernate.type.UUIDCharType")
+    private UUID id;
 
     @Column(name = "name_of_school", nullable = false)
     private String nameOfSchool;
@@ -33,11 +43,11 @@ public class MetaDataBackend {
         this.version = version;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 }

@@ -4,9 +4,10 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 
 public class MetaDataBackendDTO implements Serializable {
-    private Long id;
+    private UUID id;
 
     private String nameOfSchool;
 
@@ -36,11 +37,11 @@ public class MetaDataBackendDTO implements Serializable {
         this.version = version;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -49,11 +50,11 @@ public class MetaDataBackendDTO implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MetaDataBackendDTO that = (MetaDataBackendDTO) o;
-        return Objects.equals(nameOfSchool, that.nameOfSchool) && Objects.equals(version, that.version);
+        return Objects.equals(id, that.id) && Objects.equals(nameOfSchool, that.nameOfSchool) && Objects.equals(version, that.version);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nameOfSchool, version);
+        return Objects.hash(id, nameOfSchool, version);
     }
 }
