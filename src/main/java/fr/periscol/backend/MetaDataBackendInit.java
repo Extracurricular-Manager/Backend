@@ -24,17 +24,16 @@ public class MetaDataBackendInit {
     }
 
     @EventListener(ApplicationReadyEvent.class)
-    public void initMetaDataBackend(){
-        if (metaDataBackendRepository.findAll().isEmpty()){
+    public void initMetaDataBackend() {
+        if (metaDataBackendRepository.findAll().isEmpty()) {
             MetaDataBackend m = this.metaDataBackendMapper.toEntity(createBeanMetaDataBackendInit());
             metaDataBackendRepository.saveAndFlush(m);
-        }
-        else if (metaDataBackendRepository.findAll().get(0).getVersion().equals(versionInProperties)){
+        } else if (metaDataBackendRepository.findAll().get(0).getVersion().equals(versionInProperties)) {
             metaDataBackendRepository.saveAndFlush(createBeanMetaDataBackendFromDatabase());
         }
     }
 
-    private MetaDataBackendDTO createBeanMetaDataBackendInit(){
+    private MetaDataBackendDTO createBeanMetaDataBackendInit() {
         MetaDataBackendDTO metaDataBackend = new MetaDataBackendDTO();
         //initialisation with empty String for school
         metaDataBackend.setNameOfSchool("");
@@ -42,7 +41,7 @@ public class MetaDataBackendInit {
         return metaDataBackend;
     }
 
-    private MetaDataBackend createBeanMetaDataBackendFromDatabase(){
+    private MetaDataBackend createBeanMetaDataBackendFromDatabase() {
         MetaDataBackend metaDataBackend = metaDataBackendRepository.findAll().get(0);
         metaDataBackend.setVersion(versionInProperties);
         return metaDataBackend;

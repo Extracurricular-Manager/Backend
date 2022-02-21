@@ -13,8 +13,8 @@ public class MetaDataBackend {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
+            name = "uuid",
+            strategy = "uuid2"
     )
     @Column(name = "id", updatable = false, nullable = false)
     @Type(type="org.hibernate.type.UUIDCharType")
