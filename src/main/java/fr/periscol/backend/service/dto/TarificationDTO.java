@@ -1,10 +1,12 @@
 package fr.periscol.backend.service.dto;
 
+import fr.periscol.backend.domain.tarification.Criteria;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the {@link fr.periscol.backend.domain.Tarification} entity.
+ * A DTO for the {@link Criteria} entity.
  */
 public class TarificationDTO implements Serializable {
 

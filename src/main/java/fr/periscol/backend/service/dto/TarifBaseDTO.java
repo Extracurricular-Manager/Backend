@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the {@link fr.periscol.backend.domain.TarifBase} entity.
+ * A DTO for the {@link TarifBase} entity.
  */
 public class TarifBaseDTO implements Serializable {
 

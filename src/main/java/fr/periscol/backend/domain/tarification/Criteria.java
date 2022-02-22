@@ -1,4 +1,4 @@
-package fr.periscol.backend.domain;
+package fr.periscol.backend.domain.tarification;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -7,8 +7,8 @@ import java.io.Serializable;
  * A Tarification.
  */
 @Entity
-@Table(name = "tarification")
-public class Tarification implements Serializable {
+@Table(name = "criteria")
+public class Criteria implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,7 +23,7 @@ public class Tarification implements Serializable {
         return this.id;
     }
 
-    public Tarification id(Long id) {
+    public Criteria id(Long id) {
         this.setId(id);
         return this;
     }
@@ -39,10 +39,10 @@ public class Tarification implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Tarification)) {
+        if (!(o instanceof Criteria)) {
             return false;
         }
-        return id != null && id.equals(((Tarification) o).id);
+        return id != null && id.equals(((Criteria) o).id);
     }
 
     @Override

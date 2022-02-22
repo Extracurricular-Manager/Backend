@@ -10,7 +10,7 @@ import org.mapstruct.*;
 @Mapper(
     componentModel = "spring",
     uses = {
-        ClassroomMapper.class, FamilyMapper.class, GradeLevelMapper.class, DietMapper.class, TarifBaseMapper.class, FacturationMapper.class,
+        ClassroomMapper.class, FamilyMapper.class, GradeLevelMapper.class, DietMapper.class, FacturationMapper.class,
     }
 )
 public interface ChildMapper extends EntityMapper<ChildDTO, Child> {
@@ -18,7 +18,6 @@ public interface ChildMapper extends EntityMapper<ChildDTO, Child> {
     @Mapping(target = "adelphie", source = "adelphie", qualifiedByName = "id")
     @Mapping(target = "gradeLevel", source = "gradeLevel", qualifiedByName = "id")
     @Mapping(target = "diets", source = "diets", qualifiedByName = "idSet")
-    @Mapping(target = "tarif", source = "tarif", qualifiedByName = "id")
     @Mapping(target = "facturation", source = "facturation", qualifiedByName = "id")
     @Mapping(target = "birthday", source = "birthday")
     ChildDTO toDto(Child s);
