@@ -2,10 +2,14 @@ package fr.periscol.backend.web.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.periscol.backend.IntegrationTest;
+import fr.periscol.backend.domain.Permission;
 import fr.periscol.backend.domain.service_model.ServiceMetadata;
+import fr.periscol.backend.repository.PermissionRepository;
 import fr.periscol.backend.repository.service_model.ServiceMetadataRepository;
 import fr.periscol.backend.service.dto.service_model.ModifiedServiceMetadataDTO;
 import fr.periscol.backend.service.dto.service_model.NewServiceMetadataDTO;
+import fr.periscol.backend.service.service_model.ServiceMetadataService;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,9 +36,16 @@ class MetadataResourceIT {
 
     private static final String ENTITY_API_URL = "/api/service";
     private static final String ENTITY_API_URL_ALL = "/api/services";
+    private static final String PERMISSION_API_URL = "/api/permissions";
 
     @Autowired
     private ServiceMetadataRepository repository;
+
+    @Autowired
+    private PermissionRepository permissionRepository;
+
+    @Autowired
+    private ServiceMetadataService serviceMetadata;
 
     @Autowired
     private MockMvc serviceMetadataMockMvc;
@@ -43,11 +54,11 @@ class MetadataResourceIT {
     private EntityManager em;
 
     void addChild(EntityManager em) {
-        final var metadata = new ServiceMetadata();
+        final var metadata = new NewServiceMetadataDTO();
         metadata.setName("Michel");
         metadata.setModel("presence");
         metadata.setIcon("foo");
-        repository.saveAndFlush(metadata);
+        serviceMetadata.createServiceMetadata(metadata);
     }
 
     @BeforeEach
@@ -59,7 +70,7 @@ class MetadataResourceIT {
     @Test
     void postService() throws Exception {
         final var metadata = new NewServiceMetadataDTO();
-        metadata.setName("foo");
+        metadata.setName("foo42");
         metadata.setIcon("bar");
         metadata.setModel("presence");
         final var json = new ObjectMapper().writeValueAsString(metadata);
@@ -67,6 +78,9 @@ class MetadataResourceIT {
                         .contentType("application/json")
                         .content(json))
                 .andExpect(status().isCreated());
+
+        serviceMetadataMockMvc.perform(get(PERMISSION_API_URL))
+                .andExpect(jsonPath("$.[*].name").value(hasItem(metadata.getName())));
 
     }
 
@@ -119,8 +133,15 @@ class MetadataResourceIT {
     void deleteExistingService() throws Exception {
         final var serviceOpt = repository.findOneByName("Michel");
         assertFalse(serviceOpt.isEmpty());
+
+        serviceMetadataMockMvc.perform(get(PERMISSION_API_URL))
+                .andExpect(jsonPath("$.[*].name").value(hasItem(serviceOpt.get().getName())));
+
         serviceMetadataMockMvc.perform(delete(ENTITY_API_URL + "/" + serviceOpt.get().getId()))
                 .andExpect(status().isNoContent());
+
+        serviceMetadataMockMvc.perform(get(PERMISSION_API_URL))
+                .andExpect(jsonPath("$.[*].name").value(Matchers.not(hasItem(serviceOpt.get().getName()))));
     }
 
     @Transactional
@@ -168,9 +189,14 @@ class MetadataResourceIT {
     void patchService() throws Exception {
         final var serviceOpt = repository.findOneByName("Michel");
         assertFalse(serviceOpt.isEmpty());
+
+        serviceMetadataMockMvc.perform(get(PERMISSION_API_URL))
+                .andExpect(jsonPath("$.[*].name").value(hasItem(serviceOpt.get().getName())));
+
         var metadata = new ModifiedServiceMetadataDTO();
         metadata.setName("Michel2");
         metadata.setIcon("foo");
+
         final var json = new ObjectMapper().writeValueAsString(metadata);
         serviceMetadataMockMvc.perform(patch(ENTITY_API_URL + "/" + serviceOpt.get().getId())
                         .contentType("application/merge-patch+json")
@@ -179,6 +205,9 @@ class MetadataResourceIT {
                 .andExpect(jsonPath("$.id").value(serviceOpt.get().getId().intValue()))
                 .andExpect(jsonPath("$.name").value(metadata.getName()))
                 .andExpect(jsonPath("$.icon").value(metadata.getIcon()));
+
+        serviceMetadataMockMvc.perform(get(PERMISSION_API_URL))
+                .andExpect(jsonPath("$.[*].name").value(hasItem(metadata.getName())));
     }
 
     @Transactional
