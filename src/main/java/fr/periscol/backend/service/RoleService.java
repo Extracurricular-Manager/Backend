@@ -118,10 +118,8 @@ public class RoleService {
             if(! roleDTO.getPermissions().contains(permission)) {
                 final List<PermissionDTO> permissions = new ArrayList<>(roleDTO.getPermissions());
                 permissions.add(permission);
-                final var newRole = new RoleDTO();
-                newRole.setName(roleDTO.getName());
-                newRole.setPermissions(permissions);
-                partialUpdate(newRole);
+                roleDTO.setPermissions(permissions);
+                partialUpdate(roleDTO);
                 return true;
             } else
                 return false;

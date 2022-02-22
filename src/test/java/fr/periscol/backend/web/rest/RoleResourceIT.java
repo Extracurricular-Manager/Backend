@@ -26,6 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 
 @IntegrationTest
@@ -68,9 +69,18 @@ public class RoleResourceIT {
 
     private Permission permission;
 
+    private Permission permission1;
+
+    private Permission permission2;
+
     private Role createEntityRole(EntityManager em){
         final var role = new Role();
-        role.setPermissions(List.of(new Permission("perm1"), new Permission("perm2")));
+        permission1 = new Permission("perm1");
+        permission2 = new Permission("perm2");
+        List<Permission> permissionList = new ArrayList<>();
+        permissionList.add(permission1);
+        permissionList.add(permission2);
+        role.setPermissions(permissionList);
         role.setName("ROLE_PERSO");
         return role;
     }
@@ -89,7 +99,7 @@ public class RoleResourceIT {
     @Transactional
     public void getPermissionFromRole() throws Exception{
         roleRepository.saveAndFlush(role);
-        String id = role.getName();
+        Long id = role.getId();
         restRoleMockMvc.perform(get(ENTITY_API_URL_BEGINNING + id + ENTITY_API_URL_ENDING))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -112,7 +122,7 @@ public class RoleResourceIT {
         permissionRepository.saveAndFlush(permission);
         int databaseSizeBeforeUpdate = roleRepository.findAll().size();
         String permissionJson = new ObjectMapper().writeValueAsString(permission);
-        restRoleMockMvc.perform(patch(ENTITY_API_URL_BEGINNING + role.getName() + ENTITY_API_URL_ENDING)
+        restRoleMockMvc.perform(patch(ENTITY_API_URL_BEGINNING + role.getId() + ENTITY_API_URL_ENDING)
                         .contentType("application/json")
                         .content(permissionJson))
                 .andExpect(status().isCreated());
@@ -129,23 +139,29 @@ public class RoleResourceIT {
     @Transactional
     public void deletePermissionFromRole() throws Exception{
         roleRepository.saveAndFlush(role);
-        String namePermissionToDelete = "perm2";
-        restRoleMockMvc.perform(delete(ENTITY_API_URL_BEGINNING + role.getName() + ENTITY_API_URL_ENDING + "/" + namePermissionToDelete))
+        Long idPermissionToDelete = permission1.getId();
+        int databaseSizeBeforeUpdate = role.getPermissions().size();
+        System.out.println(ENTITY_API_URL_BEGINNING + role.getId() + ENTITY_API_URL_ENDING + "/" + idPermissionToDelete);
+        restRoleMockMvc.perform(delete(ENTITY_API_URL_BEGINNING + role.getId() + ENTITY_API_URL_ENDING + "/" + idPermissionToDelete))
                 .andExpect(status().isNoContent());
         List<Role> roleList = roleRepository.findAll();
         int index = roleList.indexOf(role);
         assert(index != -1);
         Role roleDatabase = roleList.get(index);
         List<Permission> permissionList = roleDatabase.getPermissions();
-        assertThat(permissionList).isNotEmpty().doesNotContain(new Permission("perm2"));
+        assertThat(permissionList).hasSize(databaseSizeBeforeUpdate - 1).isNotEmpty().doesNotContain(permission1);
     }
 
     @Test
     @Transactional
     public void deleteAbsentPermissionFromRole() throws Exception{
         roleRepository.saveAndFlush(role);
-        String namePermissionToDelete = "toto";
-        restRoleMockMvc.perform(delete(ENTITY_API_URL_BEGINNING + role.getName() + ENTITY_API_URL_ENDING + "/" + namePermissionToDelete))
+        List<Permission> permissionList = role.getPermissions();
+        Long idPermissionToDelete = 0L;
+        for(Permission permission : permissionList){
+            idPermissionToDelete += permission.getId();
+        }
+        restRoleMockMvc.perform(delete(ENTITY_API_URL_BEGINNING + role.getId() + ENTITY_API_URL_ENDING + "/" + idPermissionToDelete))
                 .andExpect(status().isNotFound());
     }
 }

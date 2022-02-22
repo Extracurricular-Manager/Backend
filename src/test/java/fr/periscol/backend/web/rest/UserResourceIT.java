@@ -71,6 +71,11 @@ public class UserResourceIT {
 
     private Role role;
 
+    private Role role1;
+
+    private Role role2;
+
+
     private User createEntityUser(EntityManager em){
         User user = new User().name("Jojo").password("Lapin");
         user.setLogin("JojoBis");
@@ -78,12 +83,12 @@ public class UserResourceIT {
         user.setActivated(true);
         userRepository.saveAndFlush(user);
 
-        Role role1 = new Role().name("ROLE_PERSO");
+        role1 = new Role().name("ROLE_PERSO");
         role1.setPermissions(new ArrayList<>());
         role1.setUsers(Set.of(user));
 
 
-        Role role2 = new Role().name("ROLE_PERSO_BIS");
+        role2 = new Role().name("ROLE_PERSO_BIS");
         role2.setPermissions(new ArrayList<>());
         role2.setUsers(Set.of(user));
 
@@ -157,8 +162,8 @@ public class UserResourceIT {
     @Test
     @Transactional
     public void deleteRoleFromRole() throws Exception{
-        String nameRoleToDelete = "ROLE_PERSO_BIS";
-        restUserMockMvc.perform(delete(ENTITY_API_URL_BEGINNING + user.getLogin() + ENTITY_API_URL_ROLE + nameRoleToDelete))
+        Long idRoleToDelete = role2.getId();
+        restUserMockMvc.perform(delete(ENTITY_API_URL_BEGINNING + user.getLogin() + ENTITY_API_URL_ROLE + idRoleToDelete))
                 .andExpect(status().isNoContent());
         List<User> userList = userRepository.findAll();
         int index = userList.indexOf(user);
@@ -166,6 +171,6 @@ public class UserResourceIT {
         User userDatabase = userList.get(index);
         Set<Role> roleSet = userDatabase.getRoles();
         assert(roleSet.size() == 1);
-        assertThat(roleSet).doesNotContain(new Role("ROLE_PERSO_BIS")).contains(new Role("ROLE_PERSO"));
+        assertThat(roleSet).doesNotContain(role2).contains(role1);
     }
 }

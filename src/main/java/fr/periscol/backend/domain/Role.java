@@ -18,6 +18,7 @@ public class Role implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue()
     @Column(name = "id")
     private Long id;
 
@@ -25,7 +26,8 @@ public class Role implements Serializable {
     private String name;
 
     @Column(name = "permissions")
-    @JoinTable(name = "rel_role_permissions")
+    //TODO see if it is really important
+    // @JoinTable(name = "rel_role_permissions")
     @OneToMany(cascade=CascadeType.ALL)
     private List<Permission> permissions;
 

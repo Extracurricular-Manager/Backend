@@ -95,7 +95,7 @@ public class RoleResource {
     }
 
     /**
-     * {@code PATCH  /role.json/:id} : Partial updates given fields of an existing role, field will ignore if it is null
+     * {@code PATCH  /role/:id} : Partial updates given fields of an existing role, field will ignore if it is null
      *
      * @param id the id of the roleDTO to save.
      * @param roleDTO the roleDTO to update.
@@ -131,7 +131,7 @@ public class RoleResource {
     }
 
     /**
-     * {@code GET  /roles.json} : get all the roles.
+     * {@code GET  /roles} : get all the roles.
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of roles in body.
      */
@@ -142,7 +142,7 @@ public class RoleResource {
     }
 
     /**
-     * {@code GET  /role.json/:id} : get the "id" role.
+     * {@code GET  /role/:id} : get the "id" role.
      *
      * @param id the id of the roleDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the roleDTO, or with status {@code 404 (Not Found)}.
@@ -155,7 +155,7 @@ public class RoleResource {
     }
 
     /**
-     * {@code DELETE  /role.json/:id} : delete the "id" role.
+     * {@code DELETE  /role/:id} : delete the "id" role.
      *
      * @param id the id of the roleDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
