@@ -1,5 +1,6 @@
 package fr.periscol.backend.web.rest;
 
+import fr.periscol.backend.domain.tarification.Criteria;
 import fr.periscol.backend.repository.TarificationRepository;
 import fr.periscol.backend.service.TarificationService;
 import fr.periscol.backend.service.dto.TarificationDTO;
@@ -19,7 +20,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * REST controller for managing {@link fr.periscol.backend.domain.Tarification}.
+ * REST controller for managing {@link Criteria}.
  */
 @RestController
 @RequestMapping("/api")

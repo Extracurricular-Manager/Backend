@@ -1,6 +1,6 @@
 package fr.periscol.backend.repository;
 
-import fr.periscol.backend.domain.Tarification;
+import fr.periscol.backend.domain.tarification.Criteria;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface TarificationRepository extends JpaRepository<Tarification, Long> {}
+public interface TarificationRepository extends JpaRepository<Criteria, Long> {}

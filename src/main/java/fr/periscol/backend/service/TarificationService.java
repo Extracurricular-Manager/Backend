@@ -1,6 +1,6 @@
 package fr.periscol.backend.service;
 
-import fr.periscol.backend.domain.Tarification;
+import fr.periscol.backend.domain.tarification.Criteria;
 import fr.periscol.backend.repository.TarificationRepository;
 import fr.periscol.backend.service.dto.TarificationDTO;
 import fr.periscol.backend.service.mapper.TarificationMapper;
@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Service Implementation for managing {@link Tarification}.
+ * Service Implementation for managing {@link Criteria}.
  */
 @Service
 @Transactional
@@ -40,7 +40,7 @@ public class TarificationService {
      */
     public TarificationDTO save(TarificationDTO tarificationDTO) {
         log.debug("Request to save Tarification : {}", tarificationDTO);
-        Tarification tarification = tarificationMapper.toEntity(tarificationDTO);
+        Criteria tarification = tarificationMapper.toEntity(tarificationDTO);
         tarification = tarificationRepository.save(tarification);
         return tarificationMapper.toDto(tarification);
     }

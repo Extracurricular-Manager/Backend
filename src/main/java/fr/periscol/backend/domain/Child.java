@@ -58,9 +58,6 @@ public class Child implements Serializable {
     @OneToOne(mappedBy = "child")
     private PresenceModel presenceModel;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "children" }, allowSetters = true)
-    private TarifBase tarif;
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "childs" }, allowSetters = true)
@@ -219,19 +216,6 @@ public class Child implements Serializable {
 
     public Child presenceModel(PresenceModel presenceModel) {
         this.setPresenceModel(presenceModel);
-        return this;
-    }
-
-    public TarifBase getTarif() {
-        return this.tarif;
-    }
-
-    public void setTarif(TarifBase tarifBase) {
-        this.tarif = tarifBase;
-    }
-
-    public Child tarif(TarifBase tarifBase) {
-        this.setTarif(tarifBase);
         return this;
     }
 
