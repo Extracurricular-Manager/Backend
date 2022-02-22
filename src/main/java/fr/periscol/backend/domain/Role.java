@@ -26,8 +26,7 @@ public class Role implements Serializable {
     private String name;
 
     @Column(name = "permissions")
-    //TODO see if it is really important
-    // @JoinTable(name = "rel_role_permissions")
+    @JoinTable(name = "rel_role_permissions")
     @OneToMany(cascade=CascadeType.ALL)
     private List<Permission> permissions;
 
