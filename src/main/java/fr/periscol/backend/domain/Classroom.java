@@ -27,7 +27,7 @@ public class Classroom implements Serializable {
     @Column(name = "professor")
     private String professor;
 
-    @OneToMany(mappedBy = "classroom")
+    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
     @JsonIgnoreProperties(
         value = { "classroom", "adelphie", "gradeLevel", "diets", "timeSlotModel", "presenceModel", "tarif", "facturation" },
         allowSetters = true
