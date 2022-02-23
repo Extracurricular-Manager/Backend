@@ -30,8 +30,6 @@ public class ChildDTO implements Serializable {
 
     private Set<DietDTO> diets = new HashSet<>();
 
-    private TarifBaseDTO tarif;
-
     private FacturationDTO facturation;
 
     public Long getId() {
@@ -98,14 +96,6 @@ public class ChildDTO implements Serializable {
         this.diets = diets;
     }
 
-    public TarifBaseDTO getTarif() {
-        return tarif;
-    }
-
-    public void setTarif(TarifBaseDTO tarif) {
-        this.tarif = tarif;
-    }
-
     public FacturationDTO getFacturation() {
         return facturation;
     }
@@ -147,7 +137,6 @@ public class ChildDTO implements Serializable {
             ", adelphie=" + getAdelphie() +
             ", gradeLevel=" + getGradeLevel() +
             ", diets=" + getDiets() +
-            ", tarif=" + getTarif() +
             ", facturation=" + getFacturation() +
             "}";
     }
