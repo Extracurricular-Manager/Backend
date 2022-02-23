@@ -1,5 +1,7 @@
 package fr.periscol.backend.domain.service_model;
 
+import fr.periscol.backend.domain.Permission;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -26,6 +28,9 @@ public class ServiceMetadata implements Serializable {
     @Column(name = "icon")
     private String icon;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Permission permission;
+
     public Long getId() {
         return this.id;
     }
@@ -33,6 +38,14 @@ public class ServiceMetadata implements Serializable {
     public ServiceMetadata endPoint(Long endPoint) {
         this.setId(endPoint);
         return this;
+    }
+
+    public Permission getPermission() {
+        return permission;
+    }
+
+    public void setPermission(Permission permission) {
+        this.permission = permission;
     }
 
     public void setId(Long endPoint) {
