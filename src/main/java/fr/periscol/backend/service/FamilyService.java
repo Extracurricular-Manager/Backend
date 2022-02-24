@@ -2,7 +2,9 @@ package fr.periscol.backend.service;
 
 import fr.periscol.backend.domain.Family;
 import fr.periscol.backend.repository.FamilyRepository;
+import fr.periscol.backend.service.dto.ChildDTO;
 import fr.periscol.backend.service.dto.FamilyDTO;
+import fr.periscol.backend.service.mapper.ChildMapper;
 import fr.periscol.backend.service.mapper.FamilyMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +29,12 @@ public class FamilyService {
 
     private final FamilyMapper familyMapper;
 
-    public FamilyService(FamilyRepository familyRepository, FamilyMapper familyMapper) {
+    private final ChildMapper childMapper;
+
+    public FamilyService(FamilyRepository familyRepository, FamilyMapper familyMapper, ChildMapper childMapper) {
         this.familyRepository = familyRepository;
         this.familyMapper = familyMapper;
+        this.childMapper = childMapper;
     }
 
     /**
@@ -96,5 +101,22 @@ public class FamilyService {
     public void delete(Long id) {
         log.debug("Request to delete Family : {}", id);
         familyRepository.deleteById(id);
+    }
+
+    /**
+     * Get the children of a family by its id.
+     *
+     * @return the list of children.
+     */
+    @Transactional(readOnly = true)
+    public Optional<List<ChildDTO>> findAllChildren(Long id) {
+        log.debug("Request to get all the children in the classroom with id : {}.", id);
+        Optional<Family> optionalFamily = familyRepository.findById(id);
+        if (optionalFamily.isPresent()){
+            List<ChildDTO> childDTOList = optionalFamily.get().getChildren().stream()
+                    .map(childMapper::toDto).toList();
+            return Optional.of(childDTOList);
+        }
+        return Optional.empty();
     }
 }

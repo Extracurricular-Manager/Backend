@@ -33,19 +33,19 @@ public class Child implements Serializable {
     @Column(name = "birthday")
     private LocalDate birthday;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnoreProperties(value = { "children" }, allowSetters = true)
     private Classroom classroom;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnoreProperties(value = { "children" }, allowSetters = true)
     private Family adelphie;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnoreProperties(value = { "children" }, allowSetters = true)
     private GradeLevel gradeLevel;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "rel_child__diet", joinColumns = @JoinColumn(name = "child_id"), inverseJoinColumns = @JoinColumn(name = "diet_id"))
     @JsonIgnoreProperties(value = { "children" }, allowSetters = true)
     private Set<Diet> diets = new HashSet<>();
@@ -59,7 +59,7 @@ public class Child implements Serializable {
     private PresenceModel presenceModel;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnoreProperties(value = { "childs" }, allowSetters = true)
     private Facturation facturation;
 

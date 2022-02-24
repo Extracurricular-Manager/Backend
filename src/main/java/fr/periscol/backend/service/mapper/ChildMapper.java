@@ -14,6 +14,7 @@ import org.mapstruct.*;
     }
 )
 public interface ChildMapper extends EntityMapper<ChildDTO, Child> {
+
     @Mapping(target = "classroom", source = "classroom", qualifiedByName = "id")
     @Mapping(target = "adelphie", source = "adelphie", qualifiedByName = "id")
     @Mapping(target = "gradeLevel", source = "gradeLevel", qualifiedByName = "id")
@@ -22,6 +23,7 @@ public interface ChildMapper extends EntityMapper<ChildDTO, Child> {
     @Mapping(target = "birthday", source = "birthday")
     ChildDTO toDto(Child s);
 
+
     @Named("id")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
@@ -29,4 +31,5 @@ public interface ChildMapper extends EntityMapper<ChildDTO, Child> {
 
     @Mapping(target = "removeDiet", ignore = true)
     Child toEntity(ChildDTO childDTO);
+
 }

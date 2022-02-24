@@ -7,11 +7,13 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.periscol.backend.IntegrationTest;
 import fr.periscol.backend.domain.Child;
 import fr.periscol.backend.repository.ChildRepository;
 import fr.periscol.backend.service.ChildService;
 import fr.periscol.backend.service.dto.ChildDTO;
+import fr.periscol.backend.service.dto.FamilyDTO;
 import fr.periscol.backend.service.mapper.ChildMapper;
 
 import java.time.*;
@@ -148,6 +150,13 @@ class ChildResourceIT {
     void getAllChildren() throws Exception {
         // Initialize the database
         childRepository.saveAndFlush(child);
+
+        String r = restChildMockMvc
+                .perform(get(ENTITY_API_URL + "?sort=id,desc"))
+                .andExpect(status().isOk())
+                        .andReturn().getResponse().getContentAsString();
+
+        System.out.println(r);
 
         // Get all the childList
         restChildMockMvc

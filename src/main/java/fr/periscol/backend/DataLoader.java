@@ -17,7 +17,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -33,14 +33,26 @@ public class DataLoader {
         this.passwordEncoder = passwordEncoder;
     }
 
+    private static int compareString(String a, String b) {
+        if(a.startsWith("rel"))
+            return Integer.MAX_VALUE;
+        if(b.startsWith("rel"))
+            return Integer.MIN_VALUE;
+        if(a.equals("child.csv"))
+            return Integer.MAX_VALUE - 1;
+        if(b.equals("child.csv"))
+            return Integer.MIN_VALUE + 1;
+        return a.compareTo(b);
+    }
+
     @EventListener(ApplicationReadyEvent.class)
     public void loadFromCsv() {
         em.createNativeQuery("SET DATABASE SQL SYNTAX MYS TRUE").executeUpdate();
         final var path = "data/";
         new BufferedReader(new InputStreamReader(readResource(path)))
                 .lines()
-                .sorted((a, b) -> a.startsWith("rel") ? Integer.MAX_VALUE : b.startsWith("rel") ? Integer.MIN_VALUE :
-                        a.compareTo(b))
+                .filter(a -> a.endsWith(".csv"))
+                .sorted(DataLoader::compareString)
                 .forEach(f -> loadFromCsv(readResource(path + f), f.split("\\.")[0]));
     }
 
@@ -66,7 +78,10 @@ public class DataLoader {
     }
 
     private String lineToString(String[] line) {
-        return Arrays.stream(line).map(e -> StringUtils.wrap(e, '\'')).collect(Collectors.joining(", "));
+        return Arrays.stream(line)
+                .map(e -> StringUtils.wrap(e, '\''))
+                .map(s -> s.matches("'[0-9]{4}-[0-9]{2}-[0-9]{2}'") ? "DATE " + s : s)
+                .collect(Collectors.joining(", "));
     }
 
     private InputStream readResource(String name) {

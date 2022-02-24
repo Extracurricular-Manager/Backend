@@ -22,7 +22,7 @@ public class Permission {
         this.name = name;
     }
 
-    protected Permission() {}
+    public Permission() {}
 
     public Long getId() {
         return id;

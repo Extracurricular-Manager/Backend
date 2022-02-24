@@ -2,6 +2,7 @@ package fr.periscol.backend.web.rest;
 
 import fr.periscol.backend.repository.ClassroomRepository;
 import fr.periscol.backend.service.ClassroomService;
+import fr.periscol.backend.service.dto.ChildDTO;
 import fr.periscol.backend.service.dto.ClassroomDTO;
 import fr.periscol.backend.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
@@ -153,6 +154,19 @@ public class ClassroomResource {
         log.debug("REST request to get Classroom : {}", id);
         Optional<ClassroomDTO> classroomDTO = classroomService.findOne(id);
         return ResponseUtil.wrapOrNotFound(classroomDTO);
+    }
+
+    /**
+     * {@code GET  /classrooms/:id/children} : get the children of the "id" classroom.
+     *
+     * @param id the id of the classroomDTO to retrieve the children from.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body a list of childrenDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/classrooms/{id}/children")
+    public ResponseEntity<List<ChildDTO>> getChildren(@PathVariable Long id){
+        log.debug("REST request to get Classroom : {}", id);
+        Optional<List<ChildDTO>> childDTOList = classroomService.findAllChildren(id);
+        return ResponseUtil.wrapOrNotFound(childDTOList);
     }
 
     /**

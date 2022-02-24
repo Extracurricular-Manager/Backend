@@ -2,7 +2,9 @@ package fr.periscol.backend.service;
 
 import fr.periscol.backend.domain.Classroom;
 import fr.periscol.backend.repository.ClassroomRepository;
+import fr.periscol.backend.service.dto.ChildDTO;
 import fr.periscol.backend.service.dto.ClassroomDTO;
+import fr.periscol.backend.service.mapper.ChildMapper;
 import fr.periscol.backend.service.mapper.ClassroomMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +29,12 @@ public class ClassroomService {
 
     private final ClassroomMapper classroomMapper;
 
-    public ClassroomService(ClassroomRepository classroomRepository, ClassroomMapper classroomMapper) {
+    private final ChildMapper childMapper;
+
+    public ClassroomService(ClassroomRepository classroomRepository, ClassroomMapper classroomMapper, ChildMapper childMapper) {
         this.classroomRepository = classroomRepository;
         this.classroomMapper = classroomMapper;
+        this.childMapper = childMapper;
     }
 
     /**
@@ -86,6 +91,23 @@ public class ClassroomService {
     public Optional<ClassroomDTO> findOne(Long id) {
         log.debug("Request to get Classroom : {}", id);
         return classroomRepository.findById(id).map(classroomMapper::toDto);
+    }
+
+    /**
+     * Get the children of a classroom by its id.
+     *
+     * @return the list of children.
+     */
+    @Transactional(readOnly = true)
+    public Optional<List<ChildDTO>> findAllChildren(Long id) {
+        log.debug("Request to get all the children in the classroom with id : {}.", id);
+        Optional<Classroom> optionalClassroom = classroomRepository.findById(id);
+        if (optionalClassroom.isPresent()){
+            List<ChildDTO> childDTOList = optionalClassroom.get().getChildren().stream()
+                    .map(childMapper::toDtoId).toList();
+            return Optional.of(childDTOList);
+        }
+        return Optional.empty();
     }
 
     /**

@@ -3,9 +3,12 @@ package fr.periscol.backend.service.service_model;
 import fr.periscol.backend.domain.service_model.ModelEnum;
 import fr.periscol.backend.domain.service_model.ServiceMetadata;
 import fr.periscol.backend.repository.service_model.ServiceMetadataRepository;
+import fr.periscol.backend.service.PermissionService;
+import fr.periscol.backend.service.dto.PermissionDTO;
 import fr.periscol.backend.service.dto.service_model.ModifiedServiceMetadataDTO;
 import fr.periscol.backend.service.dto.service_model.NewServiceMetadataDTO;
 import fr.periscol.backend.service.dto.service_model.ServiceMetadataDTO;
+import fr.periscol.backend.service.mapper.PermissionMapper;
 import fr.periscol.backend.service.mapper.service_model.ModifiedServiceMapper;
 import fr.periscol.backend.service.mapper.service_model.NewServiceMetadataMapper;
 import fr.periscol.backend.service.mapper.service_model.ServiceMetadataMapper;
@@ -30,42 +33,36 @@ public class ServiceMetadataService {
     private final Logger log = LoggerFactory.getLogger(ServiceMetadataService.class);
 
     private final ServiceMetadataRepository repository;
+    private final PermissionService permissionService;
     private final NewServiceMetadataMapper newMapper;
     private final ModifiedServiceMapper modifiedMapper;
     private final ServiceMetadataMapper mapper;
+    private final PermissionMapper permissionMapper;
 
-    public ServiceMetadataService(ServiceMetadataRepository repository, NewServiceMetadataMapper newMapper, ModifiedServiceMapper modifiedMapper, ServiceMetadataMapper mapper) {
+    public ServiceMetadataService(ServiceMetadataRepository repository, PermissionService permissionService, NewServiceMetadataMapper newMapper, ModifiedServiceMapper modifiedMapper, ServiceMetadataMapper mapper, PermissionMapper permissionMapper) {
         this.repository = repository;
+        this.permissionService = permissionService;
         this.newMapper = newMapper;
         this.modifiedMapper = modifiedMapper;
         this.mapper = mapper;
+        this.permissionMapper = permissionMapper;
     }
 
 
     @Transactional
     public ServiceMetadata createServiceMetadata(NewServiceMetadataDTO metadata) {
         final var existingEntity = repository.findOneByName(metadata.getName());
-        if(existingEntity.isPresent())
+        if (existingEntity.isPresent())
             throw new AlreadyExistAlertException("A service with the same name already exists");
 
-        if(!ModelEnum.exists(metadata.getModel()))
+        if (!ModelEnum.exists(metadata.getModel()))
             throw new NotFoundAlertException("Model does not exist. Existing models: " +
                     Arrays.stream(ModelEnum.values()).map(ModelEnum::getId).collect(Collectors.joining(", ")));
 
-        return repository.save(newMapper.toEntity(metadata));
-    }
-
-    /**
-     * Save a serviceMetadata.
-     *
-     * @param metadataDto the entity to save.
-     * @return the persisted entity.
-     */
-    public ServiceMetadataDTO save(NewServiceMetadataDTO metadataDto) {
-        log.debug("Request to save ServiceMetadata : {}", metadataDto);
-        ServiceMetadata metadata = newMapper.toEntity(metadataDto);
-        metadata = repository.save(metadata);
-        return mapper.toDto(metadata);
+        final var permission = new PermissionDTO(metadata.getName());
+        final var entity = newMapper.toEntity(metadata);
+        entity.setPermission(permissionMapper.toEntity(permission));
+        return repository.save(entity);
     }
 
     /**
@@ -103,11 +100,10 @@ public class ServiceMetadataService {
      */
     public void delete(Long id) {
         log.debug("Request to delete ServiceMetadata : {}", id);
-        try {
-            repository.deleteById(id);
-        } catch(EmptyResultDataAccessException e) {
+        final var service = repository.findById(id);
+        if (service.isEmpty())
             throw new NotFoundAlertException("'%s' doesn't exist".formatted(id));
-        }
+        repository.deleteById(id);
     }
 
     /**
@@ -121,9 +117,13 @@ public class ServiceMetadataService {
 
         return repository
                 .findById(id)
-                .map(existingUserCustom -> {
-                    modifiedMapper.partialUpdate(existingUserCustom, metadata);
-                    return existingUserCustom;
+                .map(existingService -> {
+                    final var permission = new PermissionDTO();
+                    permission.setName(metadata.getName());
+                    permission.setId(existingService.getPermission().getId());
+                    permissionService.partialUpdate(permission);
+                    modifiedMapper.partialUpdate(existingService, metadata);
+                    return existingService;
                 })
                 .map(repository::save)
                 .map(mapper::toDto);
