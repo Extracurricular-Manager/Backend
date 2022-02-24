@@ -27,6 +27,9 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class RoleResource {
 
+    private static final String ENTITY_NOT_FOUND = "Entity not found";
+    private static final String ID_NOT_FOUND = "idnotfound";
+
     private final Logger log = LoggerFactory.getLogger(RoleResource.class);
 
     private static final String ENTITY_NAME = "role";
@@ -50,13 +53,13 @@ public class RoleResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new roleDTO, or with status {@code 400 (Bad Request)} if the role has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/roles")
+    @PostMapping("/role")
     public ResponseEntity<RoleDTO> createRole(@RequestBody RoleDTO roleDTO) throws URISyntaxException {
         log.debug("REST request to save Role : {}", roleDTO);
         RoleDTO result = roleService.save(roleDTO);
         return ResponseEntity
             .created(new URI("/api/role/" + result.getName()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getName().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getName()))
             .body(result);
     }
 
@@ -79,18 +82,18 @@ public class RoleResource {
         if (roleDTO.getName() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, roleDTO.getName())) {
+        if (!Objects.equals(id, roleDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
         if (!roleRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+            throw new BadRequestAlertException(ENTITY_NOT_FOUND, ENTITY_NAME, ID_NOT_FOUND);
         }
 
         RoleDTO result = roleService.save(roleDTO);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, roleDTO.getName().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, roleDTO.getName()))
             .body(result);
     }
 
@@ -119,7 +122,7 @@ public class RoleResource {
         }
 
         if (!roleRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+            throw new BadRequestAlertException(ENTITY_NOT_FOUND, ENTITY_NAME, ID_NOT_FOUND);
         }
 
         Optional<RoleDTO> result = roleService.partialUpdate(roleDTO);
@@ -181,7 +184,7 @@ public class RoleResource {
         log.debug("REST request to get Permission from Role : {}", id);
         Optional<RoleDTO> roleDTO = roleService.findOne(id);
         if(roleDTO.isEmpty()){
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+            throw new BadRequestAlertException(ENTITY_NOT_FOUND, ENTITY_NAME, ID_NOT_FOUND);
         }
         else{
             List<PermissionDTO> permissions = roleService.getPermissions(id);
