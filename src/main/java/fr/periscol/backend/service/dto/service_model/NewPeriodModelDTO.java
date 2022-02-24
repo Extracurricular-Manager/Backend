@@ -1,20 +1,10 @@
 package fr.periscol.backend.service.dto.service_model;
 
-import fr.periscol.backend.domain.service_model.PeriodModel;
 import fr.periscol.backend.service.dto.ChildDTO;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
-/**
- * A DTO for the {@link PeriodModel} entity.
- */
-public class PeriodModelDTO implements Serializable {
-
-    private Long id;
-
-    private Long serviceId;
+public class NewPeriodModelDTO implements Serializable {
 
     private String name;
 
@@ -25,22 +15,6 @@ public class PeriodModelDTO implements Serializable {
     private LocalDateTime timeOfStartBilling;
 
     private ChildDTO child;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getServiceId() {
-        return serviceId;
-    }
-
-    public void setServiceId(Long serviceId) {
-        this.serviceId = serviceId;
-    }
 
     public String getName() {
         return name;
@@ -82,36 +56,14 @@ public class PeriodModelDTO implements Serializable {
         this.timeOfStartBilling = timeOfStartBilling;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof PeriodModelDTO)) {
-            return false;
-        }
-
-        PeriodModelDTO periodModelDTO = (PeriodModelDTO) o;
-        if (this.id == null) {
-            return false;
-        }
-        return Objects.equals(this.id, periodModelDTO.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.id);
-    }
-
     // prettier-ignore
     @Override
     public String toString() {
         return "TimeSlotModelDTO{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", timeOfArrival='" + getTimeOfArrival() + "'" +
-            ", timeOfDeparture='" + getTimeOfDeparture() + "'" +
-            ", child=" + getChild() +
-            "}";
+                ", name='" + getName() + "'" +
+                ", timeOfArrival='" + getTimeOfArrival() + "'" +
+                ", timeOfDeparture='" + getTimeOfDeparture() + "'" +
+                ", child=" + getChild() +
+                "}";
     }
 }

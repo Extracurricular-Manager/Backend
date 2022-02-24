@@ -61,7 +61,5 @@ class UserPermissionsIT {
     void testPermissionNOTOK() throws Exception {
         mockMvc.perform(get("/api/children"))
                 .andExpect(status().isUnauthorized());
-        //assert(true);
     }
-
 }

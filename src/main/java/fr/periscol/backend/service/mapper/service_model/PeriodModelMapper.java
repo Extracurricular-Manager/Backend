@@ -10,7 +10,10 @@ import org.mapstruct.*;
  * Mapper for the entity {@link PeriodModel} and its DTO {@link PeriodModelDTO}.
  */
 @Mapper(componentModel = "spring", uses = { ChildMapper.class })
-public interface TimeSlotModelMapper extends EntityMapper<PeriodModelDTO, PeriodModel> {
-    @Mapping(target = "child", source = "child", qualifiedByName = "id")
+public interface PeriodModelMapper extends EntityMapper<PeriodModelDTO, PeriodModel> {
+    @Mapping(source = "child", target = "child")
+    @Mapping(source = "startBilling", target = "timeOfStartBilling")
+    @Mapping(source = "begin", target = "timeOfArrival")
+    @Mapping(source = "end", target = "timeOfDeparture")
     PeriodModelDTO toDto(PeriodModel s);
 }

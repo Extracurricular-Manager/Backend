@@ -104,7 +104,7 @@ public class ClassroomService {
         Optional<Classroom> optionalClassroomDTO = classroomRepository.findById(id);
         if (optionalClassroomDTO.isPresent()){
             List<ChildDTO> childDTOList = optionalClassroomDTO.get().getChildren().stream()
-                    .map(childMapper::toDtoId).toList();
+                    .map(childMapper::toDto).toList();
             return Optional.of(childDTOList);
         }
         return Optional.empty();

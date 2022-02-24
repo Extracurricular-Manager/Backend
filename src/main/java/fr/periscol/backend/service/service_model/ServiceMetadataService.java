@@ -68,13 +68,13 @@ public class ServiceMetadataService {
     /**
      * Get one service metadata by id.
      *
-     * @param name the id of the entity.
+     * @param id the id of the entity.
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public Optional<ServiceMetadataDTO> findOne(Long name) {
-        log.debug("Request to get ServiceMetadata : {}", name);
-        return repository.findById(name).map(mapper::toDto);
+    public Optional<ServiceMetadataDTO> findOne(Long id) {
+        log.debug("Request to get ServiceMetadata : {}", id);
+        return repository.findById(id).map(mapper::toDto);
     }
 
     /**

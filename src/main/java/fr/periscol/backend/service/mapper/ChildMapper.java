@@ -23,12 +23,6 @@ public interface ChildMapper extends EntityMapper<ChildDTO, Child> {
     @Mapping(target = "birthday", source = "birthday")
     ChildDTO toDto(Child s);
 
-
-    @Named("id")
-    @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "id", source = "id")
-    ChildDTO toDtoId(Child child);
-
     @Mapping(target = "removeDiet", ignore = true)
     Child toEntity(ChildDTO childDTO);
 
