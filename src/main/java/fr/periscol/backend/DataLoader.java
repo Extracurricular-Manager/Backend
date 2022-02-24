@@ -7,18 +7,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.invoke.MethodHandles;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -46,14 +51,19 @@ public class DataLoader {
     }
 
     @EventListener(ApplicationReadyEvent.class)
-    public void loadFromCsv() {
+    public void loadFromCsv() throws IOException {
+        log.info("Read all data...");
         em.createNativeQuery("SET DATABASE SQL SYNTAX MYS TRUE").executeUpdate();
         final var path = "data/";
-        new BufferedReader(new InputStreamReader(readResource(path)))
-                .lines()
-                .filter(a -> a.endsWith(".csv"))
-                .sorted(DataLoader::compareString)
-                .forEach(f -> loadFromCsv(readResource(path + f), f.split("\\.")[0]));
+        getAllResources(path, "csv")
+                .sorted((a, b) -> compareString(a.getFilename(), b.getFilename()))
+                .forEach(f -> {
+                    try {
+                        loadFromCsv(f.getInputStream(), f.getFilename().split("\\.")[0]);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
     }
 
     private void loadFromCsv(InputStream csv, String name) {
@@ -84,7 +94,10 @@ public class DataLoader {
                 .collect(Collectors.joining(", "));
     }
 
-    private InputStream readResource(String name) {
-        return DataLoader.class.getClassLoader().getResourceAsStream(name);
+    private Stream<Resource> getAllResources(String name, @Nullable String extension) throws IOException {
+        ClassLoader classLoader = MethodHandles.lookup().getClass().getClassLoader();
+        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(classLoader);
+
+        return Arrays.stream(resolver.getResources("classpath:**/" + name + "/*" +  "." + extension));
     }
 }
