@@ -14,14 +14,10 @@ import org.mapstruct.*;
     }
 )
 public interface ChildMapper extends EntityMapper<ChildDTO, Child> {
-
-    @Mapping(target = "classroom", source = "classroom", qualifiedByName = "id")
-    @Mapping(target = "adelphie", source = "adelphie", qualifiedByName = "id")
-    @Mapping(target = "gradeLevel", source = "gradeLevel", qualifiedByName = "id")
-    @Mapping(target = "diets", source = "diets", qualifiedByName = "idSet")
-    @Mapping(target = "facturation", source = "facturation", qualifiedByName = "id")
-    @Mapping(target = "birthday", source = "birthday")
-    ChildDTO toDto(Child s);
+    @Named("id")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    ChildDTO toDtoId(Child child);
 
     @Mapping(target = "removeDiet", ignore = true)
     Child toEntity(ChildDTO childDTO);

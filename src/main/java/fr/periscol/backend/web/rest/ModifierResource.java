@@ -42,13 +42,13 @@ public class ModifierResource {
     }
 
     /**
-     * {@code POST  /modifiers} : Create a new modifier.
+     * {@code POST  /modifier} : Create a new modifier.
      *
      * @param modifierDTO the modifierDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new modifierDTO, or with status {@code 400 (Bad Request)} if the modifier has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/modifiers")
+    @PostMapping("/modifier")
     public ResponseEntity<ModifierDTO> createModifier(@RequestBody ModifierDTO modifierDTO) throws URISyntaxException {
         log.debug("REST request to save Modifier : {}", modifierDTO);
         if (modifierDTO.getId() != null) {
@@ -56,13 +56,13 @@ public class ModifierResource {
         }
         ModifierDTO result = modifierService.save(modifierDTO);
         return ResponseEntity
-            .created(new URI("/api/modifiers/" + result.getId()))
+            .created(new URI("/api/modifier/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /modifiers/:id} : Updates an existing modifier.
+     * {@code PUT  /modifier/:id} : Updates an existing modifier.
      *
      * @param id the id of the modifierDTO to save.
      * @param modifierDTO the modifierDTO to update.
@@ -71,7 +71,7 @@ public class ModifierResource {
      * or with status {@code 500 (Internal Server Error)} if the modifierDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/modifiers/{id}")
+    @PutMapping("/modifier/{id}")
     public ResponseEntity<ModifierDTO> updateModifier(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody ModifierDTO modifierDTO
@@ -96,7 +96,7 @@ public class ModifierResource {
     }
 
     /**
-     * {@code PATCH  /modifiers/:id} : Partial updates given fields of an existing modifier, field will ignore if it is null
+     * {@code PATCH  /modifier/:id} : Partial updates given fields of an existing modifier, field will ignore if it is null
      *
      * @param id the id of the modifierDTO to save.
      * @param modifierDTO the modifierDTO to update.
@@ -106,7 +106,7 @@ public class ModifierResource {
      * or with status {@code 500 (Internal Server Error)} if the modifierDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/modifiers/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/modifier/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<ModifierDTO> partialUpdateModifier(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody ModifierDTO modifierDTO
@@ -143,12 +143,12 @@ public class ModifierResource {
     }
 
     /**
-     * {@code GET  /modifiers/:id} : get the "id" modifier.
+     * {@code GET  /modifier/:id} : get the "id" modifier.
      *
      * @param id the id of the modifierDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the modifierDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/modifiers/{id}")
+    @GetMapping("/modifier/{id}")
     public ResponseEntity<ModifierDTO> getModifier(@PathVariable Long id) {
         log.debug("REST request to get Modifier : {}", id);
         Optional<ModifierDTO> modifierDTO = modifierService.findOne(id);
@@ -156,12 +156,12 @@ public class ModifierResource {
     }
 
     /**
-     * {@code DELETE  /modifiers/:id} : delete the "id" modifier.
+     * {@code DELETE  /modifier/:id} : delete the "id" modifier.
      *
      * @param id the id of the modifierDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/modifiers/{id}")
+    @DeleteMapping("/modifier/{id}")
     public ResponseEntity<Void> deleteModifier(@PathVariable Long id) {
         log.debug("REST request to delete Modifier : {}", id);
         modifierService.delete(id);

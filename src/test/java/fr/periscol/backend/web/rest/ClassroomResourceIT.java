@@ -6,10 +6,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import fr.periscol.backend.IntegrationTest;
+import fr.periscol.backend.domain.Child;
 import fr.periscol.backend.domain.Classroom;
 import fr.periscol.backend.repository.ClassroomRepository;
 import fr.periscol.backend.service.dto.ClassroomDTO;
 import fr.periscol.backend.service.mapper.ClassroomMapper;
+
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -37,8 +40,10 @@ class ClassroomResourceIT {
     private static final String DEFAULT_PROFESSOR = "AAAAAAAAAA";
     private static final String UPDATED_PROFESSOR = "BBBBBBBBBB";
 
-    private static final String ENTITY_API_URL = "/api/classrooms";
+    private static final String ENTITY_API_URL = "/api/classroom";
+    private static final String ENTITY_API_URL_SEVERAL = "/api/classrooms";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
+
 
     private static Random random = new Random();
     private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
@@ -57,6 +62,10 @@ class ClassroomResourceIT {
 
     private Classroom classroom;
 
+    private Child child1;
+
+    private Child child2;
+
     /**
      * Create an entity for this test.
      *
@@ -65,6 +74,16 @@ class ClassroomResourceIT {
      */
     public static Classroom createEntity(EntityManager em) {
         Classroom classroom = new Classroom().name(DEFAULT_NAME).professor(DEFAULT_PROFESSOR);
+        return classroom;
+    }
+
+    private Classroom createEntityWithChildren(EntityManager em){
+        child1 = new Child().name("child1");
+        child2 = new Child().name("child2");
+        Classroom classroom = new Classroom().name(DEFAULT_NAME).professor(DEFAULT_PROFESSOR);
+        classroom.setChildren(new HashSet<>(List.of(child1, child2)));
+        child1.setClassroom(classroom);
+        child2.setClassroom(classroom);
         return classroom;
     }
 
@@ -129,7 +148,7 @@ class ClassroomResourceIT {
 
         // Get all the classroomList
         restClassroomMockMvc
-            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
+            .perform(get(ENTITY_API_URL_SEVERAL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(classroom.getId().intValue())))
@@ -399,5 +418,28 @@ class ClassroomResourceIT {
         // Validate the database contains one less item
         List<Classroom> classroomList = classroomRepository.findAll();
         assertThat(classroomList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    void getChildren() throws Exception{
+        classroom = createEntityWithChildren(em);
+        classroomRepository.saveAndFlush(classroom);
+
+        restClassroomMockMvc.perform(get(ENTITY_API_URL + "/" + classroom.getId().intValue() + "/children"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(child1.getId().intValue())))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(child2.getId().intValue())));
+    }
+
+    @Test
+    @Transactional
+    void getChildrenOnAbsentClassroom() throws Exception{
+        Long absentId;
+        absentId = classroomRepository.findAll().stream().map(Classroom::getId)
+                .reduce(0L, Long::sum);
+        restClassroomMockMvc.perform(get(ENTITY_API_URL + "/" + absentId.intValue() + "/children"))
+                .andExpect(status().isNotFound());
     }
 }
