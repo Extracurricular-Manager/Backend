@@ -435,8 +435,8 @@ class ClassroomResourceIT {
     @Test
     @Transactional
     void getChildrenOnAbsentClassroom() throws Exception{
-        Long absentId = 0L;
-        absentId = classroomRepository.findAll().stream().map(classroom -> classroom.getId())
+        Long absentId;
+        absentId = classroomRepository.findAll().stream().map(Classroom::getId)
                 .reduce(0L, Long::sum);
         restClassroomMockMvc.perform(get(ENTITY_API_URL + "/" + absentId.intValue() + "/children"))
                 .andExpect(status().isNotFound());
