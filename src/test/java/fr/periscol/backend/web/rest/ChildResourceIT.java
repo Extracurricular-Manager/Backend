@@ -54,7 +54,8 @@ class ChildResourceIT {
     private static final LocalDate DEFAULT_BIRTHDAY = LocalDate.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final LocalDate UPDATED_BIRTHDAY = LocalDate.now(ZoneId.systemDefault());
 
-    private static final String ENTITY_API_URL = "/api/children";
+    private static final String ENTITY_API_URL = "/api/child";
+    private static final String ENTITY_API_URL_SEVERAL = "/api/children";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
     private static Random random = new Random();
@@ -152,7 +153,7 @@ class ChildResourceIT {
         childRepository.saveAndFlush(child);
 
         String r = restChildMockMvc
-                .perform(get(ENTITY_API_URL + "?sort=id,desc"))
+                .perform(get(ENTITY_API_URL_SEVERAL + "?sort=id,desc"))
                 .andExpect(status().isOk())
                         .andReturn().getResponse().getContentAsString();
 
@@ -160,7 +161,7 @@ class ChildResourceIT {
 
         // Get all the childList
         restChildMockMvc
-            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
+            .perform(get(ENTITY_API_URL_SEVERAL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(child.getId().intValue())))
