@@ -2,6 +2,8 @@ package fr.periscol.backend.domain.tarification;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A Tarification.
@@ -17,7 +19,11 @@ public class Criteria implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here
+    @Column(name = "name")
+    private String name;
+
+    @OneToMany(mappedBy = "tarifications")
+    private Set<Attributes> attributes = new HashSet<>();
 
     public Long getId() {
         return this.id;
@@ -32,7 +38,11 @@ public class Criteria implements Serializable {
         this.id = id;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+    public Criteria compute(){
+
+        return this;
+
+    }
 
     @Override
     public boolean equals(Object o) {
