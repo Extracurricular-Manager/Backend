@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -49,6 +50,7 @@ public class PresenceModelResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/presence-service/{id}")
+    @PreAuthorize("@serviceAccessor.hasServiceAccess(#serviceId)")
     public ResponseEntity<PresenceModelDTO> putEntry(@RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date date,
                                                    @PathVariable("id") Long serviceId,
                                                    @RequestBody NewPresenceModelDTO presenceModelDTO) throws URISyntaxException {
@@ -71,6 +73,7 @@ public class PresenceModelResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of presenceModels in body.
      */
     @GetMapping("/presence-service/{id}")
+    @PreAuthorize("@serviceAccessor.hasServiceAccess(#serviceId)")
     public ResponseEntity<List<PresenceModelDTO>> getAllEntries(@RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date date,
                                               @PathVariable("id") Long serviceId) {
         log.debug("REST request to get all PresenceModel entries from {} services", serviceId);
@@ -88,6 +91,7 @@ public class PresenceModelResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the presenceModelDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/presence-service/{serviceId}/{childId}")
+    @PreAuthorize("@serviceAccessor.hasServiceAccess(#serviceId)")
     public ResponseEntity<PresenceModelDTO> getTimeSlotModel(@RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date date,
                                                            @PathVariable Long serviceId,
                                                            @PathVariable Long childId) {
@@ -108,6 +112,7 @@ public class PresenceModelResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/presence-service/{serviceId}/{childId}")
+    @PreAuthorize("@serviceAccessor.hasServiceAccess(#serviceId)")
     public ResponseEntity<Void> deleteTimeSlotModel(@RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date date,
                                                     @PathVariable Long serviceId,
                                                     @PathVariable Long childId) {

@@ -1,5 +1,11 @@
 package fr.periscol.backend.security.jwt;
 
+import fr.periscol.backend.domain.Permission;
+import fr.periscol.backend.domain.Role;
+import fr.periscol.backend.service.UserService;
+import fr.periscol.backend.service.dto.PermissionDTO;
+import fr.periscol.backend.service.dto.RoleDTO;
+import fr.periscol.backend.web.rest.errors.UserNotExistsException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -10,6 +16,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,7 +24,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
-import tech.jhipster.config.JHipsterProperties;
 
 @Component
 public class TokenProvider {
@@ -34,9 +40,13 @@ public class TokenProvider {
 
     private final long tokenValidityInMillisecondsForRememberMe;
 
+    private final UserService service;
+
     public TokenProvider(@Value("${security.authentication.jwt.base64-secret}") String secret,
                          @Value("${security.authentication.jwt.token-validity-in-seconds}") String tokenValidityInMilliseconds,
-                         @Value("${security.authentication.jwt.token-validity-in-seconds-for-remember-me}") String tokenValidityInMillisecondsForRememberMe) {
+                         @Value("${security.authentication.jwt.token-validity-in-seconds-for-remember-me}") String tokenValidityInMillisecondsForRememberMe,
+                         @Lazy UserService service) {
+        this.service = service;
         byte[] keyBytes;
         if (!ObjectUtils.isEmpty(secret)) {
             log.debug("Using a Base64-encoded JWT secret key");
@@ -56,7 +66,7 @@ public class TokenProvider {
     }
 
     public String createToken(Authentication authentication, boolean rememberMe) {
-        String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
+        String authorities = "";
 
         long now = (new Date()).getTime();
         Date validity;
@@ -78,11 +88,19 @@ public class TokenProvider {
     public Authentication getAuthentication(String token) {
         Claims claims = jwtParser.parseClaimsJws(token).getBody();
 
-        Collection<? extends GrantedAuthority> authorities = Arrays
-            .stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-            .filter(auth -> !auth.trim().isEmpty())
+        final var userOpt = service.findOne(claims.getSubject());
+
+        if(userOpt.isEmpty())
+            throw new UserNotExistsException();
+
+        Collection<SimpleGrantedAuthority> authorities = userOpt.get()
+                .getRoles().stream()
+                .flatMap(r -> r.getPermissions().stream())
+                .map(PermissionDTO::getName)
             .map(SimpleGrantedAuthority::new)
-            .collect(Collectors.toList());
+            .collect(Collectors.toCollection(ArrayList::new));
+
+        authorities.addAll(userOpt.get().getRoles().stream().map(RoleDTO::getName).map(SimpleGrantedAuthority::new).toList());
 
         User principal = new User(claims.getSubject(), "", authorities);
 

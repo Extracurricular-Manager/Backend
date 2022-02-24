@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -40,7 +41,7 @@ public class PeriodModelResource {
     }
 
     /**
-     * {@code POST  /period-service} : Put an entry to PeriodModel. If exist, update.
+     * {@code POST  /period-service} : Put an entry to PeriodModel. If exists, update.
      *
      * @param date        the date of the entry to get
      * @param serviceId      the ID of the service where put the entry
@@ -49,6 +50,7 @@ public class PeriodModelResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/period-service/{id}")
+    @PreAuthorize("@serviceAccessor.hasServiceAccess(#serviceId)")
     public ResponseEntity<PeriodModelDTO> putEntry(@RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date date,
                                                    @PathVariable("id") Long serviceId,
                                                    @RequestBody NewPeriodModelDTO periodModelDTO) throws URISyntaxException {
@@ -71,6 +73,7 @@ public class PeriodModelResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of periodModels in body.
      */
     @GetMapping("/period-service/{id}")
+    @PreAuthorize("@serviceAccessor.hasServiceAccess(#serviceId)")
     public ResponseEntity<List<PeriodModelDTO>> getAllEntries(@RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date date,
                                               @PathVariable("id") Long serviceId) {
         log.debug("REST request to get all PeriodModel entries from {} services", serviceId);
@@ -88,6 +91,7 @@ public class PeriodModelResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the periodModelDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/period-service/{serviceId}/{childId}")
+    @PreAuthorize("@serviceAccessor.hasServiceAccess(#serviceId)")
     public ResponseEntity<PeriodModelDTO> getTimeSlotModel(@RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date date,
                                                            @PathVariable Long serviceId,
                                                            @PathVariable Long childId) {
@@ -108,6 +112,7 @@ public class PeriodModelResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/period-service/{serviceId}/{childId}")
+    @PreAuthorize("@serviceAccessor.hasServiceAccess(#serviceId)")
     public ResponseEntity<Void> deleteTimeSlotModel(@RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date date,
                                                     @PathVariable Long serviceId,
                                                     @PathVariable Long childId) {
