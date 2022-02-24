@@ -2,6 +2,7 @@ package fr.periscol.backend.web.rest;
 
 import fr.periscol.backend.repository.FamilyRepository;
 import fr.periscol.backend.service.FamilyService;
+import fr.periscol.backend.service.dto.ChildDTO;
 import fr.periscol.backend.service.dto.FamilyDTO;
 import fr.periscol.backend.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
@@ -153,6 +154,19 @@ public class FamilyResource {
         log.debug("REST request to get Family : {}", id);
         Optional<FamilyDTO> familyDTO = familyService.findOne(id);
         return ResponseUtil.wrapOrNotFound(familyDTO);
+    }
+
+    /**
+     * {@code GET  /families/:id/children} : get the children of the "id" family.
+     *
+     * @param id the id of the familyDTO to retrieve the children from.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body a list of childrenDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/families/{id}/children")
+    public ResponseEntity<List<ChildDTO>> getChildren(@PathVariable Long id){
+        log.debug("REST request to get Classroom : {}", id);
+        Optional<List<ChildDTO>> childDTOList = familyService.findAllChildren(id);
+        return ResponseUtil.wrapOrNotFound(childDTOList);
     }
 
     /**

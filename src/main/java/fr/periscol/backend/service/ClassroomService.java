@@ -101,9 +101,9 @@ public class ClassroomService {
     @Transactional(readOnly = true)
     public Optional<List<ChildDTO>> findAllChildren(Long id) {
         log.debug("Request to get all the children in the classroom with id : {}.", id);
-        Optional<Classroom> optionalClassroomDTO = classroomRepository.findById(id);
-        if (optionalClassroomDTO.isPresent()){
-            List<ChildDTO> childDTOList = optionalClassroomDTO.get().getChildren().stream()
+        Optional<Classroom> optionalClassroom = classroomRepository.findById(id);
+        if (optionalClassroom.isPresent()){
+            List<ChildDTO> childDTOList = optionalClassroom.get().getChildren().stream()
                     .map(childMapper::toDtoId).toList();
             return Optional.of(childDTOList);
         }
