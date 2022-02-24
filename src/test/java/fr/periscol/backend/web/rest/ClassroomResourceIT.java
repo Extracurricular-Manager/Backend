@@ -431,4 +431,14 @@ class ClassroomResourceIT {
                 .andExpect(jsonPath("$.[*].id").value(hasItem(child1.getId().intValue())))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(child2.getId().intValue())));
     }
+
+    @Test
+    @Transactional
+    void getChildrenOnAbsentClassroom() throws Exception{
+        Long absentId = 0L;
+        absentId = classroomRepository.findAll().stream().map(classroom -> classroom.getId())
+                .reduce(0L, Long::sum);
+        restClassroomMockMvc.perform(get(ENTITY_API_URL + "/" + absentId.intValue() + "/children"))
+                .andExpect(status().isNotFound());
+    }
 }
