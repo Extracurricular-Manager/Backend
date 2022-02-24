@@ -45,6 +45,16 @@ public class UserJWTController {
         return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
     }
 
+    @GetMapping("/token_validation")
+    public ResponseEntity<Void> isValidToken(@RequestHeader("authorization") String token) {
+        final var isValid = tokenProvider.validateToken(token.replace("Bearer ", ""));
+
+        if(isValid)
+            return ResponseEntity.noContent().build();
+        else
+            return ResponseEntity.notFound().build();
+    }
+
     /**
      * Object to return as body in JWT Authentication.
      */

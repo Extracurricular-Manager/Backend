@@ -43,13 +43,13 @@ public class FamilyResource {
     }
 
     /**
-     * {@code POST  /families} : Create a new family.
+     * {@code POST  /family} : Create a new family.
      *
      * @param familyDTO the familyDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new familyDTO, or with status {@code 400 (Bad Request)} if the family has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/families")
+    @PostMapping("/family")
     public ResponseEntity<FamilyDTO> createFamily(@RequestBody FamilyDTO familyDTO) throws URISyntaxException {
         log.debug("REST request to save Family : {}", familyDTO);
         if (familyDTO.getId() != null) {
@@ -57,13 +57,13 @@ public class FamilyResource {
         }
         FamilyDTO result = familyService.save(familyDTO);
         return ResponseEntity
-            .created(new URI("/api/families/" + result.getId()))
+            .created(new URI("/api/family/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /families/:id} : Updates an existing family.
+     * {@code PUT  /family/:id} : Updates an existing family.
      *
      * @param id the id of the familyDTO to save.
      * @param familyDTO the familyDTO to update.
@@ -72,7 +72,7 @@ public class FamilyResource {
      * or with status {@code 500 (Internal Server Error)} if the familyDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/families/{id}")
+    @PutMapping("/family/{id}")
     public ResponseEntity<FamilyDTO> updateFamily(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody FamilyDTO familyDTO
@@ -97,7 +97,7 @@ public class FamilyResource {
     }
 
     /**
-     * {@code PATCH  /families/:id} : Partial updates given fields of an existing family, field will ignore if it is null
+     * {@code PATCH  /family/:id} : Partial updates given fields of an existing family, field will ignore if it is null
      *
      * @param id the id of the familyDTO to save.
      * @param familyDTO the familyDTO to update.
@@ -107,7 +107,7 @@ public class FamilyResource {
      * or with status {@code 500 (Internal Server Error)} if the familyDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/families/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/family/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<FamilyDTO> partialUpdateFamily(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody FamilyDTO familyDTO
@@ -144,12 +144,12 @@ public class FamilyResource {
     }
 
     /**
-     * {@code GET  /families/:id} : get the "id" family.
+     * {@code GET  /family/:id} : get the "id" family.
      *
      * @param id the id of the familyDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the familyDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/families/{id}")
+    @GetMapping("/family/{id}")
     public ResponseEntity<FamilyDTO> getFamily(@PathVariable Long id) {
         log.debug("REST request to get Family : {}", id);
         Optional<FamilyDTO> familyDTO = familyService.findOne(id);
@@ -157,12 +157,12 @@ public class FamilyResource {
     }
 
     /**
-     * {@code GET  /families/:id/children} : get the children of the "id" family.
+     * {@code GET  /family/:id/children} : get the children of the "id" family.
      *
      * @param id the id of the familyDTO to retrieve the children from.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body a list of childrenDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/families/{id}/children")
+    @GetMapping("/family/{id}/children")
     public ResponseEntity<List<ChildDTO>> getChildren(@PathVariable Long id){
         log.debug("REST request to get Classroom : {}", id);
         Optional<List<ChildDTO>> childDTOList = familyService.findAllChildren(id);
@@ -170,12 +170,12 @@ public class FamilyResource {
     }
 
     /**
-     * {@code DELETE  /families/:id} : delete the "id" family.
+     * {@code DELETE  /family/:id} : delete the "id" family.
      *
      * @param id the id of the familyDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/families/{id}")
+    @DeleteMapping("/family/{id}")
     public ResponseEntity<Void> deleteFamily(@PathVariable Long id) {
         log.debug("REST request to delete Family : {}", id);
         familyService.delete(id);

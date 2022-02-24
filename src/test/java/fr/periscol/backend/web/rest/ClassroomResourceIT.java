@@ -40,7 +40,8 @@ class ClassroomResourceIT {
     private static final String DEFAULT_PROFESSOR = "AAAAAAAAAA";
     private static final String UPDATED_PROFESSOR = "BBBBBBBBBB";
 
-    private static final String ENTITY_API_URL = "/api/classrooms";
+    private static final String ENTITY_API_URL = "/api/classroom";
+    private static final String ENTITY_API_URL_SEVERAL = "/api/classrooms";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
 
@@ -147,7 +148,7 @@ class ClassroomResourceIT {
 
         // Get all the classroomList
         restClassroomMockMvc
-            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
+            .perform(get(ENTITY_API_URL_SEVERAL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(classroom.getId().intValue())))
@@ -430,5 +431,15 @@ class ClassroomResourceIT {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(child1.getId().intValue())))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(child2.getId().intValue())));
+    }
+
+    @Test
+    @Transactional
+    void getChildrenOnAbsentClassroom() throws Exception{
+        Long absentId;
+        absentId = classroomRepository.findAll().stream().map(Classroom::getId)
+                .reduce(0L, Long::sum);
+        restClassroomMockMvc.perform(get(ENTITY_API_URL + "/" + absentId.intValue() + "/children"))
+                .andExpect(status().isNotFound());
     }
 }

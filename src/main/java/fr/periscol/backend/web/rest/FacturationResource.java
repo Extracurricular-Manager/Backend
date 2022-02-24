@@ -42,13 +42,13 @@ public class FacturationResource {
     }
 
     /**
-     * {@code POST  /facturations} : Create a new facturation.
+     * {@code POST  /facturation} : Create a new facturation.
      *
      * @param facturationDTO the facturationDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new facturationDTO, or with status {@code 400 (Bad Request)} if the facturation has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/facturations")
+    @PostMapping("/facturation")
     public ResponseEntity<FacturationDTO> createFacturation(@RequestBody FacturationDTO facturationDTO) throws URISyntaxException {
         log.debug("REST request to save Facturation : {}", facturationDTO);
         if (facturationDTO.getId() != null) {
@@ -56,13 +56,13 @@ public class FacturationResource {
         }
         FacturationDTO result = facturationService.save(facturationDTO);
         return ResponseEntity
-            .created(new URI("/api/facturations/" + result.getId()))
+            .created(new URI("/api/facturation/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /facturations/:id} : Updates an existing facturation.
+     * {@code PUT  /facturation/:id} : Updates an existing facturation.
      *
      * @param id the id of the facturationDTO to save.
      * @param facturationDTO the facturationDTO to update.
@@ -71,7 +71,7 @@ public class FacturationResource {
      * or with status {@code 500 (Internal Server Error)} if the facturationDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/facturations/{id}")
+    @PutMapping("/facturation/{id}")
     public ResponseEntity<FacturationDTO> updateFacturation(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody FacturationDTO facturationDTO
@@ -96,7 +96,7 @@ public class FacturationResource {
     }
 
     /**
-     * {@code PATCH  /facturations/:id} : Partial updates given fields of an existing facturation, field will ignore if it is null
+     * {@code PATCH  /facturation/:id} : Partial updates given fields of an existing facturation, field will ignore if it is null
      *
      * @param id the id of the facturationDTO to save.
      * @param facturationDTO the facturationDTO to update.
@@ -106,7 +106,7 @@ public class FacturationResource {
      * or with status {@code 500 (Internal Server Error)} if the facturationDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/facturations/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/facturation/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<FacturationDTO> partialUpdateFacturation(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody FacturationDTO facturationDTO
@@ -143,12 +143,12 @@ public class FacturationResource {
     }
 
     /**
-     * {@code GET  /facturations/:id} : get the "id" facturation.
+     * {@code GET  /facturation/:id} : get the "id" facturation.
      *
      * @param id the id of the facturationDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the facturationDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/facturations/{id}")
+    @GetMapping("/facturation/{id}")
     public ResponseEntity<FacturationDTO> getFacturation(@PathVariable Long id) {
         log.debug("REST request to get Facturation : {}", id);
         Optional<FacturationDTO> facturationDTO = facturationService.findOne(id);
@@ -156,12 +156,12 @@ public class FacturationResource {
     }
 
     /**
-     * {@code DELETE  /facturations/:id} : delete the "id" facturation.
+     * {@code DELETE  /facturation/:id} : delete the "id" facturation.
      *
      * @param id the id of the facturationDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/facturations/{id}")
+    @DeleteMapping("/facturation/{id}")
     public ResponseEntity<Void> deleteFacturation(@PathVariable Long id) {
         log.debug("REST request to delete Facturation : {}", id);
         facturationService.delete(id);

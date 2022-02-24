@@ -96,6 +96,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
             .authorizeRequests()
             .antMatchers("/api/authenticate").permitAll()
+            .antMatchers("/api/token_validation").permitAll()
             .antMatchers("/api/**").authenticated()
         .and()
             .httpBasic()

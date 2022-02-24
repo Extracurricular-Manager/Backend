@@ -42,13 +42,13 @@ public class DietResource {
     }
 
     /**
-     * {@code POST  /diets} : Create a new diet.
+     * {@code POST  /diet} : Create a new diet.
      *
      * @param dietDTO the dietDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new dietDTO, or with status {@code 400 (Bad Request)} if the diet has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/diets")
+    @PostMapping("/diet")
     public ResponseEntity<DietDTO> createDiet(@RequestBody DietDTO dietDTO) throws URISyntaxException {
         log.debug("REST request to save Diet : {}", dietDTO);
         if (dietDTO.getId() != null) {
@@ -56,13 +56,13 @@ public class DietResource {
         }
         DietDTO result = dietService.save(dietDTO);
         return ResponseEntity
-            .created(new URI("/api/diets/" + result.getId()))
+            .created(new URI("/api/diet/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /diets/:id} : Updates an existing diet.
+     * {@code PUT  /diet/:id} : Updates an existing diet.
      *
      * @param id the id of the dietDTO to save.
      * @param dietDTO the dietDTO to update.
@@ -71,7 +71,7 @@ public class DietResource {
      * or with status {@code 500 (Internal Server Error)} if the dietDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/diets/{id}")
+    @PutMapping("/diet/{id}")
     public ResponseEntity<DietDTO> updateDiet(@PathVariable(value = "id", required = false) final Long id, @RequestBody DietDTO dietDTO)
         throws URISyntaxException {
         log.debug("REST request to update Diet : {}, {}", id, dietDTO);
@@ -94,7 +94,7 @@ public class DietResource {
     }
 
     /**
-     * {@code PATCH  /diets/:id} : Partial updates given fields of an existing diet, field will ignore if it is null
+     * {@code PATCH  /diet/:id} : Partial updates given fields of an existing diet, field will ignore if it is null
      *
      * @param id the id of the dietDTO to save.
      * @param dietDTO the dietDTO to update.
@@ -104,7 +104,7 @@ public class DietResource {
      * or with status {@code 500 (Internal Server Error)} if the dietDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/diets/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/diet/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<DietDTO> partialUpdateDiet(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody DietDTO dietDTO
@@ -146,7 +146,7 @@ public class DietResource {
      * @param id the id of the dietDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the dietDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/diets/{id}")
+    @GetMapping("/diet/{id}")
     public ResponseEntity<DietDTO> getDiet(@PathVariable Long id) {
         log.debug("REST request to get Diet : {}", id);
         Optional<DietDTO> dietDTO = dietService.findOne(id);
@@ -154,12 +154,12 @@ public class DietResource {
     }
 
     /**
-     * {@code DELETE  /diets/:id} : delete the "id" diet.
+     * {@code DELETE  /diet/:id} : delete the "id" diet.
      *
      * @param id the id of the dietDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/diets/{id}")
+    @DeleteMapping("/diet/{id}")
     public ResponseEntity<Void> deleteDiet(@PathVariable Long id) {
         log.debug("REST request to delete Diet : {}", id);
         dietService.delete(id);

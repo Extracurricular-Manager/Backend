@@ -2,11 +2,11 @@ package fr.periscol.backend.service.dto.service_model;
 
 public class ServiceMetadataDTO {
 
+    private Long id;
+
     private String name;
 
     private String model;
-
-    private Long id;
 
     private String icon;
 

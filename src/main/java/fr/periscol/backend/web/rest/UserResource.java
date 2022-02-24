@@ -139,7 +139,7 @@ public class UserResource {
     }
 
     /**
-     * {@code GET  /user} : get all the users.
+     * {@code GET  /users} : get all the users.
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of users in body.
      */

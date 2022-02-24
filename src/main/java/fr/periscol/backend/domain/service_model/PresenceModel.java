@@ -30,6 +30,9 @@ public class PresenceModel implements Serializable {
     @Column(name = "date")
     private LocalDate date;
 
+    @Column(name = "service_id")
+    private Long serviceId;
+
     @JsonIgnoreProperties(
         value = { "classroom", "adelphie", "gradeLevel", "diets", "timeSlotModel", "presenceModel", "tarif", "facturation" },
         allowSetters = true
@@ -47,6 +50,14 @@ public class PresenceModel implements Serializable {
     public PresenceModel id(Long id) {
         this.setId(id);
         return this;
+    }
+
+    public Long getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(Long serviceId) {
+        this.serviceId = serviceId;
     }
 
     public void setId(Long id) {

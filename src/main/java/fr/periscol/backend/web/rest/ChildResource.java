@@ -42,13 +42,13 @@ public class ChildResource {
     }
 
     /**
-     * {@code POST  /children} : Create a new child.
+     * {@code POST  /child} : Create a new child.
      *
      * @param childDTO the childDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new childDTO, or with status {@code 400 (Bad Request)} if the child has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/children")
+    @PostMapping("/child")
     public ResponseEntity<ChildDTO> createChild(@RequestBody ChildDTO childDTO) throws URISyntaxException {
         log.debug("REST request to save Child : {}", childDTO);
         if (childDTO.getId() != null) {
@@ -56,13 +56,13 @@ public class ChildResource {
         }
         ChildDTO result = childService.save(childDTO);
         return ResponseEntity
-            .created(new URI("/api/children/" + result.getId()))
+            .created(new URI("/api/child/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /children/:id} : Updates an existing child.
+     * {@code PUT  /child/:id} : Updates an existing child.
      *
      * @param id the id of the childDTO to save.
      * @param childDTO the childDTO to update.
@@ -71,7 +71,7 @@ public class ChildResource {
      * or with status {@code 500 (Internal Server Error)} if the childDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/children/{id}")
+    @PutMapping("/child/{id}")
     public ResponseEntity<ChildDTO> updateChild(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody ChildDTO childDTO
@@ -96,7 +96,7 @@ public class ChildResource {
     }
 
     /**
-     * {@code PATCH  /children/:id} : Partial updates given fields of an existing child, field will ignore if it is null
+     * {@code PATCH  /child/:id} : Partial updates given fields of an existing child, field will ignore if it is null
      *
      * @param id the id of the childDTO to save.
      * @param childDTO the childDTO to update.
@@ -106,7 +106,7 @@ public class ChildResource {
      * or with status {@code 500 (Internal Server Error)} if the childDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/children/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/child/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<ChildDTO> partialUpdateChild(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody ChildDTO childDTO
@@ -157,12 +157,12 @@ public class ChildResource {
     }
 
     /**
-     * {@code GET  /children/:id} : get the "id" child.
+     * {@code GET  /child/:id} : get the "id" child.
      *
      * @param id the id of the childDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the childDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/children/{id}")
+    @GetMapping("/child/{id}")
     public ResponseEntity<ChildDTO> getChild(@PathVariable Long id) {
         log.debug("REST request to get Child : {}", id);
         Optional<ChildDTO> childDTO = childService.findOne(id);
@@ -170,12 +170,12 @@ public class ChildResource {
     }
 
     /**
-     * {@code DELETE  /children/:id} : delete the "id" child.
+     * {@code DELETE  /child/:id} : delete the "id" child.
      *
      * @param id the id of the childDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/children/{id}")
+    @DeleteMapping("/child/{id}")
     public ResponseEntity<Void> deleteChild(@PathVariable Long id) {
         log.debug("REST request to delete Child : {}", id);
         childService.delete(id);

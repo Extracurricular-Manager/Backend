@@ -6,6 +6,7 @@ import fr.periscol.backend.domain.Child;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * A TimeSlotModel.
@@ -18,17 +19,19 @@ public class PeriodModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "service_id")
+    private Long serviceId;
 
     @Column(name = "begin")
-    private LocalDate begin;
+    private LocalDateTime begin;
 
     @Column(name = "end")
-    private LocalDate end;
+    private LocalDateTime end;
+
+    @Column(name = "start_billing")
+    private LocalDateTime startBilling;
 
     @JsonIgnoreProperties(
         value = { "classroom", "adelphie", "gradeLevel", "diets", "timeSlotModel", "presenceModel", "tarif", "facturation" },
@@ -49,46 +52,41 @@ public class PeriodModel implements Serializable {
         return this;
     }
 
+    public LocalDateTime getStartBilling() {
+        return startBilling;
+    }
+
+    public void setStartBilling(LocalDateTime startBilling) {
+        this.startBilling = startBilling;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public PeriodModel name(String name) {
-        this.setName(name);
-        return this;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public LocalDate getBegin() {
+    public LocalDateTime getBegin() {
         return this.begin;
     }
 
-    public PeriodModel timeOfArrival(LocalDate timeOfArrival) {
+    public PeriodModel timeOfArrival(LocalDateTime timeOfArrival) {
         this.setBegin(timeOfArrival);
         return this;
     }
 
-    public void setBegin(LocalDate timeOfArrival) {
+    public void setBegin(LocalDateTime timeOfArrival) {
         this.begin = timeOfArrival;
     }
 
-    public LocalDate getEnd() {
+    public LocalDateTime getEnd() {
         return this.end;
     }
 
-    public PeriodModel timeOfDeparture(LocalDate timeOfDeparture) {
+    public PeriodModel timeOfDeparture(LocalDateTime timeOfDeparture) {
         this.setEnd(timeOfDeparture);
         return this;
     }
 
-    public void setEnd(LocalDate timeOfDeparture) {
+    public void setEnd(LocalDateTime timeOfDeparture) {
         this.end = timeOfDeparture;
     }
 
@@ -103,6 +101,14 @@ public class PeriodModel implements Serializable {
     public PeriodModel child(Child child) {
         this.setChild(child);
         return this;
+    }
+
+    public Long getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(Long serviceId) {
+        this.serviceId = serviceId;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -129,7 +135,6 @@ public class PeriodModel implements Serializable {
     public String toString() {
         return "TimeSlotModel{" +
             "id=" + getId() +
-            ", name='" + getName() + "'" +
             ", timeOfArrival='" + getBegin() + "'" +
             ", timeOfDeparture='" + getEnd() + "'" +
             "}";

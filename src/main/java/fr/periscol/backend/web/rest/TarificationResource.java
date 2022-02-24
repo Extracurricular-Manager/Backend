@@ -43,13 +43,13 @@ public class TarificationResource {
     }
 
     /**
-     * {@code POST  /tarifications} : Create a new tarification.
+     * {@code POST  /tarification} : Create a new tarification.
      *
      * @param tarificationDTO the tarificationDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new tarificationDTO, or with status {@code 400 (Bad Request)} if the tarification has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/tarifications")
+    @PostMapping("/tarification")
     public ResponseEntity<TarificationDTO> createTarification(@RequestBody TarificationDTO tarificationDTO) throws URISyntaxException {
         log.debug("REST request to save Tarification : {}", tarificationDTO);
         if (tarificationDTO.getId() != null) {
@@ -57,13 +57,13 @@ public class TarificationResource {
         }
         TarificationDTO result = tarificationService.save(tarificationDTO);
         return ResponseEntity
-            .created(new URI("/api/tarifications/" + result.getId()))
+            .created(new URI("/api/tarification/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /tarifications/:id} : Updates an existing tarification.
+     * {@code PUT  /tarification/:id} : Updates an existing tarification.
      *
      * @param id the id of the tarificationDTO to save.
      * @param tarificationDTO the tarificationDTO to update.
@@ -72,7 +72,7 @@ public class TarificationResource {
      * or with status {@code 500 (Internal Server Error)} if the tarificationDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/tarifications/{id}")
+    @PutMapping("/tarification/{id}")
     public ResponseEntity<TarificationDTO> updateTarification(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody TarificationDTO tarificationDTO
@@ -97,7 +97,7 @@ public class TarificationResource {
     }
 
     /**
-     * {@code PATCH  /tarifications/:id} : Partial updates given fields of an existing tarification, field will ignore if it is null
+     * {@code PATCH  /tarification/:id} : Partial updates given fields of an existing tarification, field will ignore if it is null
      *
      * @param id the id of the tarificationDTO to save.
      * @param tarificationDTO the tarificationDTO to update.
@@ -107,7 +107,7 @@ public class TarificationResource {
      * or with status {@code 500 (Internal Server Error)} if the tarificationDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/tarifications/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/tarification/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<TarificationDTO> partialUpdateTarification(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody TarificationDTO tarificationDTO
@@ -144,12 +144,12 @@ public class TarificationResource {
     }
 
     /**
-     * {@code GET  /tarifications/:id} : get the "id" tarification.
+     * {@code GET  /tarification/:id} : get the "id" tarification.
      *
      * @param id the id of the tarificationDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the tarificationDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/tarifications/{id}")
+    @GetMapping("/tarification/{id}")
     public ResponseEntity<TarificationDTO> getTarification(@PathVariable Long id) {
         log.debug("REST request to get Tarification : {}", id);
         Optional<TarificationDTO> tarificationDTO = tarificationService.findOne(id);
@@ -157,12 +157,12 @@ public class TarificationResource {
     }
 
     /**
-     * {@code DELETE  /tarifications/:id} : delete the "id" tarification.
+     * {@code DELETE  /tarification/:id} : delete the "id" tarification.
      *
      * @param id the id of the tarificationDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/tarifications/{id}")
+    @DeleteMapping("/tarification/{id}")
     public ResponseEntity<Void> deleteTarification(@PathVariable Long id) {
         log.debug("REST request to delete Tarification : {}", id);
         tarificationService.delete(id);
