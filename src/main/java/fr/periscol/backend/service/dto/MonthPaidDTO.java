@@ -1,20 +1,27 @@
 package fr.periscol.backend.service.dto;
 
+import fr.periscol.backend.domain.Child;
+import fr.periscol.backend.domain.MonthPaid;
+
+import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
- * A DTO for the {@link fr.periscol.backend.domain.Facturation} entity.
+ * A DTO for the {@link MonthPaid} entity.
  */
-public class FacturationDTO implements Serializable {
+public class MonthPaidDTO implements Serializable {
 
     private Long id;
 
-    private String schoolService;
+    private LocalDate date;
 
     private Long cost;
 
     private Boolean payed;
+
+    private Child child;
 
     public Long getId() {
         return id;
@@ -24,12 +31,12 @@ public class FacturationDTO implements Serializable {
         this.id = id;
     }
 
-    public String getSchoolService() {
-        return schoolService;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setSchoolService(String schoolService) {
-        this.schoolService = schoolService;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public Long getCost() {
@@ -48,20 +55,28 @@ public class FacturationDTO implements Serializable {
         this.payed = payed;
     }
 
+    public Child getChild() {
+        return child;
+    }
+
+    public void setChild(Child child) {
+        this.child = child;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof FacturationDTO)) {
+        if (!(o instanceof MonthPaidDTO)) {
             return false;
         }
 
-        FacturationDTO facturationDTO = (FacturationDTO) o;
+        MonthPaidDTO monthPaidDTO = (MonthPaidDTO) o;
         if (this.id == null) {
             return false;
         }
-        return Objects.equals(this.id, facturationDTO.id);
+        return Objects.equals(this.id, monthPaidDTO.id);
     }
 
     @Override
@@ -74,7 +89,7 @@ public class FacturationDTO implements Serializable {
     public String toString() {
         return "FacturationDTO{" +
             "id=" + getId() +
-            ", schoolService='" + getSchoolService() + "'" +
+            ", date='" + getDate() + "'" +
             ", cost=" + getCost() +
             ", payed='" + getPayed() + "'" +
             "}";

@@ -59,11 +59,8 @@ public class Child implements Serializable {
     private PresenceModel presenceModel;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JsonIgnoreProperties(value = { "childs" }, allowSetters = true)
-    private Facturation facturation;
-
-    // jhipster-needle-entity-add-field - JHipster will add fields here
+    @OneToOne(mappedBy = "child")
+    private MonthPaid monthPaid;
 
     public Long getId() {
         return this.id;
@@ -219,20 +216,14 @@ public class Child implements Serializable {
         return this;
     }
 
-    public Facturation getFacturation() {
-        return this.facturation;
+    public MonthPaid getMonthPaid() {
+        return monthPaid;
     }
 
-    public void setFacturation(Facturation facturation) {
-        this.facturation = facturation;
+    public void setMonthPaid(MonthPaid monthPaid) {
+        this.monthPaid = monthPaid;
     }
-
-    public Child facturation(Facturation facturation) {
-        this.setFacturation(facturation);
-        return this;
-    }
-
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+// jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {

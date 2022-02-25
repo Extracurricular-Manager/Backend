@@ -89,7 +89,7 @@ class PresenceModelResourceTest {
         child.setSurname("Michel");
         child.setAdelphie(null);
         child.setClassroom(null);
-        child.setFacturation(null);
+        child.setMonthPaid(null);
         child.setGradeLevel(null);
         this.child = childMapper.toEntity(childService.save(childMapper.toDto(child)));
     }

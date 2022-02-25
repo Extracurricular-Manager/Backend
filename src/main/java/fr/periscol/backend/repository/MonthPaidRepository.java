@@ -1,6 +1,6 @@
 package fr.periscol.backend.repository;
 
-import fr.periscol.backend.domain.Facturation;
+import fr.periscol.backend.domain.MonthPaid;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface FacturationRepository extends JpaRepository<Facturation, Long> {}
+public interface MonthPaidRepository extends JpaRepository<MonthPaid, Long> {}

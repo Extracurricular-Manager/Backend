@@ -10,7 +10,7 @@ import org.mapstruct.*;
 @Mapper(
     componentModel = "spring",
     uses = {
-        ClassroomMapper.class, FamilyMapper.class, GradeLevelMapper.class, DietMapper.class, FacturationMapper.class,
+        ClassroomMapper.class, FamilyMapper.class, GradeLevelMapper.class, DietMapper.class, MonthPaidMapper.class,
     }
 )
 public interface ChildMapper extends EntityMapper<ChildDTO, Child> {
