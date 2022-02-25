@@ -1,9 +1,16 @@
 package fr.periscol.backend.domain.tarification;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import fr.periscol.backend.domain.Diet;
+import fr.periscol.backend.domain.service_model.ServiceMetadata;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
+
+
 
 /**
  * A Tarification.
@@ -13,6 +20,13 @@ import java.util.Set;
 public class Criteria implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    enum TimePerspective {
+        DAY,
+        WEEK,
+        MONTH,
+        YEAR
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +39,18 @@ public class Criteria implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "TimePerspective")
+    private TimePerspective timePerspective;
+
     @OneToMany(mappedBy = "criteria")
     private Set<Attributes> attributes = new HashSet<>();
+
+    @ManyToMany(mappedBy = "criterias")
+    @JsonIgnoreProperties(
+            allowSetters = true
+    )
+    private Set<ServiceMetadata> serviceMetadata = new HashSet<>();
+
 
     public Long getId() {
         return this.id;
@@ -39,12 +63,6 @@ public class Criteria implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Criteria compute(){
-
-        return this;
-
     }
 
     public String getName() {
@@ -69,6 +87,37 @@ public class Criteria implements Serializable {
 
     public void setAttributes(Set<Attributes> attributes) {
         this.attributes = attributes;
+    }
+
+    public Set<ServiceMetadata> getServiceMetadata() {
+        return this.serviceMetadata;
+    }
+
+    public void setServiceMetadata(Set<ServiceMetadata> serviceMetadata) {
+        if (this.serviceMetadata != null) {
+            this.serviceMetadata.forEach(i -> i.removeCriteria(this));
+        }
+        if (serviceMetadata != null) {
+            serviceMetadata.forEach(i -> i.addCriteria(this));
+        }
+        this.serviceMetadata = serviceMetadata;
+    }
+
+    public Criteria serviceMetadata(Set<ServiceMetadata> serviceMetadata) {
+        this.setServiceMetadata(serviceMetadata);
+        return this;
+    }
+
+    public Criteria addServiceMetadataren(ServiceMetadata serviceMetadata) {
+        this.serviceMetadata.add(serviceMetadata);
+        serviceMetadata.getCriterias().add(this);
+        return this;
+    }
+
+    public Criteria removeServiceMetadataren(ServiceMetadata serviceMetadata) {
+        this.serviceMetadata.remove(serviceMetadata);
+        serviceMetadata.getCriterias().remove(this);
+        return this;
     }
 
     @Override

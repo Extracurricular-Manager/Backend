@@ -1,9 +1,13 @@
 package fr.periscol.backend.domain.service_model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fr.periscol.backend.domain.Permission;
+import fr.periscol.backend.domain.tarification.Criteria;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A ServiceMetadata.
@@ -30,6 +34,13 @@ public class ServiceMetadata implements Serializable {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Permission permission;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "rel_serviceMetadata__criteria", joinColumns = @JoinColumn(name = "serviceMetadata_id"),
+            inverseJoinColumns = @JoinColumn(name = "criteria_id"))
+    @JsonIgnoreProperties(value = { "serviceMetadata" }, allowSetters = true)
+    private Set<Criteria> criterias = new HashSet<>();
+
 
     public Long getId() {
         return this.id;
@@ -74,6 +85,31 @@ public class ServiceMetadata implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Criteria> getCriterias() {
+        return this.criterias;
+    }
+
+    public void setCriterias(Set<Criteria> criterias) {
+        this.criterias = criterias;
+    }
+
+    public ServiceMetadata criterias(Set<Criteria> criterias) {
+        this.setCriterias(criterias);
+        return this;
+    }
+
+    public ServiceMetadata addCriteria(Criteria criteria) {
+        this.criterias.add(criteria);
+        criteria.getServiceMetadata().add(this);
+        return this;
+    }
+
+    public ServiceMetadata removeCriteria(Criteria criteria) {
+        this.criterias.remove(criteria);
+        criteria.getServiceMetadata().remove(this);
+        return this;
     }
 
     @Override
