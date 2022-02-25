@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fr.periscol.backend.domain.service_model.ServiceMetadata;
 import fr.periscol.backend.domain.tarification.Attributes;
 import fr.periscol.backend.domain.tarification.Criteria;
+import fr.periscol.backend.domain.tarification.TimePerspective;
 
 import javax.persistence.Column;
 import javax.persistence.ManyToMany;
@@ -13,14 +14,6 @@ import java.sql.Time;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
-enum TimePerspective {
-    DAY,
-    WEEK,
-    MONTH,
-    YEAR
-}
-
 /**
  * A DTO for the {@link fr.periscol.backend.domain.tarification.Criteria} entity.
  */

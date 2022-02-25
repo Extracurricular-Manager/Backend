@@ -1,15 +1,12 @@
 package fr.periscol.backend.domain.tarification;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import fr.periscol.backend.domain.Diet;
 import fr.periscol.backend.domain.service_model.ServiceMetadata;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
-
 
 
 /**
@@ -20,13 +17,6 @@ import java.util.Set;
 public class Criteria implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    enum TimePerspective {
-        DAY,
-        WEEK,
-        MONTH,
-        YEAR
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +29,7 @@ public class Criteria implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "TimePerspective")
+    @Enumerated(EnumType.STRING)
     private TimePerspective timePerspective;
 
     @OneToMany(mappedBy = "criteria")
