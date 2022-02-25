@@ -242,7 +242,7 @@ public class UserResource {
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} if password reset
      */
-    @PreAuthorize("hasAuthority()")
+    @PreAuthorize("#name == authentication.principal.username")
     @PatchMapping("/user/{name}/change-password")
     public ResponseEntity<Void> changePassword(@PathVariable String name, @RequestBody PasswordVM password) {
         log.debug("REST request to change password of a User : {}", name);

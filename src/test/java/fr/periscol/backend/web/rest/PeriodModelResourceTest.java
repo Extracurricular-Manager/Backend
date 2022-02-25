@@ -9,6 +9,7 @@ import fr.periscol.backend.domain.service_model.PeriodModel;
 import fr.periscol.backend.domain.service_model.ServiceMetadata;
 import fr.periscol.backend.repository.service_model.PeriodModelRepository;
 import fr.periscol.backend.service.ChildService;
+import fr.periscol.backend.service.UserService;
 import fr.periscol.backend.service.dto.service_model.NewServiceMetadataDTO;
 import fr.periscol.backend.service.mapper.ChildMapper;
 import fr.periscol.backend.service.mapper.service_model.PeriodModelMapper;
@@ -38,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @IntegrationTest
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
-@WithMockUser(roles={"ADMIN"})
+@WithMockUser(authorities = {"ROLE_ADMIN", "Foo"})
 class PeriodModelResourceTest {
 
     @Autowired
@@ -46,6 +47,9 @@ class PeriodModelResourceTest {
 
     @Autowired
     private ServiceMetadataService metadataService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private ChildService childService;

@@ -42,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @IntegrationTest
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
-@WithMockUser(roles={"ADMIN"})
+@WithMockUser(authorities = {"ROLE_ADMIN", "Foo"})
 class PresenceModelResourceTest {
 
     @Autowired
