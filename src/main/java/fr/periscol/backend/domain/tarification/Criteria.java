@@ -25,7 +25,7 @@ public class Criteria implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "tarifications")
+    @OneToMany(mappedBy = "criteria")
     private Set<Attributes> attributes = new HashSet<>();
 
     public Long getId() {
@@ -91,7 +91,7 @@ public class Criteria implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "Tarification{" +
+        return "Criteria{" +
             "id=" + getId() +
             "}";
     }
