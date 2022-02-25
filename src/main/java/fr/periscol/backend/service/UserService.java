@@ -12,6 +12,7 @@ import fr.periscol.backend.web.rest.errors.NotFoundAlertException;
 import fr.periscol.backend.web.rest.vm.PasswordVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
