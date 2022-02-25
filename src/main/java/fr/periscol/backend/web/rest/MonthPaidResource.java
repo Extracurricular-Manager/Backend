@@ -1,7 +1,7 @@
 package fr.periscol.backend.web.rest;
 
 import fr.periscol.backend.repository.MonthPaidRepository;
-import fr.periscol.backend.service.MonthPaid;
+import fr.periscol.backend.service.MonthPaidService;
 import fr.periscol.backend.service.dto.MonthPaidDTO;
 import fr.periscol.backend.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
@@ -32,12 +32,12 @@ public class MonthPaidResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final MonthPaid monthPaid;
+    private final MonthPaidService monthPaidService;
 
     private final MonthPaidRepository monthPaidRepository;
 
-    public MonthPaidResource(MonthPaid monthPaid, MonthPaidRepository monthPaidRepository) {
-        this.monthPaid = monthPaid;
+    public MonthPaidResource(MonthPaidService monthPaidService, MonthPaidRepository monthPaidRepository) {
+        this.monthPaidService = monthPaidService;
         this.monthPaidRepository = monthPaidRepository;
     }
 
@@ -54,7 +54,7 @@ public class MonthPaidResource {
         if (monthPaidDTO.getId() != null) {
             throw new BadRequestAlertException("A new facturation cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        MonthPaidDTO result = monthPaid.save(monthPaidDTO);
+        MonthPaidDTO result = monthPaidService.save(monthPaidDTO);
         return ResponseEntity
             .created(new URI("/api/facturation/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
@@ -88,7 +88,7 @@ public class MonthPaidResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        MonthPaidDTO result = monthPaid.save(monthPaidDTO);
+        MonthPaidDTO result = monthPaidService.save(monthPaidDTO);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, monthPaidDTO.getId().toString()))
@@ -123,7 +123,7 @@ public class MonthPaidResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<MonthPaidDTO> result = monthPaid.partialUpdate(monthPaidDTO);
+        Optional<MonthPaidDTO> result = monthPaidService.partialUpdate(monthPaidDTO);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -139,7 +139,7 @@ public class MonthPaidResource {
     @GetMapping("/facturations")
     public List<MonthPaidDTO> getAllFacturations() {
         log.debug("REST request to get all Facturations");
-        return monthPaid.findAll();
+        return monthPaidService.findAll();
     }
 
     /**
@@ -151,7 +151,7 @@ public class MonthPaidResource {
     @GetMapping("/facturation/{id}")
     public ResponseEntity<MonthPaidDTO> getFacturation(@PathVariable Long id) {
         log.debug("REST request to get Facturation : {}", id);
-        Optional<MonthPaidDTO> facturationDTO = monthPaid.findOne(id);
+        Optional<MonthPaidDTO> facturationDTO = monthPaidService.findOne(id);
         return ResponseUtil.wrapOrNotFound(facturationDTO);
     }
 
@@ -164,7 +164,7 @@ public class MonthPaidResource {
     @DeleteMapping("/facturation/{id}")
     public ResponseEntity<Void> deleteFacturation(@PathVariable Long id) {
         log.debug("REST request to delete Facturation : {}", id);
-        monthPaid.delete(id);
+        monthPaidService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))

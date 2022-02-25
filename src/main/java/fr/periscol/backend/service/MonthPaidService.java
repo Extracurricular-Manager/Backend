@@ -18,15 +18,15 @@ import java.util.stream.Collectors;
  */
 @Service
 @Transactional
-public class MonthPaid {
+public class MonthPaidService {
 
-    private final Logger log = LoggerFactory.getLogger(MonthPaid.class);
+    private final Logger log = LoggerFactory.getLogger(MonthPaidService.class);
 
     private final MonthPaidRepository monthPaidRepository;
 
     private final MonthPaidMapper monthPaidMapper;
 
-    public MonthPaid(MonthPaidRepository monthPaidRepository, MonthPaidMapper monthPaidMapper) {
+    public MonthPaidService(MonthPaidRepository monthPaidRepository, MonthPaidMapper monthPaidMapper) {
         this.monthPaidRepository = monthPaidRepository;
         this.monthPaidMapper = monthPaidMapper;
     }

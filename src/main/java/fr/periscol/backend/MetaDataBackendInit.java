@@ -44,7 +44,6 @@ public class MetaDataBackendInit {
 
     private MetaDataBackendDTO createBeanMetaDataBackendInit() {
         MetaDataBackendDTO metaDataBackend = new MetaDataBackendDTO();
-        //initialisation with empty String for school
         metaDataBackend.setNameOfSchool(getRandomName("default_backend_names.txt"));
         metaDataBackend.setVersion(versionInProperties);
         return metaDataBackend;
