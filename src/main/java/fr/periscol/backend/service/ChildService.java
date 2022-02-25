@@ -3,6 +3,7 @@ package fr.periscol.backend.service;
 import fr.periscol.backend.domain.Child;
 import fr.periscol.backend.repository.ChildRepository;
 import fr.periscol.backend.service.dto.ChildDTO;
+import fr.periscol.backend.service.dto.FacturationDTO;
 import fr.periscol.backend.service.mapper.ChildMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -141,4 +143,6 @@ public class ChildService {
         log.debug("Request to delete Child : {}", id);
         childRepository.deleteById(id);
     }
+
+
 }

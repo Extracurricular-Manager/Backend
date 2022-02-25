@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -97,4 +98,5 @@ public class FacturationService {
         log.debug("Request to delete Facturation : {}", id);
         facturationRepository.deleteById(id);
     }
+
 }

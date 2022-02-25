@@ -22,6 +22,9 @@ public class Criteria implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "description")
+    private String description;
+
     @OneToMany(mappedBy = "tarifications")
     private Set<Attributes> attributes = new HashSet<>();
 
@@ -42,6 +45,30 @@ public class Criteria implements Serializable {
 
         return this;
 
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Set<Attributes> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(Set<Attributes> attributes) {
+        this.attributes = attributes;
     }
 
     @Override
