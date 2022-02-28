@@ -3,10 +3,15 @@ package fr.periscol.backend.domain.tarification.child;
 import fr.periscol.backend.domain.Child;
 import fr.periscol.backend.domain.tarification.Criteria;
 
+import javax.persistence.Entity;
 import java.util.Date;
 
-public abstract class CriteriaChild extends Criteria {
+/**
+ * @param <T> Spring service to get data
+ */
+@Entity
+public abstract class CriteriaChild<T> extends Criteria {
 
-    public abstract float compute(Child child, Long serviceId, Date date, float price);
+    public abstract float compute(Child child, Long serviceId, Date date, float price, T dataService);
 
 }

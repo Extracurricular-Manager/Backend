@@ -6,6 +6,8 @@ import fr.periscol.backend.domain.tarification.Attributes;
 import fr.periscol.backend.domain.tarification.Criteria;
 import fr.periscol.backend.service.service_model.PeriodModelService;
 
+import javax.persistence.Entity;
+
 import static fr.periscol.backend.domain.tarification.AttributeType.*;
 import java.sql.Time;
 
@@ -18,11 +20,11 @@ import java.util.*;
  *
  * daily basis
  */
-public class CriteriaChildBasePeriod extends CriteriaChild {
+@Entity
+public class CriteriaChildBasePeriod extends CriteriaChild<PeriodModelService> {
 
-    PeriodModelService periodModelService;
 
-    public void CriteriaChildBasedPeriod(PeriodModelService periodModelService){
+    public void CriteriaChildBasedPeriod(){
 
 
         String name[] = {"price", "time","maxBound", "minBound"};
@@ -42,14 +44,13 @@ public class CriteriaChildBasePeriod extends CriteriaChild {
                 "Begining Time of daycare"
         };
         for(int i = 0; i < name.length; i++) {
-            Attributes attribute = new Attributes(this, name[i], type[i].getStr(), value[i], description[i]);
+            Attributes attribute = new Attributes(this, name[i], type[i], value[i], description[i]);
             this.getAttributes().add(attribute);
         }
-        this.periodModelService = periodModelService;
     }
 
     @Override
-    public float compute(Child child, Long serviceId, Date date, float price) {
+    public float compute(Child child, Long serviceId, Date date, float price, PeriodModelService dataService) {
         return 0;
     }
 }
