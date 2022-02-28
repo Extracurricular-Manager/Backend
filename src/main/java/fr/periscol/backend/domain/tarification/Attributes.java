@@ -9,7 +9,7 @@ import javax.persistence.Table;
 @Table(name = "Attributes")
 public class Attributes {
 
-    public Attributes(Criteria criteria, String name, String type, String value, String description) {
+    public Attributes(Criteria criteria, String name, AttributeType type, String value, String description) {
         this.criteria = criteria;
         this.name = name;
         this.type = type;
@@ -37,7 +37,7 @@ public class Attributes {
 
     private String name;
 
-    private String type;
+    private AttributeType type;
 
     private String value;
 
