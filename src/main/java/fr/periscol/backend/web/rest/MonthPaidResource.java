@@ -7,6 +7,7 @@ import fr.periscol.backend.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
@@ -14,6 +15,8 @@ import tech.jhipster.web.util.ResponseUtil;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,7 +30,7 @@ public class MonthPaidResource {
 
     private final Logger log = LoggerFactory.getLogger(MonthPaidResource.class);
 
-    private static final String ENTITY_NAME = "facturation";
+    private static final String ENTITY_NAME = "monthPaid";
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -42,41 +45,69 @@ public class MonthPaidResource {
     }
 
     /**
-     * {@code POST  /facturation} : Create a new facturation.
+     * {@code POST  /monthPaid} : Create a new monthPaid.
      *
-     * @param monthPaidDTO the facturationDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new facturationDTO, or with status {@code 400 (Bad Request)} if the facturation has already an ID.
+     * @param monthPaidDTO the monthPaidDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new monthPaidDTO, or with status {@code 400 (Bad Request)} if the monthPaid has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/facturation")
-    public ResponseEntity<MonthPaidDTO> createFacturation(@RequestBody MonthPaidDTO monthPaidDTO) throws URISyntaxException {
-        log.debug("REST request to save Facturation : {}", monthPaidDTO);
+    @PostMapping("/monthPaid")
+    public ResponseEntity<MonthPaidDTO> createMonthPaid(@RequestBody MonthPaidDTO monthPaidDTO) throws URISyntaxException {
+        log.debug("REST request to save MonthPaid : {}", monthPaidDTO);
         if (monthPaidDTO.getId() != null) {
-            throw new BadRequestAlertException("A new facturation cannot already have an ID", ENTITY_NAME, "idexists");
+            throw new BadRequestAlertException("A new monthPaid cannot already have an ID", ENTITY_NAME, "idexists");
         }
         MonthPaidDTO result = monthPaidService.save(monthPaidDTO);
         return ResponseEntity
-            .created(new URI("/api/facturation/" + result.getId()))
+            .created(new URI("/api/monthPaid/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /facturation/:id} : Updates an existing facturation.
+     * {@code GET  /monthPaid/childAndDate/:child_id/:date} : get the monthPaid by child id and date.
      *
-     * @param id the id of the facturationDTO to save.
-     * @param monthPaidDTO the facturationDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated facturationDTO,
-     * or with status {@code 400 (Bad Request)} if the facturationDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the facturationDTO couldn't be updated.
+     * @param child_id of the monthpaid to retrieve.
+     * @param date of the monthpaid to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the monthPaidDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/monthPaid/childAndDate/{child_id}/{date}")
+    public ResponseEntity<MonthPaidDTO> getMonthPaidByChildAndDate(@PathVariable Long child_id,
+                                                                   @PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date date) {
+        log.debug("REST request to get MonthPaid : {}", child_id, date);
+        Optional<MonthPaidDTO> monthPaidDTO = monthPaidService.findOneByChildAndDate(child_id,date);
+        return ResponseUtil.wrapOrNotFound(monthPaidDTO);
+    }
+
+    /**
+     * {@code GET  /monthPaid/child/:child_id} : get the monthPaid by child id.
+     *
+     * @param child_id of the monthpaid to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the monthPaidDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/monthPaid/child/{child_id}")
+    public List<MonthPaidDTO> getMonthPaidByChild(@PathVariable Long child_id) {
+        log.debug("REST request to get MonthPaid : {}", child_id);
+        return monthPaidService.findAllByChild(child_id);
+    }
+
+
+    /**
+     * {@code PUT  /monthPaid/:id} : Updates an existing monthPaid.
+     *
+     * @param id the id of the monthPaidDTO to save.
+     * @param monthPaidDTO the monthPaidDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated monthPaidDTO,
+     * or with status {@code 400 (Bad Request)} if the monthPaidDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the monthPaidDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/facturation/{id}")
-    public ResponseEntity<MonthPaidDTO> updateFacturation(
+    @PutMapping("/monthPaid/{id}")
+    public ResponseEntity<MonthPaidDTO> updateMonthPaid(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody MonthPaidDTO monthPaidDTO
     ) throws URISyntaxException {
-        log.debug("REST request to update Facturation : {}, {}", id, monthPaidDTO);
+        log.debug("REST request to update MonthPaid : {}, {}", id, monthPaidDTO);
         if (monthPaidDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
@@ -96,22 +127,22 @@ public class MonthPaidResource {
     }
 
     /**
-     * {@code PATCH  /facturation/:id} : Partial updates given fields of an existing facturation, field will ignore if it is null
+     * {@code PATCH  /monthPaid/:id} : Partial updates given fields of an existing monthPaid, field will ignore if it is null
      *
-     * @param id the id of the facturationDTO to save.
-     * @param monthPaidDTO the facturationDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated facturationDTO,
-     * or with status {@code 400 (Bad Request)} if the facturationDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the facturationDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the facturationDTO couldn't be updated.
+     * @param id the id of the monthPaidDTO to save.
+     * @param monthPaidDTO the monthPaidDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated monthPaidDTO,
+     * or with status {@code 400 (Bad Request)} if the monthPaidDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the monthPaidDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the monthPaidDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/facturation/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<MonthPaidDTO> partialUpdateFacturation(
+    @PatchMapping(value = "/monthPaid/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    public ResponseEntity<MonthPaidDTO> partialUpdateMonthPaid(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody MonthPaidDTO monthPaidDTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update Facturation partially : {}, {}", id, monthPaidDTO);
+        log.debug("REST request to partial update MonthPaid partially : {}, {}", id, monthPaidDTO);
         if (monthPaidDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
@@ -132,38 +163,38 @@ public class MonthPaidResource {
     }
 
     /**
-     * {@code GET  /facturations} : get all the facturations.
+     * {@code GET  /monthPaids} : get all the monthPaids.
      *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of facturations in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of monthPaids in body.
      */
-    @GetMapping("/facturations")
-    public List<MonthPaidDTO> getAllFacturations() {
-        log.debug("REST request to get all Facturations");
+    @GetMapping("/monthPaids")
+    public List<MonthPaidDTO> getAllMonthPaids() {
+        log.debug("REST request to get all MonthPaids");
         return monthPaidService.findAll();
     }
 
     /**
-     * {@code GET  /facturation/:id} : get the "id" facturation.
+     * {@code GET  /monthPaid/:id} : get the "id" monthPaid.
      *
-     * @param id the id of the facturationDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the facturationDTO, or with status {@code 404 (Not Found)}.
+     * @param id the id of the monthPaidDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the monthPaidDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/facturation/{id}")
-    public ResponseEntity<MonthPaidDTO> getFacturation(@PathVariable Long id) {
-        log.debug("REST request to get Facturation : {}", id);
-        Optional<MonthPaidDTO> facturationDTO = monthPaidService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(facturationDTO);
+    @GetMapping("/monthPaid/{id}")
+    public ResponseEntity<MonthPaidDTO> getMonthPaid(@PathVariable Long id) {
+        log.debug("REST request to get MonthPaid : {}", id);
+        Optional<MonthPaidDTO> monthPaidDTO = monthPaidService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(monthPaidDTO);
     }
 
     /**
-     * {@code DELETE  /facturation/:id} : delete the "id" facturation.
+     * {@code DELETE  /monthPaid/:id} : delete the "id" monthPaid.
      *
-     * @param id the id of the facturationDTO to delete.
+     * @param id the id of the monthPaidDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/facturation/{id}")
-    public ResponseEntity<Void> deleteFacturation(@PathVariable Long id) {
-        log.debug("REST request to delete Facturation : {}", id);
+    @DeleteMapping("/monthPaid/{id}")
+    public ResponseEntity<Void> deleteMonthPaid(@PathVariable Long id) {
+        log.debug("REST request to delete MonthPaid : {}", id);
         monthPaidService.delete(id);
         return ResponseEntity
             .noContent()

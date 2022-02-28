@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * A Facturation.
@@ -21,7 +22,7 @@ public class MonthPaid implements Serializable {
     private Long id;
 
     @Column(name = "date")
-    private LocalDate date;
+    private LocalDateTime date;
 
     @Column(name = "cost")
     private Long cost;
@@ -47,11 +48,11 @@ public class MonthPaid implements Serializable {
         this.id = id;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
