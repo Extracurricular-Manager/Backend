@@ -2,7 +2,6 @@ package fr.periscol.backend.domain.tarification;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fr.periscol.backend.domain.service_model.ServiceMetadata;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,7 +16,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "criteria")
-public class Criteria implements Serializable {
+public sealed class Criteria  implements Serializable permits CriteriaAdelphie, CriteriaChild {
 
     private static final long serialVersionUID = 1L;
 
@@ -110,6 +109,14 @@ public class Criteria implements Serializable {
         this.serviceMetadata.remove(serviceMetadata);
         serviceMetadata.getCriterias().remove(this);
         return this;
+    }
+
+    public TimePerspective getTimePerspective() {
+        return timePerspective;
+    }
+
+    public void setTimePerspective(TimePerspective timePerspective) {
+        this.timePerspective = timePerspective;
     }
 
     @Override

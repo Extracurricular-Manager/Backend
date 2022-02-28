@@ -1,9 +1,8 @@
 package fr.periscol.backend.domain.tarification.child;
 
 import fr.periscol.backend.domain.Child;
+import fr.periscol.backend.domain.tarification.CriteriaChild;
 import fr.periscol.backend.service.service_model.PeriodModelService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 
 import javax.persistence.Entity;
 import java.util.Date;

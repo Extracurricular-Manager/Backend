@@ -3,6 +3,7 @@ package fr.periscol.backend.domain.tarification.child;
 import fr.periscol.backend.domain.Child;
 import fr.periscol.backend.domain.tarification.AttributeType;
 import fr.periscol.backend.domain.tarification.Attributes;
+import fr.periscol.backend.domain.tarification.CriteriaChild;
 import fr.periscol.backend.service.service_model.PresenceModelService;
 
 import javax.persistence.Entity;
