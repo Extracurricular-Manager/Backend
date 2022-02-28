@@ -9,8 +9,20 @@ import javax.persistence.Table;
 @Table(name = "Attributes")
 public class Attributes {
 
+    public Attributes(Criteria criteria, String name, String type, String value, String description) {
+        this.criteria = criteria;
+        this.name = name;
+        this.type = type;
+        this.value = value;
+        this.description = description;
+    }
+
     @Id
     private Long id;
+
+    public Attributes() {
+
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -25,7 +37,7 @@ public class Attributes {
 
     private String name;
 
-    private AttributeType type;
+    private String type;
 
     private String value;
 
