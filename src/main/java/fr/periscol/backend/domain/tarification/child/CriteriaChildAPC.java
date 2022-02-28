@@ -1,7 +1,7 @@
 package fr.periscol.backend.domain.tarification.child;
 
 import fr.periscol.backend.domain.Child;
-import fr.periscol.backend.domain.tarification.Criteria;
+import fr.periscol.backend.domain.tarification.CriteriaChild;
 import fr.periscol.backend.service.service_model.PeriodModelService;
 
 import javax.persistence.Entity;

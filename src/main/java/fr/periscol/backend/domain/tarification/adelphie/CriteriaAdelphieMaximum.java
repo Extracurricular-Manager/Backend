@@ -1,9 +1,9 @@
 package fr.periscol.backend.domain.tarification.adelphie;
 
-import fr.periscol.backend.domain.Child;
 import fr.periscol.backend.domain.Family;
 import fr.periscol.backend.domain.tarification.AttributeType;
 import fr.periscol.backend.domain.tarification.Attributes;
+import fr.periscol.backend.domain.tarification.CriteriaAdelphie;
 
 import javax.persistence.Entity;
 import java.util.Date;

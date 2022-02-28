@@ -3,13 +3,12 @@ package fr.periscol.backend.domain.tarification.child;
 import fr.periscol.backend.domain.Child;
 import fr.periscol.backend.domain.tarification.AttributeType;
 import fr.periscol.backend.domain.tarification.Attributes;
-import fr.periscol.backend.domain.tarification.Criteria;
+import fr.periscol.backend.domain.tarification.CriteriaChild;
 import fr.periscol.backend.service.service_model.PeriodModelService;
 
 import javax.persistence.Entity;
 
 import static fr.periscol.backend.domain.tarification.AttributeType.*;
-import java.sql.Time;
 
 import java.util.*;
 
