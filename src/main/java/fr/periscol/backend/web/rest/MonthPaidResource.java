@@ -1,25 +1,30 @@
 package fr.periscol.backend.web.rest;
 
+import fr.periscol.backend.domain.csvUtil.CsvUtil;
 import fr.periscol.backend.repository.MonthPaidRepository;
+import fr.periscol.backend.service.ChildService;
 import fr.periscol.backend.service.MonthPaidService;
+import fr.periscol.backend.service.dto.ChildDTO;
 import fr.periscol.backend.service.dto.MonthPaidDTO;
+import fr.periscol.backend.service.dto.service_model.ServiceMetadataDTO;
 import fr.periscol.backend.web.rest.errors.BadRequestAlertException;
+import fr.periscol.backend.web.rest.service_model.ServiceResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * REST controller for managing {@link fr.periscol.backend.domain.MonthPaid}.
@@ -39,9 +44,12 @@ public class MonthPaidResource {
 
     private final MonthPaidRepository monthPaidRepository;
 
-    public MonthPaidResource(MonthPaidService monthPaidService, MonthPaidRepository monthPaidRepository) {
+    private final ChildService childService;
+
+    public MonthPaidResource(MonthPaidService monthPaidService, MonthPaidRepository monthPaidRepository, ChildService childService) {
         this.monthPaidService = monthPaidService;
         this.monthPaidRepository = monthPaidRepository;
+        this.childService = childService;
     }
 
     /**
@@ -184,6 +192,27 @@ public class MonthPaidResource {
         log.debug("REST request to get MonthPaid : {}", id);
         Optional<MonthPaidDTO> monthPaidDTO = monthPaidService.findOne(id);
         return ResponseUtil.wrapOrNotFound(monthPaidDTO);
+    }
+
+    @GetMapping(value = "/monthPaid/child/{id}/getDetail", produces = "application/x-excel")
+    public ResponseEntity getDetail(@PathVariable Long id, @RequestParam(name = "date") @DateTimeFormat(pattern="yyyy-MM-dd") Date date){
+        Optional<ChildDTO> optionalChildDTO = childService.findOne(id);
+        if(optionalChildDTO.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        else {
+            ChildDTO childDTO = optionalChildDTO.get();
+            Map<Date, ServiceMetadataDTO> dateServiceResourceMap = CsvUtil.getFromChild(childDTO);
+            try {
+                File file = CsvUtil.createXlsx();
+                return ResponseEntity.ok()
+                        .header("Content-Disposition", "attachment; filename=test.xlsx")
+                        .contentType(MediaType.valueOf("application/x-excel")).body(new FileSystemResource(file));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     /**

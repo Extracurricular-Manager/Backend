@@ -43,7 +43,7 @@ public class CriteriaChildBasePeriod extends CriteriaChild<PeriodModelService> {
                 "Begining Time of daycare"
         };
         for(int i = 0; i < name.length; i++) {
-            Attributes attribute = new Attributes(this, name[i], type[i].getStr(), value[i], description[i]);
+            Attributes attribute = new Attributes(this, name[i], type[i], value[i], description[i]);
             this.getAttributes().add(attribute);
         }
     }
