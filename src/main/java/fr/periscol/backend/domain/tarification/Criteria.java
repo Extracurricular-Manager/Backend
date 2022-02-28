@@ -5,7 +5,9 @@ import fr.periscol.backend.domain.service_model.ServiceMetadata;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -33,7 +35,7 @@ public class Criteria implements Serializable {
     private TimePerspective timePerspective;
 
     @OneToMany(mappedBy = "criteria")
-    private Set<Attributes> attributes = new HashSet<>();
+    private List<Attributes> attributes = new ArrayList<>();
 
     @ManyToMany(mappedBy = "criterias")
     @JsonIgnoreProperties(
@@ -71,11 +73,11 @@ public class Criteria implements Serializable {
         this.description = description;
     }
 
-    public Set<Attributes> getAttributes() {
+    public List<Attributes> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(Set<Attributes> attributes) {
+    public void setAttributes(List<Attributes> attributes) {
         this.attributes = attributes;
     }
 
