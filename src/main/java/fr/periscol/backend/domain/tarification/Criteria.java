@@ -2,6 +2,7 @@ package fr.periscol.backend.domain.tarification;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fr.periscol.backend.domain.service_model.ServiceMetadata;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -42,7 +43,6 @@ public class Criteria implements Serializable {
             allowSetters = true
     )
     private Set<ServiceMetadata> serviceMetadata = new HashSet<>();
-
 
     public Long getId() {
         return this.id;

@@ -4,7 +4,6 @@ import fr.periscol.backend.domain.Child;
 import fr.periscol.backend.domain.tarification.AttributeType;
 import fr.periscol.backend.domain.tarification.Attributes;
 import fr.periscol.backend.service.service_model.PresenceModelService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.Entity;
 import java.util.Date;
@@ -17,9 +16,9 @@ import java.util.Date;
  *
  */
 @Entity
-public class CriteriaChildBasePresence extends CriteriaChild {
+public class CriteriaChildBasePresence extends CriteriaChild<PresenceModelService> {
 
-    public CriteriaChildBasePresence(PresenceModelService presenceModelService) {
+    public CriteriaChildBasePresence() {
         final var currency = new Attributes();
         currency.setCriteria(this);
         currency.setType(AttributeType.CURRENCY);
@@ -30,13 +29,10 @@ public class CriteriaChildBasePresence extends CriteriaChild {
 
     }
 
-    public CriteriaChildBasePresence() {
-
-    }
-
     @Override
-    public float compute(Child child, Long serviceId, Date date, float price) {
-        final var entry = presenceModelService.findOneForDay(child.getId(), serviceId, date);
+    public float compute(Child child, Long serviceId, Date date, float price, PresenceModelService dataService) {
+        final int base = Integer.parseInt(attributes.get(0).getValue());
+        final var entry = dataService.findOneForDay(child.getId(), serviceId, date);
         if(entry.isEmpty())
             return price;
 

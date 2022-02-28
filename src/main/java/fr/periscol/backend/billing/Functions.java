@@ -35,7 +35,11 @@ public class Functions {
     public float computeBasePresence(Child child, Long serviceId, Date date, float price) {
         final var base = 3f;
 
+        final var entry = presenceService.findOneForDay(child.getId(), serviceId, date);
+        if(entry.isEmpty())
+            return price;
 
+        return Boolean.TRUE.equals(entry.get().getPresence()) ? price + base : price;
     }
 
     public float computeAfterMaxPeriod(Child child, Long serviceId, Date date, float price) {

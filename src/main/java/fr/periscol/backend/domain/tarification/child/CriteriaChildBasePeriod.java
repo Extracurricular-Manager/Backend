@@ -21,7 +21,7 @@ import java.util.*;
  * daily basis
  */
 @Entity
-public class CriteriaChildBasePeriod extends CriteriaChild {
+public class CriteriaChildBasePeriod extends CriteriaChild<PeriodModelService> {
 
 
     public void CriteriaChildBasedPeriod(){
@@ -50,7 +50,7 @@ public class CriteriaChildBasePeriod extends CriteriaChild {
     }
 
     @Override
-    public float compute(Child child, Long serviceId, Date date, float price) {
+    public float compute(Child child, Long serviceId, Date date, float price, PeriodModelService dataService) {
         return 0;
     }
 }

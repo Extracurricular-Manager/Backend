@@ -2,6 +2,7 @@ package fr.periscol.backend.domain.tarification.child;
 
 import fr.periscol.backend.domain.Child;
 import fr.periscol.backend.domain.tarification.Criteria;
+import fr.periscol.backend.service.service_model.PeriodModelService;
 
 import javax.persistence.Entity;
 import java.util.Date;
@@ -13,10 +14,10 @@ import java.util.Date;
  * daily basis
  */
 @Entity
-public class CriteriaChildAPC extends CriteriaChild {
+public class CriteriaChildAPC extends CriteriaChild<PeriodModelService> {
 
     @Override
-    public float compute(Child child, Long serviceId, Date date, float price) {
+    public float compute(Child child, Long serviceId, Date date, float price, PeriodModelService dataService) {
         return 0;
     }
 }
