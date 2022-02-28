@@ -35,7 +35,7 @@ public class Criteria implements Serializable {
     private TimePerspective timePerspective;
 
     @OneToMany(mappedBy = "criteria")
-    private List<Attributes> attributes = new ArrayList<>();
+    protected List<Attributes> attributes = new ArrayList<>();
 
     @ManyToMany(mappedBy = "criterias")
     @JsonIgnoreProperties(
