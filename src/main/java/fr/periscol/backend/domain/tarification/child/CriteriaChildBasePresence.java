@@ -6,6 +6,7 @@ import fr.periscol.backend.domain.tarification.Attributes;
 import fr.periscol.backend.service.service_model.PresenceModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.persistence.Entity;
 import java.util.Date;
 
 /**
@@ -15,9 +16,8 @@ import java.util.Date;
  * daily basis
  *
  */
+@Entity
 public class CriteriaChildBasePresence extends CriteriaChild {
-
-    PresenceModelService presenceModelService;
 
     public CriteriaChildBasePresence(PresenceModelService presenceModelService) {
         final var currency = new Attributes();
@@ -27,7 +27,11 @@ public class CriteriaChildBasePresence extends CriteriaChild {
         currency.setValue("0");
         currency.setDescription("Prix de base pour ce service");
         attributes.add(currency);
-        this.presenceModelService = presenceModelService;
+
+    }
+
+    public CriteriaChildBasePresence() {
+
     }
 
     @Override

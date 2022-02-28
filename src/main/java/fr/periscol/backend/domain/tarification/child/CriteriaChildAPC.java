@@ -3,6 +3,7 @@ package fr.periscol.backend.domain.tarification.child;
 import fr.periscol.backend.domain.Child;
 import fr.periscol.backend.domain.tarification.Criteria;
 
+import javax.persistence.Entity;
 import java.util.Date;
 
 /**
@@ -11,6 +12,7 @@ import java.util.Date;
  *
  * daily basis
  */
+@Entity
 public class CriteriaChildAPC extends CriteriaChild {
 
     @Override
