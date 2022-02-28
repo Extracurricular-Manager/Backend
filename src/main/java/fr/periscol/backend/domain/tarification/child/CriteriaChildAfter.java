@@ -4,6 +4,10 @@ import fr.periscol.backend.domain.Child;
 
 import java.util.Date;
 
+/**
+ * Criteria that refers to the billing of the daycare after 18h30
+ * daily basis
+ */
 public class CriteriaChildAfter extends CriteriaChild {
 
     @Override

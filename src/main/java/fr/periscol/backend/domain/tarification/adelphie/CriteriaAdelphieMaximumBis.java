@@ -6,6 +6,10 @@ import fr.periscol.backend.domain.tarification.Criteria;
 
 import java.util.Date;
 
+/**
+ * Criteria that refers to the billing of the daycare regarding the brother/sister total month
+ * If brother/sister is at 30/month, the current child will be charged max 25€/month
+ */
 public class CriteriaAdelphieMaximumBis extends CriteriaAdelphie {
     @Override
     public float compute(Family family, Long serviceId, Date date, float price) {

@@ -5,6 +5,9 @@ import fr.periscol.backend.domain.Family;
 
 import java.util.Date;
 
+/**
+ * Criteria that refers to the billing of the daycare, maximum 30€ month for any child.
+ */
 public class CriteriaAdelphieMaximum extends CriteriaAdelphie {
 
     @Override
