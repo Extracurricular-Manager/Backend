@@ -25,7 +25,7 @@ public class Attributes {
 
     private String name;
 
-    private String type;
+    private AttributeType type;
 
     private String value;
 
@@ -47,11 +47,11 @@ public class Attributes {
         this.name = name;
     }
 
-    public String getType() {
+    public AttributeType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(AttributeType type) {
         this.type = type;
     }
 
