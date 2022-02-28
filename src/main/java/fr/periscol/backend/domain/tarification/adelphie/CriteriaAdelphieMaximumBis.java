@@ -2,6 +2,8 @@ package fr.periscol.backend.domain.tarification.adelphie;
 
 import fr.periscol.backend.domain.Child;
 import fr.periscol.backend.domain.Family;
+import fr.periscol.backend.domain.tarification.AttributeType;
+import fr.periscol.backend.domain.tarification.Attributes;
 import fr.periscol.backend.domain.tarification.Criteria;
 
 import javax.persistence.Entity;
@@ -13,6 +15,19 @@ import java.util.Date;
  */
 @Entity
 public class CriteriaAdelphieMaximumBis extends CriteriaAdelphie {
+
+    public CriteriaAdelphieMaximumBis(){
+        final var max = new Attributes();
+        max.setCriteria(this);
+        max.setType(AttributeType.CURRENCY);
+        max.setName("Prix");
+        max.setValue("25");
+        max.setDescription("Prix maximal sur un mois pour ce service si un frere ou une soeur" +
+                "est déjà au maximum de 30€ par mois");
+        attributes.add(max);
+    }
+
+
     @Override
     public float compute(Family family, Long serviceId, Date date, float price) {
         return 0;

@@ -24,7 +24,7 @@ import java.util.*;
 public class CriteriaChildBasePeriod extends CriteriaChild {
 
 
-    public void CriteriaChildBasedPeriod(PeriodModelService periodModelService){
+    public void CriteriaChildBasedPeriod(){
 
 
         String name[] = {"price", "time","maxBound", "minBound"};

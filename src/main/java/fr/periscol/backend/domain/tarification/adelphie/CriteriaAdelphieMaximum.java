@@ -24,6 +24,7 @@ public class CriteriaAdelphieMaximum extends CriteriaAdelphie {
         attributes.add(max);
     }
 
+
     @Override
     public float compute(Family family, Long serviceId, Date date, float price) {
         return 0;
