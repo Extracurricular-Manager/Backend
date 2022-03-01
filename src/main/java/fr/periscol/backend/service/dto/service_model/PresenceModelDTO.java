@@ -20,6 +20,8 @@ public class PresenceModelDTO implements Serializable {
 
     private LocalDate date;
 
+    private Long serviceId;
+
     private ChildDTO child;
 
     public Long getId() {
@@ -60,6 +62,14 @@ public class PresenceModelDTO implements Serializable {
 
     public void setChild(ChildDTO child) {
         this.child = child;
+    }
+
+    public Long getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(Long serviceId) {
+        this.serviceId = serviceId;
     }
 
     @Override
