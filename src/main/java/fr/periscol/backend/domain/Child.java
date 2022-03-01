@@ -58,6 +58,7 @@ public class Child implements Serializable {
     @OneToMany(mappedBy = "child", cascade = CascadeType.ALL)
     private Set<PresenceModel> presenceModel = new HashSet<>();;
 
+    @JsonIgnoreProperties(value = { "child" }, allowSetters = true)
     @OneToMany(mappedBy = "child", cascade = CascadeType.ALL)
     private Set<MonthPaid> monthPaid = new HashSet<>();;
 

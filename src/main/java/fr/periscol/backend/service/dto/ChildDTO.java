@@ -1,6 +1,7 @@
 package fr.periscol.backend.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -30,6 +31,7 @@ public class ChildDTO implements Serializable {
 
     private Set<DietDTO> diets = new HashSet<>();
 
+    @JsonIgnoreProperties(value = { "child" }, allowSetters = true)
     private Set<MonthPaidDTO> monthPaid;
 
     public Long getId() {
