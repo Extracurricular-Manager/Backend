@@ -58,7 +58,6 @@ public class Child implements Serializable {
     @OneToOne(mappedBy = "child")
     private PresenceModel presenceModel;
 
-
     @OneToOne(mappedBy = "child")
     private MonthPaid monthPaid;
 

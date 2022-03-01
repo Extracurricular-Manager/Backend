@@ -29,4 +29,5 @@ public class BillingResponse {
     public void setTotalCost(float totalCost) {
         this.totalCost = totalCost;
     }
+
 }

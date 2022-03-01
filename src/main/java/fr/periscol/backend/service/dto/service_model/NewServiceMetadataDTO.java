@@ -1,6 +1,7 @@
 package fr.periscol.backend.service.dto.service_model;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 public class NewServiceMetadataDTO {
 
@@ -10,6 +11,8 @@ public class NewServiceMetadataDTO {
     private String name;
     @NotNull(message = "Icon cannot be null")
     private String icon;
+    @NotNull(message = "criteriaList cannot be null")
+    private List<Integer> criteriaList;
 
     public String getModel() {
         return model;
@@ -33,5 +36,13 @@ public class NewServiceMetadataDTO {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public List<Integer> getCriteriaList() {
+        return criteriaList;
+    }
+
+    public void setCriteriaList(List<Integer> criteriaList) {
+        this.criteriaList = criteriaList;
     }
 }

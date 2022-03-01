@@ -77,6 +77,7 @@ public class ServiceMetadataService {
         return repository.findById(id).map(mapper::toDto);
     }
 
+
     /**
      * Get all the serviceMetadata.
      *

@@ -1,5 +1,10 @@
 package fr.periscol.backend.service.dto.service_model;
 
+import fr.periscol.backend.domain.tarification.Criteria;
+
+import java.util.List;
+import java.util.Set;
+
 public class ServiceMetadataDTO {
 
     private Long id;
@@ -9,6 +14,8 @@ public class ServiceMetadataDTO {
     private String model;
 
     private String icon;
+
+    private Set<Criteria> criterias;
 
     public String getName() {
         return name;
@@ -41,4 +48,14 @@ public class ServiceMetadataDTO {
     public void setIcon(String icon) {
         this.icon = icon;
     }
+
+    public Set<Criteria> getCriterias() {
+        return criterias;
+    }
+
+    public void setCriterias(Set<Criteria> criterias) {
+        this.criterias = criterias;
+    }
 }
+
+
