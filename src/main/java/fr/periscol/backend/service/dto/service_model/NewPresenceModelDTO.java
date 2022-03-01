@@ -19,6 +19,8 @@ public class NewPresenceModelDTO implements Serializable {
 
     private ChildDTO child;
 
+    private Long serviceId;
+
     public String getName() {
         return name;
     }
@@ -51,6 +53,13 @@ public class NewPresenceModelDTO implements Serializable {
         this.child = child;
     }
 
+    public Long getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(Long serviceId) {
+        this.serviceId = serviceId;
+    }
 
     // prettier-ignore
     @Override
