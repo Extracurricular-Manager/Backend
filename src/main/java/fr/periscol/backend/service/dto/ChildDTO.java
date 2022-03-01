@@ -30,7 +30,7 @@ public class ChildDTO implements Serializable {
 
     private Set<DietDTO> diets = new HashSet<>();
 
-    private MonthPaidDTO monthPaid;
+    private Set<MonthPaidDTO> monthPaid;
 
     public Long getId() {
         return id;
@@ -96,11 +96,11 @@ public class ChildDTO implements Serializable {
         this.diets = diets;
     }
 
-    public MonthPaidDTO getMonthPaid() {
+    public Set<MonthPaidDTO> getMonthPaid() {
         return monthPaid;
     }
 
-    public void setMonthPaid(MonthPaidDTO monthPaid) {
+    public void setMonthPaid(Set<MonthPaidDTO> monthPaid) {
         this.monthPaid = monthPaid;
     }
 

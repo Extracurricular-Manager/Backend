@@ -37,8 +37,7 @@ public class PresenceModel implements Serializable {
         value = { "classroom", "adelphie", "gradeLevel", "diets", "timeSlotModel", "presenceModel", "tarif", "facturation" },
         allowSetters = true
     )
-    @OneToOne
-    @JoinColumn()
+    @ManyToOne
     private Child child;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

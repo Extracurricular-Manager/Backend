@@ -37,8 +37,7 @@ public class PeriodModel implements Serializable {
         value = { "classroom", "adelphie", "gradeLevel", "diets", "timeSlotModel", "presenceModel", "tarif", "facturation" },
         allowSetters = true
     )
-    @OneToOne
-    @JoinColumn()
+    @ManyToOne
     private Child child;
 
     public Long getId() {

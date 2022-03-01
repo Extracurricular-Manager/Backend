@@ -31,7 +31,7 @@ public class MonthPaid implements Serializable {
     private Boolean payed;
 
     @JsonIgnoreProperties(value = { "monthPaid" }, allowSetters = true)
-    @OneToOne
+    @ManyToOne
     private Child child;
 
 

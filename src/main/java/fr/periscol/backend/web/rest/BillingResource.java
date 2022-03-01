@@ -20,9 +20,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
-/**
- * REST controller for managing {@link fr.periscol.backend.billing.BillingCalculation}.
- */
+
 @RestController
 @RequestMapping("/api")
 public class BillingResource {

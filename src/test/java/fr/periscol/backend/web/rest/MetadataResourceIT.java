@@ -22,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+import java.util.ArrayList;
+
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -73,6 +75,7 @@ class MetadataResourceIT {
         metadata.setName("foo42");
         metadata.setIcon("bar");
         metadata.setModel("presence");
+        metadata.setCriteriaList(new ArrayList<>());
         final var json = new ObjectMapper().writeValueAsString(metadata);
         serviceMetadataMockMvc.perform(post(ENTITY_API_URL)
                         .contentType("application/json")
@@ -120,6 +123,7 @@ class MetadataResourceIT {
         metadata.setName("Michel2");
         metadata.setIcon("foo");
         metadata.setModel("bar");
+        metadata.setCriteriaList(new ArrayList<>());
         String json = new ObjectMapper().writeValueAsString(metadata);
         serviceMetadataMockMvc.perform(post(ENTITY_API_URL)
                         .contentType("application/json")

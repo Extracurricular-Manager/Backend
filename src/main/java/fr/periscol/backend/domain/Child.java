@@ -51,15 +51,15 @@ public class Child implements Serializable {
     private Set<Diet> diets = new HashSet<>();
 
     @JsonIgnoreProperties(value = { "child" }, allowSetters = true)
-    @OneToOne(mappedBy = "child")
-    private PeriodModel periodModel;
+    @OneToMany(mappedBy = "child", cascade = CascadeType.ALL)
+    private Set<PeriodModel> periodModel = new HashSet<>();;
 
     @JsonIgnoreProperties(value = { "child" }, allowSetters = true)
-    @OneToOne(mappedBy = "child")
-    private PresenceModel presenceModel;
+    @OneToMany(mappedBy = "child", cascade = CascadeType.ALL)
+    private Set<PresenceModel> presenceModel = new HashSet<>();;
 
-    @OneToOne(mappedBy = "child")
-    private MonthPaid monthPaid;
+    @OneToMany(mappedBy = "child", cascade = CascadeType.ALL)
+    private Set<MonthPaid> monthPaid = new HashSet<>();;
 
     public Long getId() {
         return this.id;
@@ -177,52 +177,29 @@ public class Child implements Serializable {
         return this;
     }
 
-    public PeriodModel getTimeSlotModel() {
-        return this.periodModel;
+    public Set<PeriodModel> getPeriodModel() {
+        return periodModel;
     }
 
-    public void setTimeSlotModel(PeriodModel periodModel) {
-        if (this.periodModel != null) {
-            this.periodModel.setChild(null);
-        }
-        if (periodModel != null) {
-            periodModel.setChild(this);
-        }
+    public void setPeriodModel(Set<PeriodModel> periodModel) {
         this.periodModel = periodModel;
     }
 
-    public Child timeSlotModel(PeriodModel periodModel) {
-        this.setTimeSlotModel(periodModel);
-        return this;
+    public Set<PresenceModel> getPresenceModel() {
+        return presenceModel;
     }
 
-    public PresenceModel getPresenceModel() {
-        return this.presenceModel;
-    }
-
-    public void setPresenceModel(PresenceModel presenceModel) {
-        if (this.presenceModel != null) {
-            this.presenceModel.setChild(null);
-        }
-        if (presenceModel != null) {
-            presenceModel.setChild(this);
-        }
+    public void setPresenceModel(Set<PresenceModel> presenceModel) {
         this.presenceModel = presenceModel;
     }
 
-    public Child presenceModel(PresenceModel presenceModel) {
-        this.setPresenceModel(presenceModel);
-        return this;
-    }
-
-    public MonthPaid getMonthPaid() {
+    public Set<MonthPaid> getMonthPaid() {
         return monthPaid;
     }
 
-    public void setMonthPaid(MonthPaid monthPaid) {
+    public void setMonthPaid(Set<MonthPaid> monthPaid) {
         this.monthPaid = monthPaid;
     }
-// jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {

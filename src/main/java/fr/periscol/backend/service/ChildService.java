@@ -101,7 +101,7 @@ public class ChildService {
         log.debug("Request to get all children where TimeSlotModel is null");
         return StreamSupport
             .stream(childRepository.findAll().spliterator(), false)
-            .filter(child -> child.getTimeSlotModel() == null)
+            .filter(child -> child.getPeriodModel() == null)
             .map(childMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
