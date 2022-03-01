@@ -41,14 +41,22 @@ public class DataLoader {
             return Integer.MAX_VALUE;
         if(b.startsWith("rel"))
             return Integer.MIN_VALUE;
-        if(a.equals("month_paid.csv"))
+        if(a.equals("period_model.csv"))
             return Integer.MAX_VALUE - 1;
-        if(b.equals("month_paid.csv"))
+        if(b.equals("period_model.csv"))
             return Integer.MIN_VALUE + 1;
-        if(a.equals("child.csv"))
+        if(a.equals("presence_model.csv"))
             return Integer.MAX_VALUE - 2;
-        if(b.equals("child.csv"))
+        if(b.equals("presence_model.csv"))
             return Integer.MIN_VALUE + 2;
+        if(a.equals("month_paid.csv"))
+            return Integer.MAX_VALUE - 3;
+        if(b.equals("month_paid.csv"))
+            return Integer.MIN_VALUE + 3;
+        if(a.equals("child.csv"))
+            return Integer.MAX_VALUE - 4;
+        if(b.equals("child.csv"))
+            return Integer.MIN_VALUE + 4;
         return a.compareTo(b);
     }
 

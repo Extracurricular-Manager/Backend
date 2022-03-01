@@ -38,10 +38,8 @@ public class PeriodModel implements Serializable {
         allowSetters = true
     )
     @OneToOne
-    @JoinColumn(unique = true)
+    @JoinColumn()
     private Child child;
-
-    // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
         return this.id;
