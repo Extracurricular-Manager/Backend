@@ -6,9 +6,11 @@ import fr.periscol.backend.service.ChildService;
 import fr.periscol.backend.service.MonthPaidService;
 import fr.periscol.backend.service.dto.ChildDTO;
 import fr.periscol.backend.service.dto.MonthPaidDTO;
-import fr.periscol.backend.service.dto.service_model.ServiceMetadataDTO;
+import fr.periscol.backend.service.mapper.ChildMapper;
+import fr.periscol.backend.service.mapper.service_model.ServiceMetadataMapper;
+import fr.periscol.backend.service.service_model.PeriodModelService;
+import fr.periscol.backend.service.service_model.ServiceMetadataService;
 import fr.periscol.backend.web.rest.errors.BadRequestAlertException;
-import fr.periscol.backend.web.rest.service_model.ServiceResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,10 +48,22 @@ public class MonthPaidResource {
 
     private final ChildService childService;
 
-    public MonthPaidResource(MonthPaidService monthPaidService, MonthPaidRepository monthPaidRepository, ChildService childService) {
+    private final PeriodModelService periodService;
+
+    private final ChildMapper childMapper;
+
+    private final ServiceMetadataService serviceMetadata;
+
+    private  final ServiceMetadataMapper serviceMetadataMapper;
+
+    public MonthPaidResource(MonthPaidService monthPaidService, MonthPaidRepository monthPaidRepository, ChildService childService, PeriodModelService periodService, ChildMapper childMapper, ServiceMetadataService serviceMetadata, ServiceMetadataMapper serviceMetadataMapper) {
         this.monthPaidService = monthPaidService;
         this.monthPaidRepository = monthPaidRepository;
         this.childService = childService;
+        this.periodService = periodService;
+        this.childMapper = childMapper;
+        this.serviceMetadata = serviceMetadata;
+        this.serviceMetadataMapper = serviceMetadataMapper;
     }
 
     /**
@@ -202,9 +216,9 @@ public class MonthPaidResource {
         }
         else {
             ChildDTO childDTO = optionalChildDTO.get();
-            Map<Date, ServiceMetadataDTO> dateServiceResourceMap = CsvUtil.getFromChild(childDTO);
             try {
-                File file = CsvUtil.createXlsx();
+                CsvUtil csvUtil = new CsvUtil(monthPaidService, childMapper, periodService, serviceMetadata, serviceMetadataMapper);
+                File file = csvUtil.createXlsx(date);
                 return ResponseEntity.ok()
                         .header("Content-Disposition", "attachment; filename=test.xlsx")
                         .contentType(MediaType.valueOf("application/x-excel")).body(new FileSystemResource(file));
