@@ -16,7 +16,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "criteria")
-public sealed class Criteria  implements Serializable permits CriteriaAdelphie, CriteriaChild {
+public class Criteria implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

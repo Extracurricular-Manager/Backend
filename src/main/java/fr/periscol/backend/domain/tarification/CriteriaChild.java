@@ -10,7 +10,7 @@ import java.util.Date;
  * @param <T> Spring service to get data
  */
 @Entity
-public non-sealed abstract class CriteriaChild<T> extends Criteria {
+public abstract class CriteriaChild<T> extends Criteria {
 
     public abstract float compute(Child child, Long serviceId, Date date, float price, T dataService);
 
