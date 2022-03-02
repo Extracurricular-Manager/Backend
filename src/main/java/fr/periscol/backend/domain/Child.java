@@ -60,7 +60,7 @@ public class Child implements Serializable {
 
     @JsonIgnoreProperties(value = { "child" }, allowSetters = true)
     @OneToMany(mappedBy = "child", cascade = CascadeType.ALL)
-    private Set<MonthPaid> monthPaid = new HashSet<>();;
+    private Set<MonthPaid> monthPaid = new HashSet<>();
 
     public Long getId() {
         return this.id;
