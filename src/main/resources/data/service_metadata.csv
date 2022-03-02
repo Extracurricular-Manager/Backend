@@ -1,4 +1,4 @@
 END_POINT,ICON,MODEL,NAME,PERMISSION_ID
-0,bakery_dining,period,Garderie Matin,4
-1,egg,period,Garderie Soir,5
-2,castle,presence,Cantine,6
+0,wb_sunny,period,Garderie Matin,4
+1,bedtime,period,Garderie Soir,5
+2,restaurant,presence,Cantine,6
