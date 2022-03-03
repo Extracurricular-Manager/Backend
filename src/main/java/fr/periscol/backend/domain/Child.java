@@ -33,33 +33,33 @@ public class Child implements Serializable {
     @Column(name = "birthday")
     private LocalDate birthday;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JsonIgnoreProperties(value = { "children" }, allowSetters = true)
     private Classroom classroom;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JsonIgnoreProperties(value = { "children" }, allowSetters = true)
     private Family adelphie;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JsonIgnoreProperties(value = { "children" }, allowSetters = true)
     private GradeLevel gradeLevel;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "rel_child__diet", joinColumns = @JoinColumn(name = "child_id"), inverseJoinColumns = @JoinColumn(name = "diet_id"))
     @JsonIgnoreProperties(value = { "children" }, allowSetters = true)
     private Set<Diet> diets = new HashSet<>();
 
     @JsonIgnoreProperties(value = { "child" }, allowSetters = true)
-    @OneToMany(mappedBy = "child", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "child", cascade = CascadeType.MERGE)
     private Set<PeriodModel> periodModel = new HashSet<>();
 
     @JsonIgnoreProperties(value = { "child" }, allowSetters = true)
-    @OneToMany(mappedBy = "child", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "child", cascade = CascadeType.MERGE)
     private Set<PresenceModel> presenceModel = new HashSet<>();
 
     @JsonIgnoreProperties(value = { "child" }, allowSetters = true)
-    @OneToMany(mappedBy = "child", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "child", cascade = CascadeType.MERGE)
     private Set<MonthPaid> monthPaid = new HashSet<>();
 
     public Long getId() {

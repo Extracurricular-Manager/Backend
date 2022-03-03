@@ -170,6 +170,18 @@ public class ChildResource {
     }
 
     /**
+     * {@code GET /child/todayBirthday} : get the children witch the birthday is today.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the List<childDTO>.
+     */
+    @GetMapping("/child/todayBirthday")
+    public ResponseEntity<List<ChildDTO>> getChildrenBirthday(){
+        log.debug("REST request to get the children witch have their birthday today.");
+        List<ChildDTO> listChildDTO = childService.findAllWithBirthdayToday();
+        return ResponseEntity.ok(listChildDTO);
+    }
+
+    /**
      * {@code DELETE  /child/:id} : delete the "id" child.
      *
      * @param id the id of the childDTO to delete.

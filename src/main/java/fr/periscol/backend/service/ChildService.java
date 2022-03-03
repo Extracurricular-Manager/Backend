@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -118,6 +119,16 @@ public class ChildService {
             .filter(child -> child.getPresenceModel() == null)
             .map(childMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    /**
+     *  Get all the children which have its birthday today.
+     *  @return the list of entities.
+     */
+    @Transactional(readOnly = true)
+    public List<ChildDTO> findAllWithBirthdayToday() {
+        log.debug("Request to get all the children with the birthday today.");
+        return childRepository.findByBirthdayIs(LocalDate.now()).stream().map(childMapper::toDto).toList();
     }
 
     /**

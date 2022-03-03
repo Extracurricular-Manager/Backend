@@ -1,6 +1,7 @@
 package fr.periscol.backend.repository;
 
 import fr.periscol.backend.domain.Child;
+import fr.periscol.backend.service.dto.ChildDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,4 +29,6 @@ public interface ChildRepository extends JpaRepository<Child, Long> {
 
     @Query("select child from Child child left join fetch child.diets where child.id =:id")
     Optional<Child> findOneWithEagerRelationships(@Param("id") Long id);
+
+    List<Child> findByBirthdayIs(LocalDate now);
 }
