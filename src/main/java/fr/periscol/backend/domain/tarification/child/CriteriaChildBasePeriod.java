@@ -23,7 +23,7 @@ import java.util.*;
 public class CriteriaChildBasePeriod extends CriteriaChild<PeriodModelService> {
 
 
-    public void CriteriaChildBasedPeriod(){
+    public CriteriaChildBasePeriod(){
 
 
         String name[] = {"price", "time","maxBound", "minBound"};

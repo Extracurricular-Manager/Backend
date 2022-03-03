@@ -1,9 +1,6 @@
 package fr.periscol.backend.domain.tarification;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Attributes")
@@ -37,6 +34,7 @@ public class Attributes {
 
     private String name;
 
+    @Enumerated(EnumType.STRING)
     private AttributeType type;
 
     private String value;

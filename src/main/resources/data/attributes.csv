@@ -1,0 +1,5 @@
+ID,DESCRIPTION,NAME,TYPE,VALUE,CRITERIA_ID
+0,price of the prestation during regular hours,price,CURRENCY,0.5,0
+1,time scale of the price,time,INT,15,0
+2,End time of daycare,maxBound,TIME,18:30,0
+3,Begining Time of daycare,minBound,TIME,07:00,0

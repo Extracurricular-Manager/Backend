@@ -52,11 +52,11 @@ public class Child implements Serializable {
 
     @JsonIgnoreProperties(value = { "child" }, allowSetters = true)
     @OneToMany(mappedBy = "child", cascade = CascadeType.ALL)
-    private Set<PeriodModel> periodModel = new HashSet<>();;
+    private Set<PeriodModel> periodModel = new HashSet<>();
 
     @JsonIgnoreProperties(value = { "child" }, allowSetters = true)
     @OneToMany(mappedBy = "child", cascade = CascadeType.ALL)
-    private Set<PresenceModel> presenceModel = new HashSet<>();;
+    private Set<PresenceModel> presenceModel = new HashSet<>();
 
     @JsonIgnoreProperties(value = { "child" }, allowSetters = true)
     @OneToMany(mappedBy = "child", cascade = CascadeType.ALL)

@@ -37,9 +37,9 @@ public class DataLoader {
     }
 
     private static int compareString(String a, String b) {
-        if(a.startsWith("rel"))
+        if(a.startsWith("rel") || a.equals("attributes.csv"))
             return Integer.MAX_VALUE;
-        if(b.startsWith("rel"))
+        if(b.startsWith("rel") || b.equals("attributes.csv"))
             return Integer.MIN_VALUE;
         if(a.equals("period_model.csv"))
             return Integer.MAX_VALUE - 1;
