@@ -218,7 +218,7 @@ public class MonthPaidResource {
             ChildDTO childDTO = optionalChildDTO.get();
             try {
                 CsvUtil csvUtil = new CsvUtil(monthPaidService, childMapper, periodService, serviceMetadata, serviceMetadataMapper);
-                File file = csvUtil.createXlsx(date);
+                File file = csvUtil.createXlsx(date, childDTO);
                 return ResponseEntity.ok()
                         .header("Content-Disposition", "attachment; filename=test.xlsx")
                         .contentType(MediaType.valueOf("application/x-excel")).body(new FileSystemResource(file));

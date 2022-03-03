@@ -104,9 +104,10 @@ public class CsvUtil {
             cellStyle.setDataFormat(createHelper.createDataFormat().getFormat("dd/mm/yyyy"));
             cellDate.setCellStyle(cellStyle);
             for (int j = 1 ; j <= serviceMetadataList.size() ; j++){
-                row.createCell(j).setCellValue(billingCalculationService.computeChildForDay(child,
+                float bcs = billingCalculationService.computeChildForDay(child,
                         serviceMetadataList.get(j - 1),
-                        dates.get(i - 1)));
+                        dates.get(i - 1));
+                row.createCell(j).setCellValue(bcs);
             }
         }
         //TODO make calculation for the total last line.
@@ -121,12 +122,14 @@ public class CsvUtil {
         return workbook;
     }
 
-    public File createXlsx(Date date) throws IOException {
+    public File createXlsx(Date date, ChildDTO childDTO) throws IOException {
 
         Workbook workbook = new XSSFWorkbook();
+        /*
         ChildDTO childDTO = new ChildDTO();
         childDTO.setName("Bilbo");
         childDTO.setSurname("Squat");
+         */
         workbook = createChildSheet(workbook, childDTO, date);
 
         /*
