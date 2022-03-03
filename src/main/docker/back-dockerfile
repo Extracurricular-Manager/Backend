@@ -11,4 +11,4 @@ COPY --from=builder target/*.jar app.jar
 COPY src/main/docker/config.properties config.properties
 
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","app.jar"]
+ENTRYPOINT ["java","-jar", "--enable-preview", "app.jar"]
