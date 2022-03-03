@@ -21,9 +21,6 @@ public class PresenceModel implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
-    private String name;
-
     @Column(name = "presence")
     private Boolean presence;
 
@@ -61,19 +58,6 @@ public class PresenceModel implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public PresenceModel name(String name) {
-        this.setName(name);
-        return this;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Boolean getPresence() {
@@ -139,7 +123,6 @@ public class PresenceModel implements Serializable {
     public String toString() {
         return "PresenceModel{" +
             "id=" + getId() +
-            ", name='" + getName() + "'" +
             ", presence='" + getPresence() + "'" +
             ", date='" + getDate() + "'" +
             "}";

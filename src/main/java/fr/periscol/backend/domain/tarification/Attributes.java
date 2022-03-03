@@ -1,5 +1,7 @@
 package fr.periscol.backend.domain.tarification;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -29,6 +31,7 @@ public class Attributes {
         return id;
     }
 
+    @JsonIgnore
     @ManyToOne
     Criteria criteria;
 

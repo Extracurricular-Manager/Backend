@@ -1,5 +1,6 @@
 package fr.periscol.backend.domain.tarification;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fr.periscol.backend.domain.service_model.ServiceMetadata;
 
@@ -41,6 +42,7 @@ public class Criteria implements Serializable {
     @JsonIgnoreProperties(
             allowSetters = true
     )
+    @JsonIgnore
     private Set<ServiceMetadata> serviceMetadata = new HashSet<>();
 
     public Long getId() {
